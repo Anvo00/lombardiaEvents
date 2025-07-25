@@ -1,0 +1,65 @@
+# Node & Package Managers
+node_modules/
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Build output
+dist/
+build/
+tmp/
+.temp/
+.tmp/
+out-tsc/
+bazel-out/
+
+# Logs
+logs
+*.log
+*.pid
+*.seed
+*.pid.lock
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+libpeerconnection.log
+testem.log
+
+# Angular specific
+.angular/cache/
+
+# Test coverage/output
+coverage/
+.nyc_output/
+.typings/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/
+
+# OS/System files
+.DS_Store
+Thumbs.db
+
+# Misc
+connect.lock
+.sass-cache/
