@@ -10,7 +10,7 @@ export class EventsController {
     // Ritorna tutti gli eventi presenti
     @Get()
     async getEvents() : Promise<EventDto[]>{
-        return this.eventsService.findEvents();
+        return this.eventsService.findAllEvents();
     }
 
     // Ritorna tutti gli eventi con un filtro sul campo "Nome"

@@ -5,8 +5,8 @@ import { IsDate, IsNumber, IsString } from "class-validator";
 
 export class EventDto {
     @Expose({name: 'id'})
-    @IsNumber()
-    id: number;
+    @IsString()
+    id: string;
 
     @Expose({name: 'denom'})
     @IsString()
@@ -17,24 +17,24 @@ export class EventDto {
     type: string;
 
     @Expose({name: 'data_in'})
-    @IsDate()
-    startDate: Date;
+    @IsString()
+    startDate: string;
 
     @Expose({name: 'ora_in'})
     @IsString()
     startTime: string;
 
     @Expose({name: 'data_fine'})
-    @IsDate()
-    endDate: Date;
+    @IsString()
+    endDate: string;
 
     @Expose({name: 'ora_fine'})
     @IsString()
     endTime: string;
 
     @Expose({name: 'anno'})
-    @IsNumber()
-    year: number;
+    @IsString()
+    year: string;
 
     @Expose({name: 'prov'})
     @IsString()
@@ -53,8 +53,8 @@ export class EventDto {
     address: string;
 
     @Expose({name: 'cap'})
-    @IsNumber()
-    cap: number;
+    @IsString()
+    cap: string;
 
 
     //TODO Mancano le coordinate

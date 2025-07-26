@@ -12,7 +12,7 @@ export class EventsService {
     // Endpoint API
     private url = "https://www.dati.lombardia.it/resource/hs8z-dcey.json";
 
-    async findEvents() : Promise<EventDto[]> {
+    async findAllEvents() : Promise<EventDto[]> {
         try {
             const response = await firstValueFrom(this.httpService.get<EventDto[]>(this.url));
             return plainToInstance(EventDto, response.data, { excludeExtraneousValues: true });
@@ -22,10 +22,10 @@ export class EventsService {
     }
 
     async findEventsByName(name: string) : Promise<EventDto[]>{
-        const events = await this.findEvents();
+        const events = await this.findAllEvents();
         const search = name.replace(/\s/g, '').toLowerCase();
 
-        const filteredEvents = events.filter((e: any) => e.eventName?.replace(/\s/g, '').toLowerCase().startsWith(search));
+        const filteredEvents = events.filter((e: EventDto) => e.eventName?.replace(/\s/g, '').toLowerCase().startsWith(search));
     
         return filteredEvents;
     }
