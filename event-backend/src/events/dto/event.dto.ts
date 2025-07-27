@@ -1,7 +1,5 @@
 import { Expose } from "class-transformer";
-import { IsDate, IsNumber, IsString } from "class-validator";
-
-//TODO Terminare di validare i dati
+import { IsString } from "class-validator";
 
 export class EventDto {
     @Expose({name: 'id'})

@@ -5,9 +5,21 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { TicketsModule } from './tickets/tickets.module';
 import { EventsModule } from './events/events.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import entities from './users/typeorm';
 
 @Module({
-  imports: [UsersModule, AuthModule, TicketsModule, EventsModule],
+  imports: [UsersModule, AuthModule, TicketsModule, EventsModule,
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'nestjsuser',
+      password: 'MyR00tPassw0rd',
+      database: 'lombardiaEventsDB',
+      entities,
+      synchronize: true,
+    })],
   controllers: [AppController],
   providers: [AppService],
 })

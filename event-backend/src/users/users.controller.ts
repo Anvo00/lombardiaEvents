@@ -22,15 +22,12 @@ export class UsersController {
     //--- CRUD Operations ---//
     
 
-    // user (dto con dati)
     @Post()
-    //TODO Inserire nei parametri di @Body() "ValidationPipe"
     createUser(@Body() createUserDto : CreateUserDto){
         return this.userService.create(createUserDto);
     }
 
 
-    // id
     @Delete(':id')
     //TODO (Forse viene fatto dal DB) Modificare gli id successivi
     deleteUser(@Param('id', ParseIntPipe) id : number){
@@ -38,9 +35,7 @@ export class UsersController {
     }
 
 
-    // id + updatedUser (dto con campi opzionali)
     @Patch(':id')
-    //TODO Inserire nei parametri di @Body() "ValidationPipe"
     updateUser(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto : UpdateUserDto){
         return this.userService.update(id, updateUserDto);
     }

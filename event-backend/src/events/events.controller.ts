@@ -1,6 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { EventDto } from './dto/event.dto';
+import { SafeStringPipe } from 'src/common/safe-string.pipe';
 
 @Controller('events')
 export class EventsController {
@@ -15,7 +16,7 @@ export class EventsController {
 
     // Ritorna tutti gli eventi con un filtro sul campo "Nome"
     @Get(':name')
-    async getEventsByName(@Param('name') name: string) : Promise<EventDto[]>{
+    async getEventsByName(@Param('name', SafeStringPipe) name: string) : Promise<EventDto[]>{
         return this.eventsService.findEventsByName(name);
     }
 }

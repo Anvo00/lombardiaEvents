@@ -1,78 +1,59 @@
-import { Injectable } from '@nestjs/common';
+import { BadGatewayException, BadRequestException, Injectable, NotFoundException, NotImplementedException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Not, Repository } from 'typeorm';
+import { User } from './typeorm/user.entity';
 
 @Injectable()
 export class UsersService {
 
-    // Visto che non c'è un collegamento al DB, creo una lista di prova qui
-    private users = [
-        {
-            "id": 1,
-            "nome": "Davide",
-            "cognome": "Russo",
-            "email": "davide.russo@gmail.com"
-        },
-        {
-            "id": 2,
-            "nome": "Luca",
-            "cognome": "Martini",
-            "email": "luca.martini@gmail.com"
-        },
-        {
-            "id": 3,
-            "nome": "Mario",
-            "cognome": "Bianchi",
-            "email": "mario.bianchi@gmail.com"
-        }
-    ]
+    constructor(@InjectRepository(User) private userRepository : Repository<User>) {}
 
-    findAllUsers(){
-        return this.users;
+    
+    findAllUsers() : Promise<User[]>{
+        return this.userRepository.find();
     }
 
-    findUserById(id : number){
-        //TODO Validare input
-        const user = this.users.find(user => user.id === id);
-        return user;
+    // Se l'utente non esiste, ritorna un elemento null (secondo il metodo della repository)
+    findUserById(id : number) : Promise<User | null> {
+        if(id <= 0) {
+            throw new BadRequestException('ID non valido');
+        }
+
+        return this.userRepository.findOne({where: {id}});
     }
 
 
     //--- CRUD Operations ---//
 
 
-    //TODO Implementare con collegamento al DB
     create(createUserDto : CreateUserDto) {
-        // Genera un ID senza DB
-        const usersByHighestId = [...this.users].sort((a, b) => b.id - a.id)
-        const newUser = {
-            id: usersByHighestId[0].id + 1,
-            ...createUserDto
+        const newUser = this.userRepository.create(createUserDto);
+        return this.userRepository.save(newUser);
+    }
+
+    async update(id : number, updateUserDto : UpdateUserDto){
+        // Se viene trovato l'utente, allora viene fatto il merge delle informazioni automaticamente
+        const updatedUser = await this.userRepository.preload({id, updateUserDto});
+
+        console.log('Risultato preload:', updatedUser);
+
+        if(!updatedUser) {
+            throw new NotFoundException(`Utente con id ${id} non trovato`);
         }
 
-        this.users.push(newUser);
-        return newUser;
+        return this.userRepository.save(updatedUser);
     }
 
-    //TODO Implementare con collegamento al DB
-    update(id : number, updateUserDto : UpdateUserDto){
-        this.users = this.users.map(user => {
-            if (user.id === id) {
-                return { ...user, ...updateUserDto }
-            }
-            return user
-        })
+    async delete(id: number) {
+        const removedUser = await this.findUserById(id);
 
-        return this.findUserById(id);
-    }
+        if (!removedUser) {
+        throw new BadRequestException(`Utente con id ${id} non trovato`);
+        }
 
-    //TODO Implementare con collegamento al DB
-    delete(id: number) {
-        const removedUser = this.findUserById(id);
-
-        this.users = this.users.filter(user => user.id !== id);
-
-        return removedUser;
+        return this.userRepository.remove(removedUser);
     }
 
 }
