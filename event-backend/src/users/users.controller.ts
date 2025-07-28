@@ -29,7 +29,6 @@ export class UsersController {
 
 
     @Delete(':id')
-    //TODO (Forse viene fatto dal DB) Modificare gli id successivi
     deleteUser(@Param('id', ParseIntPipe) id : number){
         return this.userService.delete(id);
     }

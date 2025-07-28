@@ -11,17 +11,29 @@ export class UsersService {
     constructor(@InjectRepository(User) private userRepository : Repository<User>) {}
 
     
-    findAllUsers() : Promise<User[]>{
-        return this.userRepository.find();
+    async findAllUsers() : Promise<User[]>{
+        const users = await this.userRepository.find();
+
+        if(users.length === 0) {
+            throw new NotFoundException('Nessun utente trovato nel database');
+        }
+
+        return users;
     }
 
     // Se l'utente non esiste, ritorna un elemento null (secondo il metodo della repository)
-    findUserById(id : number) : Promise<User | null> {
+    async findUserById(id : number) : Promise<User | null> {
         if(id <= 0) {
             throw new BadRequestException('ID non valido');
         }
 
-        return this.userRepository.findOne({where: {id}});
+        const user = await this.userRepository.findOne({where: {id}})
+
+        if(!user) {
+            throw new NotFoundException(`Utente con id ${id} non trovato`);
+        }
+
+        return user;
     }
 
 
@@ -36,8 +48,6 @@ export class UsersService {
     async update(id : number, updateUserDto : UpdateUserDto){
         // Se viene trovato l'utente, allora viene fatto il merge delle informazioni automaticamente
         const updatedUser = await this.userRepository.preload({id, ...updateUserDto});
-
-        console.log('Risultato preload:', updatedUser);
 
         if(!updatedUser) {
             throw new NotFoundException(`Utente con id ${id} non trovato`);
