@@ -12,21 +12,21 @@ export class User {
     @Column({
         name: 'user_name',
         nullable: false,
-        default: '',
+        default: ' ',
     })
     name: string;
 
     @Column({
         name: 'user_surname',
         nullable: false,
-        default: '',
+        default: ' ',
     })
     surname: string;
 
     @Column({
         name: 'email_address',
         nullable: false,
-        default: '',
+        default: ' ',
     })
     email: string;
 }

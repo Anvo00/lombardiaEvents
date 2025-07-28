@@ -35,7 +35,7 @@ export class UsersService {
 
     async update(id : number, updateUserDto : UpdateUserDto){
         // Se viene trovato l'utente, allora viene fatto il merge delle informazioni automaticamente
-        const updatedUser = await this.userRepository.preload({id, updateUserDto});
+        const updatedUser = await this.userRepository.preload({id, ...updateUserDto});
 
         console.log('Risultato preload:', updatedUser);
 

@@ -7,9 +7,11 @@ import { TicketsModule } from './tickets/tickets.module';
 import { EventsModule } from './events/events.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import entities from './users/typeorm';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [UsersModule, AuthModule, TicketsModule, EventsModule,
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -18,7 +20,8 @@ import entities from './users/typeorm';
       password: 'MyR00tPassw0rd',
       database: 'lombardiaEventsDB',
       entities,
-      synchronize: true,
+      synchronize: false,
+      autoLoadEntities: true,
     })],
   controllers: [AppController],
   providers: [AppService],
