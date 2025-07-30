@@ -14,10 +14,7 @@ export class AuthService {
     async register(userData: CreateUserDto) : Promise<User> {
         const hashedPassword = await this.hashPassword(userData.password);
         const newUser = { ...userData, password: hashedPassword };
-        
-        // DEBUG: Controllo cosa c'è in newUser
-        console.log('newUser Data:', newUser);
-
+    
         return this.userService.create(newUser);
     }
 
@@ -28,11 +25,6 @@ export class AuthService {
             if(user && await bcrypt.compare(userLoginDto.password, user.password)) {
                 // Rimuovo la password dall'oggetto utente prima di restituirlo
                 const { password, ...result } = user;
-
-
-                // DEBUG: Controllo cosa c'è in result
-                console.log('Validated User Data:', result);
-
                 return result;
             }
             
@@ -43,18 +35,10 @@ export class AuthService {
         }
     }
     
-    //TODO Provare test per la registrazione (controlla utente com'è fatto)
     async login(user: any) : Promise<any> {
 
-        // DEBUG: Controllo cosa c'è in user
-        console.log('User Data in Login:', user);
-
-        return {
-            access_token: this.jwtService.sign(user),
-            user,
-        }
+        return {access_token: this.jwtService.sign(user)}
     }
-
 
     async hashPassword(password: string): Promise<string> {
         const saltRounds = 10;

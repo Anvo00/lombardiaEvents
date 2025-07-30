@@ -24,12 +24,10 @@ export class AuthController {
         const user = await this.authService.register(createUserDto);
         if (!user) return { message: 'Registrazione fallita' };
 
-        /*
         // Una volta registrato, l'utente può essere autenticato
         const loginResult = await this.authService.login(user);
-        */
 
-        return {message: 'Utente registrato con successo'};
+        return {message: 'Utente registrato e loggato con successo', ...loginResult};
     }
 
 
