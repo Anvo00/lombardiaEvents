@@ -14,24 +14,27 @@ export class UsersService {
     async findAllUsers() : Promise<User[]>{
         const users = await this.userRepository.find();
 
-        if(users.length === 0) {
-            throw new NotFoundException('Nessun utente trovato nel database');
-        }
+        if(users.length === 0) throw new NotFoundException('Nessun utente trovato nel database');
 
         return users;
     }
 
+    async findUserByUsername(username : string) : Promise<User | null> {
+        const user = await this.userRepository.findOne({where : {username}});
+
+        if(!user) throw new NotFoundException(`Utente con username ${username} non trovato`);
+
+        return user;
+    }
+
+
     // Se l'utente non esiste, ritorna un elemento null (secondo il metodo della repository)
     async findUserById(id : number) : Promise<User | null> {
-        if(id <= 0) {
-            throw new BadRequestException('ID non valido');
-        }
+        if(id <= 0) throw new BadRequestException('ID non valido');
 
         const user = await this.userRepository.findOne({where: {id}})
 
-        if(!user) {
-            throw new NotFoundException(`Utente con id ${id} non trovato`);
-        }
+        if(!user) throw new NotFoundException(`Utente con id ${id} non trovato`);
 
         return user;
     }
@@ -49,9 +52,7 @@ export class UsersService {
         // Se viene trovato l'utente, allora viene fatto il merge delle informazioni automaticamente
         const updatedUser = await this.userRepository.preload({id, ...updateUserDto});
 
-        if(!updatedUser) {
-            throw new NotFoundException(`Utente con id ${id} non trovato`);
-        }
+        if(!updatedUser) throw new NotFoundException(`Utente con id ${id} non trovato`);
 
         return this.userRepository.save(updatedUser);
     }
@@ -59,9 +60,7 @@ export class UsersService {
     async delete(id: number) {
         const removedUser = await this.findUserById(id);
 
-        if (!removedUser) {
-        throw new BadRequestException(`Utente con id ${id} non trovato`);
-        }
+        if (!removedUser) throw new BadRequestException(`Utente con id ${id} non trovato`);
 
         return this.userRepository.remove(removedUser);
     }

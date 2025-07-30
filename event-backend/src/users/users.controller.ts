@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from 
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { SafeStringPipe } from 'src/common/safe-string.pipe';
 
 @Controller('users')
 export class UsersController {
@@ -16,6 +17,11 @@ export class UsersController {
     @Get(':id')
     getUserById(@Param('id', ParseIntPipe) id: number){
         return this.userService.findUserById(id);
+    }
+
+    @Get(':username')
+    getUserByUsername(@Param('username', SafeStringPipe) username : string) {
+        return this.userService.findUserByUsername(username);
     }
 
 

@@ -11,7 +11,10 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [UsersModule, AuthModule, TicketsModule, EventsModule,
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
