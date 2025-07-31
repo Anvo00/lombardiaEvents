@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
-import { User } from './typeorm/user.entity';
+import { User } from '../typeorm/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -27,8 +27,6 @@ export class UsersService {
         return user;
     }
 
-
-    // Se l'utente non esiste, ritorna un elemento null (secondo il metodo della repository)
     async findUserById(id : number) : Promise<User | null> {
         if(id <= 0) throw new BadRequestException('ID non valido');
 
@@ -43,12 +41,12 @@ export class UsersService {
     //--- CRUD Operations ---//
 
 
-    create(createUserDto : CreateUserDto) {
+    async createUser(createUserDto : CreateUserDto) : Promise<User>{
         const newUser = this.userRepository.create(createUserDto);
         return this.userRepository.save(newUser);
     }
 
-    async update(id : number, updateUserDto : UpdateUserDto){
+    async updateUser(id : number, updateUserDto : UpdateUserDto) : Promise<User> {
         // Se viene trovato l'utente, allora viene fatto il merge delle informazioni automaticamente
         const updatedUser = await this.userRepository.preload({id, ...updateUserDto});
 
@@ -57,10 +55,10 @@ export class UsersService {
         return this.userRepository.save(updatedUser);
     }
 
-    async delete(id: number) {
+    async deleteUser(id: number) {
         const removedUser = await this.findUserById(id);
 
-        if (!removedUser) throw new BadRequestException(`Utente con id ${id} non trovato`);
+        if (!removedUser) throw new NotFoundException(`Utente con id ${id} non trovato`);
 
         return this.userRepository.remove(removedUser);
     }

@@ -1,8 +1,9 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { EventDto } from './dto/event.dto';
 import { plainToInstance } from 'class-transformer';
+import { Not } from 'typeorm';
 
 @Injectable()
 export class EventsService {
@@ -28,5 +29,14 @@ export class EventsService {
         const filteredEvents = events.filter((e: EventDto) => e.eventName?.replace(/\s/g, '').toLowerCase().startsWith(search));
     
         return filteredEvents;
+    }
+
+    async findEventById(id: string) : Promise<EventDto | null> {
+        const events = await this.findAllEvents();
+        const event = events.find((e: EventDto) => e.id === id);
+
+        if (!event) throw new NotFoundException(`Evento con id ${id} non trovato`);
+
+        return event;
     }
 }

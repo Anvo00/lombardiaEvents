@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
-import { User } from 'src/users/typeorm';
+import { User } from 'src/typeorm';
 import { UserLoginDto } from './dto/user-login.dto';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class AuthService {
         const hashedPassword = await this.hashPassword(userData.password);
         const newUser = { ...userData, password: hashedPassword };
     
-        return this.userService.create(newUser);
+        return this.userService.createUser(newUser);
     }
 
     async validateUser(userLoginDto: UserLoginDto) : Promise<any> {
