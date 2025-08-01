@@ -18,26 +18,28 @@ export class AuthService {
         return this.userService.createUser(newUser);
     }
 
-    async validateUser(userLoginDto: UserLoginDto) : Promise<any> {
+    async validateUser(userLoginDto: UserLoginDto): Promise<any> {
         try {
             const user = await this.userService.findUserByUsername(userLoginDto.username);
-            
-            if(user && await bcrypt.compare(userLoginDto.password, user.password)) {
-                // Rimuovo la password dall'oggetto utente prima di restituirlo
+            if (user && await bcrypt.compare(userLoginDto.password, user.password)) {
                 const { password, ...result } = user;
                 return result;
             }
-            
             return null;
         } catch (error) {
-            // Se non esiste, 'findUserByUsername' lancia un'eccezione
+            console.error('Errore durante validateUser:', error);
             return null;
         }
     }
     
-    async login(user: any) : Promise<any> {
+    async login(user: any) : Promise<{access_token: string}> {
 
-        return {access_token: this.jwtService.sign(user)}
+        const payload = {
+            username: user.username,
+            sub: user.id
+        }
+        
+        return {access_token: this.jwtService.sign(payload)}
     }
 
     async hashPassword(password: string): Promise<string> {

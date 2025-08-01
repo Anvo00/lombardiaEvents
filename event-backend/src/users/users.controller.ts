@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { SafeStringPipe } from 'src/common/safe-string.pipe';
 import { TicketsService } from 'src/tickets/tickets.service';
 import { Ticket } from 'src/typeorm';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 
 @Controller('users')
 export class UsersController {
@@ -17,6 +18,20 @@ export class UsersController {
     getUsers(){
         return this.userService.findAllUsers();
     }
+    
+    @Get('tickets')
+    @UseGuards(JwtAuthGuard)
+    getTicketsByUserId(@Req() req) : Promise<Ticket[]>{
+        console.log('Richiesta ricevuta per ottenere i biglietti dell\'utente');
+        // Controlla che l'utente esista
+        const userId = req.user.sub;
+        console.log(`User ID from request: ${userId}`);
+        console.log(`Cerco l'utente nel dabatabe`);
+        this.userService.findUserById(userId);
+
+        console.log(`Cerco i ticket per l'utente con ID: ${userId}`);
+        return this.ticketsService.findTicketsByUserId(userId);
+    }
 
     @Get(':id')
     getUserById(@Param('id', ParseIntPipe) userId: number){
@@ -28,13 +43,6 @@ export class UsersController {
         return this.userService.findUserByUsername(username);
     }
 
-    @Get(':id/tickets')
-    getTicketsByUserId(@Param('id', ParseIntPipe) userId: number) : Promise<Ticket[]>{
-        // Controlla che l'utente esista
-        this.getUserById(userId);
-
-        return this.ticketsService.findTicketsByUserId(userId);
-    }
 
 
     //--- CRUD Operations ---//

@@ -1,8 +1,8 @@
-import { BadGatewayException, BadRequestException, Injectable, NotFoundException, NotImplementedException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Not, Repository } from 'typeorm';
+import {  Repository } from 'typeorm';
 import { User } from '../typeorm/user.entity';
 
 @Injectable()
@@ -34,6 +34,7 @@ export class UsersService {
 
         if(!user) throw new NotFoundException(`Utente con id ${id} non trovato`);
 
+        console.log(`Utente trovato: ${user.username}`);
         return user;
     }
 

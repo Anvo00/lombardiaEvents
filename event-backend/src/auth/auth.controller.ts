@@ -1,16 +1,18 @@
 import { Body, ClassSerializerInterceptor, Controller, Get, Post, Req, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { UserLoginDto } from './dto/user-login.dto';
 import { JwtAuthGuard } from './guards/jwt.guard';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import { UsersService } from 'src/users/users.service';
 
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)  // Per attivare @Exlude nell'entità
 export class AuthController {
 
-    constructor(private authService: AuthService) {}
+    constructor(private authService: AuthService,
+        private usersService: UsersService
+    ) {}
 
     @Post('login')
     @UseGuards(LocalAuthGuard)
@@ -34,7 +36,8 @@ export class AuthController {
     // Metodo per ottenere il profilo dell'utente autenticato
     @Get('profile')
     @UseGuards(JwtAuthGuard)
-    getProfile(@Req() req) {
-        return req.user;
+    async getProfile(@Req() req) {
+        const userId = req.user.sub;
+        return await this.usersService.findUserById(userId);
     }
 }

@@ -1,6 +1,5 @@
-import { Body, Controller, Delete, Get, NotImplementedException, Param, ParseIntPipe, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
-import { UsersService } from 'src/users/users.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
@@ -8,9 +7,7 @@ import { UpdateTicketDto } from './dto/update-ticket.dto';
 @Controller('tickets')
 export class TicketsController {
 
-    constructor(private ticketsService: TicketsService,
-        private userService: UsersService
-    ) {}
+    constructor(private ticketsService: TicketsService) {}
 
     @Get()
     getTickets() {

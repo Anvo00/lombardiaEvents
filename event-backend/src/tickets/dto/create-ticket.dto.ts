@@ -1,10 +1,10 @@
-import { IsNotEmpty, IsNumber } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreateTicketDto {
 
     @IsNotEmpty()
-    @IsNumber()
-    eventId: number;
+    @IsString()
+    eventId: string;
 
     @IsNotEmpty()
     @IsNumber()

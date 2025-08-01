@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException, NotImplementedException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ticket } from 'src/typeorm/ticket.entity';
 import { Repository } from 'typeorm';
@@ -8,6 +8,7 @@ import { EventsService } from 'src/events/events.service';
 @Injectable()
 export class TicketsService {
 
+    
     constructor(@InjectRepository(Ticket) private ticketsRepository : Repository<Ticket>,
         private eventsService : EventsService){}
 
@@ -34,6 +35,7 @@ export class TicketsService {
 
         if(tickets.length === 0) throw new NotFoundException(`Nessun biglietto trovato per l'utente con id ${userId}`);
 
+        console.log(`Trovati ${tickets.length} biglietti per l'utente con id ${userId}`);
         return tickets;
     }
 
@@ -43,7 +45,7 @@ export class TicketsService {
 
 
     async createTicket(userId : number, createTicketDto : CreateTicketDto) : Promise<Ticket> {
-        const event = await this.eventsService.findEventById(createTicketDto.eventId.toString());
+        const event = await this.eventsService.findEventById(createTicketDto.eventId);
 
         if (!event) throw new NotFoundException(`Evento con id ${createTicketDto.eventId} non trovato`);
 
