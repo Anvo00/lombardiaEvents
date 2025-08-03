@@ -6,7 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { TicketsModule } from './tickets/tickets.module';
 import { EventsModule } from './events/events.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import entities from './typeorm';
+import entities from './database/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({

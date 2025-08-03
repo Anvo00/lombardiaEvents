@@ -27,11 +27,15 @@ export class EventsService {
         const search = name.replace(/\s/g, '').toLowerCase();
 
         const filteredEvents = events.filter((e: EventDto) => e.eventName?.replace(/\s/g, '').toLowerCase().startsWith(search));
-    
+
+        if (filteredEvents.length === 0) {
+            throw new NotFoundException('Nessun evento trovato');
+        }
+
         return filteredEvents;
     }
 
-    async findEventById(id: string) : Promise<EventDto | null> {
+    async findEventById(id: string) : Promise<EventDto> {
         const events = await this.findAllEvents();
         const event = events.find((e: EventDto) => e.id === id);
 

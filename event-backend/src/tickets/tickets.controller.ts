@@ -3,6 +3,9 @@ import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/common/roles.decorator';
+import { Role } from 'src/common/role.enum';
 
 @Controller('tickets')
 export class TicketsController {
@@ -10,11 +13,15 @@ export class TicketsController {
     constructor(private ticketsService: TicketsService) {}
 
     @Get()
+    @UseGuards(RolesGuard, JwtAuthGuard)
+    @Roles(Role.ADMIN)
     getTickets() {
         return this.ticketsService.findAllTickets();
     }
 
     @Get(':id')
+    @UseGuards(RolesGuard, JwtAuthGuard)
+    @Roles(Role.ADMIN)
     getTicketById(@Param('id', ParseIntPipe) id: number) {
         return this.ticketsService.findTicketById(id);
     }

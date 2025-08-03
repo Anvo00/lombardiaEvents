@@ -3,7 +3,7 @@ import { TicketsController } from './tickets.controller';
 import { TicketsService } from './tickets.service';
 import { UsersModule } from 'src/users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Ticket } from 'src/typeorm/ticket.entity';
+import { Ticket } from 'src/database/typeorm/ticket.entity';
 import { EventsModule } from 'src/events/events.module';
 
 @Module({

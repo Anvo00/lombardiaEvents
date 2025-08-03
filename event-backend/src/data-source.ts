@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import entities from './typeorm';
+import entities from './database/typeorm';
 import { ConfigService } from '@nestjs/config';
 import * as dotenv from 'dotenv';
 

@@ -1,6 +1,6 @@
 import { Exclude } from "class-transformer";
-import { Entity, Column,  PrimaryGeneratedColumn, OneToMany } from "typeorm";
-import { Ticket } from "./ticket.entity";
+import { Entity, Column,  PrimaryGeneratedColumn } from "typeorm";
+import { Role } from "../../common/role.enum";
 
 @Entity()
 export class User {
@@ -46,4 +46,7 @@ export class User {
         default: ' ',
     })
     email: string;
+
+    @Column({type: 'enum', enum: Role, default: Role.USER})
+    role: Role;
 }
