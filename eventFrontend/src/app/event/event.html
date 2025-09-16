@@ -1,0 +1,22 @@
+
+<div class="event-container">
+  <div class="event-card">
+    <div class="event-image">
+      <img src="images/jazz-concert.jpeg" alt="{{ event.title }}" />
+    </div>
+    <div class="event-info">
+      <h2>{{ event.title }}</h2>
+      <p>{{ event.description }}</p>
+      <p><strong>Luogo:</strong> {{ event.location }}</p>
+      <p><strong>Data:</strong> {{ event.date }}</p>
+      <p><strong>Orario:</strong> {{ event.time }}</p>
+      <div class="buttons">
+        <button class="btn map-btn" (click)="onOpenMap()">
+          Mappa
+        </button>
+        <button class="btn signup-btn" (click)="onSignup()">Iscriviti</button>
+      </div>
+    </div>
+  </div>
+</div>
+

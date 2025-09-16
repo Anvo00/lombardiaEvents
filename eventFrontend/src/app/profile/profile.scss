@@ -1,0 +1,150 @@
+.profile-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f4eeeb;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+
+.profile-card {
+  background: #fff;
+  width: 80%;             
+  padding: 40px;
+  border-radius: 20px;    
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+
+.profile-card h1,h2 {
+  margin-top: 0;
+  margin-bottom: 30px;
+  font-size: 2em;
+  text-align: center;
+}
+
+
+.view-mode p {
+  font-size: 1.1em;
+  margin: 8px 0;
+}
+.view-mode .btn {
+  display: block;
+  margin: 30px auto 0;
+}
+
+
+.edit-mode form {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-mode label {
+  margin-bottom: 20px;
+  font-size: 1em;
+}
+
+.edit-mode input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 8px; 
+  box-sizing: border-box;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+.btn {
+  padding: 12px 24px;
+  font-size: 1em;
+  border: none;
+  border-radius: 25px;
+  background-color: #799851;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background-color: #864b4f;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 40px 0 20px 0;
+}
+
+.container-events {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    gap: 20px;
+    justify-content: center;
+}
+
+.event-card {
+    width: 270px;
+    height: 350px; //400
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    border:1px solid rgb(235, 221, 221);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.event-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.event-image {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.event-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+@media (max-width: 600px) {
+  .event-card {
+        width: 100%;
+ }
+  .profile-card {
+    width: 100%;           
+    padding: 20px;
+  }
+
+  .edit-mode input {
+    padding: 8px;
+    font-size: 0.9em;
+  }
+
+  .btn {
+    padding: 10px 18px;
+    font-size: 0.9em;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+
