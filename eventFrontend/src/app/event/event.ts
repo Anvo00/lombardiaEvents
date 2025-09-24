@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 
 //TODO rivedi tipi 
 interface EventDetail {
@@ -15,7 +14,7 @@ interface EventDetail {
 @Component({
   selector: 'app-event',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './event.html',
   styleUrls: ['./event.scss']
 })

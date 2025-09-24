@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Footer } from "../footer/footer";
 
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [CommonModule, Footer],
+  imports: [CommonModule],
   templateUrl: './auth.html',
   styleUrls: ['./auth.scss']
 })
