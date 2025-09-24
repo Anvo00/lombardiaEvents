@@ -2797,7 +2797,7 @@ var require_Element = __commonJS({
     var xml = require_xmlnames();
     var utils = require_utils();
     var NAMESPACE = utils.NAMESPACE;
-    var attributes2 = require_attributes();
+    var attributes = require_attributes();
     var Node2 = require_Node();
     var NodeList = require_NodeList();
     var NodeUtils = require_NodeUtils();
@@ -3483,10 +3483,10 @@ var require_Element = __commonJS({
           return this._attrsByLName[this._attrKeys[n]];
         }
       },
-      id: attributes2.property({
+      id: attributes.property({
         name: "id"
       }),
-      className: attributes2.property({
+      className: attributes.property({
         name: "class"
       }),
       classList: {
@@ -3538,7 +3538,7 @@ var require_Element = __commonJS({
     });
     Object.defineProperties(Element2.prototype, ChildNode);
     Object.defineProperties(Element2.prototype, NonDocumentTypeChildNode);
-    attributes2.registerChangeHandler(Element2, "id", function(element, lname, oldval, newval) {
+    attributes.registerChangeHandler(Element2, "id", function(element, lname, oldval, newval) {
       if (element.rooted) {
         if (oldval) {
           element.ownerDocument.delId(oldval, element);
@@ -3548,7 +3548,7 @@ var require_Element = __commonJS({
         }
       }
     });
-    attributes2.registerChangeHandler(Element2, "class", function(element, lname, oldval, newval) {
+    attributes.registerChangeHandler(Element2, "class", function(element, lname, oldval, newval) {
       if (element._classList) {
         element._classList._update();
       }
@@ -5321,7 +5321,7 @@ var require_URLUtils = __commonJS({
 });
 var require_defineElement = __commonJS({
   "external/npm/node_modules/domino/lib/defineElement.js"(exports, module) {
-    var attributes2 = require_attributes();
+    var attributes = require_attributes();
     var isApiWritable = require_config().isApiWritable;
     module.exports = function(spec, defaultConstructor, tagList, tagNameToImpl) {
       var c = spec.ctor;
@@ -5334,7 +5334,7 @@ var require_defineElement = __commonJS({
               type: attr
             };
             if (!attr.name) attr.name = n.toLowerCase();
-            props[n] = attributes2.property(attr);
+            props[n] = attributes.property(attr);
           }
         }
         props.constructor = {
@@ -5380,7 +5380,7 @@ var require_defineElement = __commonJS({
             this._setEventHandler(type, v);
           }
         });
-        attributes2.registerChangeHandler(c, "on" + type, EventHandlerChangeHandler);
+        attributes.registerChangeHandler(c, "on" + type, EventHandlerChangeHandler);
       });
     }
   }
@@ -10895,7 +10895,7 @@ var require_HTMLParser = __commonJS({
       var doctypenamebuf = [];
       var doctypepublicbuf = [];
       var doctypesystembuf = [];
-      var attributes2 = [];
+      var attributes = [];
       var is_end_tag = false;
       var parser2 = initial_mode;
       var originalInsertionMode = null;
@@ -11099,13 +11099,13 @@ var require_HTMLParser = __commonJS({
         return false;
       }
       function addAttribute(name, value) {
-        for (var i = 0; i < attributes2.length; i++) {
-          if (attributes2[i][0] === name) return;
+        for (var i = 0; i < attributes.length; i++) {
+          if (attributes[i][0] === name) return;
         }
         if (value !== void 0) {
-          attributes2.push([name, value]);
+          attributes.push([name, value]);
         } else {
-          attributes2.push([name]);
+          attributes.push([name]);
         }
       }
       function handleSimpleAttribute() {
@@ -11129,21 +11129,21 @@ var require_HTMLParser = __commonJS({
             value = value.substring(0, len - 1);
             break;
         }
-        for (var i = 0; i < attributes2.length; i++) {
-          if (attributes2[i][0] === name) return true;
+        for (var i = 0; i < attributes.length; i++) {
+          if (attributes[i][0] === name) return true;
         }
-        attributes2.push([name, value]);
+        attributes.push([name, value]);
         return true;
       }
       function beginTagName() {
         is_end_tag = false;
         tagnamebuf = "";
-        attributes2.length = 0;
+        attributes.length = 0;
       }
       function beginEndTagName() {
         is_end_tag = true;
         tagnamebuf = "";
-        attributes2.length = 0;
+        attributes.length = 0;
       }
       function beginTempBuf() {
         tempbuf.length = 0;
@@ -11229,7 +11229,7 @@ var require_HTMLParser = __commonJS({
           var tagname = tagnamebuf;
           tagnamebuf = "";
           lasttagname = tagname;
-          insertToken(TAG, tagname, attributes2);
+          insertToken(TAG, tagname, attributes);
         }
       }
       function emitSimpleTag() {
@@ -11255,7 +11255,7 @@ var require_HTMLParser = __commonJS({
       function emitSelfClosingTag() {
         if (is_end_tag) insertToken(ENDTAG, tagnamebuf, null, true);
         else {
-          insertToken(TAG, tagnamebuf, attributes2, true);
+          insertToken(TAG, tagnamebuf, attributes, true);
         }
       }
       function emitDoctype() {
@@ -16856,7 +16856,7 @@ var utimes = notImplemented("fs.utimes");
 var lutimes = notImplemented("fs.lutimes");
 var realpath = notImplemented("fs.realpath");
 var mkdtemp = notImplemented("fs.mkdtemp");
-var writeFile = notImplemented("fs.writeFile");
+var writeFile$1 = notImplemented("fs.writeFile");
 var appendFile = notImplemented("fs.appendFile");
 var readFile$1 = notImplemented("fs.readFile");
 notImplemented("fs.watch");
@@ -16903,7 +16903,7 @@ callbackify(symlink);
 callbackify(truncate);
 callbackify(unlink);
 callbackify(utimes);
-callbackify(writeFile);
+var writeFile = callbackify(writeFile$1);
 callbackify(statfs);
 notImplementedAsync("fs.close");
 notImplementedAsync(
@@ -21429,6 +21429,450 @@ function requireDist() {
 }
 var distExports = requireDist();
 var mediaParser = getDefaultExportFromCjs(distExports);
+var boolbase$1;
+var hasRequiredBoolbase;
+function requireBoolbase() {
+  if (hasRequiredBoolbase) return boolbase$1;
+  hasRequiredBoolbase = 1;
+  boolbase$1 = {
+    trueFunc: function trueFunc() {
+      return true;
+    },
+    falseFunc: function falseFunc() {
+      return false;
+    }
+  };
+  return boolbase$1;
+}
+var boolbaseExports = requireBoolbase();
+var boolbase = getDefaultExportFromCjs(boolbaseExports);
+var SelectorType;
+(function(SelectorType2) {
+  SelectorType2["Attribute"] = "attribute";
+  SelectorType2["Pseudo"] = "pseudo";
+  SelectorType2["PseudoElement"] = "pseudo-element";
+  SelectorType2["Tag"] = "tag";
+  SelectorType2["Universal"] = "universal";
+  SelectorType2["Adjacent"] = "adjacent";
+  SelectorType2["Child"] = "child";
+  SelectorType2["Descendant"] = "descendant";
+  SelectorType2["Parent"] = "parent";
+  SelectorType2["Sibling"] = "sibling";
+  SelectorType2["ColumnCombinator"] = "column-combinator";
+})(SelectorType || (SelectorType = {}));
+var AttributeAction;
+(function(AttributeAction2) {
+  AttributeAction2["Any"] = "any";
+  AttributeAction2["Element"] = "element";
+  AttributeAction2["End"] = "end";
+  AttributeAction2["Equals"] = "equals";
+  AttributeAction2["Exists"] = "exists";
+  AttributeAction2["Hyphen"] = "hyphen";
+  AttributeAction2["Not"] = "not";
+  AttributeAction2["Start"] = "start";
+})(AttributeAction || (AttributeAction = {}));
+var reName = /^[^#\\]?(?:\\(?:[\da-f]{1,6}\s?|.)|[\w\u00B0-\uFFFF-])+/;
+var reEscape = /\\([\da-f]{1,6}\s?|(\s)|.)/gi;
+var CharCode;
+(function(CharCode2) {
+  CharCode2[CharCode2["LeftParenthesis"] = 40] = "LeftParenthesis";
+  CharCode2[CharCode2["RightParenthesis"] = 41] = "RightParenthesis";
+  CharCode2[CharCode2["LeftSquareBracket"] = 91] = "LeftSquareBracket";
+  CharCode2[CharCode2["RightSquareBracket"] = 93] = "RightSquareBracket";
+  CharCode2[CharCode2["Comma"] = 44] = "Comma";
+  CharCode2[CharCode2["Period"] = 46] = "Period";
+  CharCode2[CharCode2["Colon"] = 58] = "Colon";
+  CharCode2[CharCode2["SingleQuote"] = 39] = "SingleQuote";
+  CharCode2[CharCode2["DoubleQuote"] = 34] = "DoubleQuote";
+  CharCode2[CharCode2["Plus"] = 43] = "Plus";
+  CharCode2[CharCode2["Tilde"] = 126] = "Tilde";
+  CharCode2[CharCode2["QuestionMark"] = 63] = "QuestionMark";
+  CharCode2[CharCode2["ExclamationMark"] = 33] = "ExclamationMark";
+  CharCode2[CharCode2["Slash"] = 47] = "Slash";
+  CharCode2[CharCode2["Equal"] = 61] = "Equal";
+  CharCode2[CharCode2["Dollar"] = 36] = "Dollar";
+  CharCode2[CharCode2["Pipe"] = 124] = "Pipe";
+  CharCode2[CharCode2["Circumflex"] = 94] = "Circumflex";
+  CharCode2[CharCode2["Asterisk"] = 42] = "Asterisk";
+  CharCode2[CharCode2["GreaterThan"] = 62] = "GreaterThan";
+  CharCode2[CharCode2["LessThan"] = 60] = "LessThan";
+  CharCode2[CharCode2["Hash"] = 35] = "Hash";
+  CharCode2[CharCode2["LowerI"] = 105] = "LowerI";
+  CharCode2[CharCode2["LowerS"] = 115] = "LowerS";
+  CharCode2[CharCode2["BackSlash"] = 92] = "BackSlash";
+  CharCode2[CharCode2["Space"] = 32] = "Space";
+  CharCode2[CharCode2["Tab"] = 9] = "Tab";
+  CharCode2[CharCode2["NewLine"] = 10] = "NewLine";
+  CharCode2[CharCode2["FormFeed"] = 12] = "FormFeed";
+  CharCode2[CharCode2["CarriageReturn"] = 13] = "CarriageReturn";
+})(CharCode || (CharCode = {}));
+var actionTypes = /* @__PURE__ */ new Map([
+  [CharCode.Tilde, AttributeAction.Element],
+  [CharCode.Circumflex, AttributeAction.Start],
+  [CharCode.Dollar, AttributeAction.End],
+  [CharCode.Asterisk, AttributeAction.Any],
+  [CharCode.ExclamationMark, AttributeAction.Not],
+  [CharCode.Pipe, AttributeAction.Hyphen]
+]);
+var unpackPseudos = /* @__PURE__ */ new Set([
+  "has",
+  "not",
+  "matches",
+  "is",
+  "where",
+  "host",
+  "host-context"
+]);
+var pseudosToPseudoElements = /* @__PURE__ */ new Set([
+  "before",
+  "after",
+  "first-line",
+  "first-letter"
+]);
+function isTraversal$1(selector) {
+  switch (selector.type) {
+    case SelectorType.Adjacent:
+    case SelectorType.Child:
+    case SelectorType.Descendant:
+    case SelectorType.Parent:
+    case SelectorType.Sibling:
+    case SelectorType.ColumnCombinator: {
+      return true;
+    }
+    default: {
+      return false;
+    }
+  }
+}
+var stripQuotesFromPseudos = /* @__PURE__ */ new Set(["contains", "icontains"]);
+function funescape(_, escaped, escapedWhitespace) {
+  const high = Number.parseInt(escaped, 16) - 65536;
+  return high !== high || escapedWhitespace ? escaped : high < 0 ? (
+    // BMP codepoint
+    String.fromCharCode(high + 65536)
+  ) : (
+    // Supplemental Plane codepoint (surrogate pair)
+    String.fromCharCode(high >> 10 | 55296, high & 1023 | 56320)
+  );
+}
+function unescapeCSS(cssString) {
+  return cssString.replace(reEscape, funescape);
+}
+function isQuote(c) {
+  return c === CharCode.SingleQuote || c === CharCode.DoubleQuote;
+}
+function isWhitespace$1(c) {
+  return c === CharCode.Space || c === CharCode.Tab || c === CharCode.NewLine || c === CharCode.FormFeed || c === CharCode.CarriageReturn;
+}
+function parse$1(selector) {
+  const subselects2 = [];
+  const endIndex = parseSelector(subselects2, `${selector}`, 0);
+  if (endIndex < selector.length) {
+    throw new Error(`Unmatched selector: ${selector.slice(endIndex)}`);
+  }
+  return subselects2;
+}
+function parseSelector(subselects2, selector, selectorIndex) {
+  let tokens = [];
+  function getName2(offset) {
+    const match = selector.slice(selectorIndex + offset).match(reName);
+    if (!match) {
+      throw new Error(`Expected name, found ${selector.slice(selectorIndex)}`);
+    }
+    const [name] = match;
+    selectorIndex += offset + name.length;
+    return unescapeCSS(name);
+  }
+  function stripWhitespace(offset) {
+    selectorIndex += offset;
+    while (selectorIndex < selector.length && isWhitespace$1(selector.charCodeAt(selectorIndex))) {
+      selectorIndex++;
+    }
+  }
+  function readValueWithParenthesis() {
+    selectorIndex += 1;
+    const start = selectorIndex;
+    for (let counter = 1; selectorIndex < selector.length; selectorIndex++) {
+      switch (selector.charCodeAt(selectorIndex)) {
+        case CharCode.BackSlash: {
+          selectorIndex += 1;
+          break;
+        }
+        case CharCode.LeftParenthesis: {
+          counter += 1;
+          break;
+        }
+        case CharCode.RightParenthesis: {
+          counter -= 1;
+          if (counter === 0) {
+            return unescapeCSS(selector.slice(start, selectorIndex++));
+          }
+          break;
+        }
+      }
+    }
+    throw new Error("Parenthesis not matched");
+  }
+  function ensureNotTraversal() {
+    if (tokens.length > 0 && isTraversal$1(tokens[tokens.length - 1])) {
+      throw new Error("Did not expect successive traversals.");
+    }
+  }
+  function addTraversal(type) {
+    if (tokens.length > 0 && tokens[tokens.length - 1].type === SelectorType.Descendant) {
+      tokens[tokens.length - 1].type = type;
+      return;
+    }
+    ensureNotTraversal();
+    tokens.push({ type });
+  }
+  function addSpecialAttribute(name, action) {
+    tokens.push({
+      type: SelectorType.Attribute,
+      name,
+      action,
+      value: getName2(1),
+      namespace: null,
+      ignoreCase: "quirks"
+    });
+  }
+  function finalizeSubselector() {
+    if (tokens.length > 0 && tokens[tokens.length - 1].type === SelectorType.Descendant) {
+      tokens.pop();
+    }
+    if (tokens.length === 0) {
+      throw new Error("Empty sub-selector");
+    }
+    subselects2.push(tokens);
+  }
+  stripWhitespace(0);
+  if (selector.length === selectorIndex) {
+    return selectorIndex;
+  }
+  loop: while (selectorIndex < selector.length) {
+    const firstChar = selector.charCodeAt(selectorIndex);
+    switch (firstChar) {
+      // Whitespace
+      case CharCode.Space:
+      case CharCode.Tab:
+      case CharCode.NewLine:
+      case CharCode.FormFeed:
+      case CharCode.CarriageReturn: {
+        if (tokens.length === 0 || tokens[0].type !== SelectorType.Descendant) {
+          ensureNotTraversal();
+          tokens.push({ type: SelectorType.Descendant });
+        }
+        stripWhitespace(1);
+        break;
+      }
+      // Traversals
+      case CharCode.GreaterThan: {
+        addTraversal(SelectorType.Child);
+        stripWhitespace(1);
+        break;
+      }
+      case CharCode.LessThan: {
+        addTraversal(SelectorType.Parent);
+        stripWhitespace(1);
+        break;
+      }
+      case CharCode.Tilde: {
+        addTraversal(SelectorType.Sibling);
+        stripWhitespace(1);
+        break;
+      }
+      case CharCode.Plus: {
+        addTraversal(SelectorType.Adjacent);
+        stripWhitespace(1);
+        break;
+      }
+      // Special attribute selectors: .class, #id
+      case CharCode.Period: {
+        addSpecialAttribute("class", AttributeAction.Element);
+        break;
+      }
+      case CharCode.Hash: {
+        addSpecialAttribute("id", AttributeAction.Equals);
+        break;
+      }
+      case CharCode.LeftSquareBracket: {
+        stripWhitespace(1);
+        let name;
+        let namespace = null;
+        if (selector.charCodeAt(selectorIndex) === CharCode.Pipe) {
+          name = getName2(1);
+        } else if (selector.startsWith("*|", selectorIndex)) {
+          namespace = "*";
+          name = getName2(2);
+        } else {
+          name = getName2(0);
+          if (selector.charCodeAt(selectorIndex) === CharCode.Pipe && selector.charCodeAt(selectorIndex + 1) !== CharCode.Equal) {
+            namespace = name;
+            name = getName2(1);
+          }
+        }
+        stripWhitespace(0);
+        let action = AttributeAction.Exists;
+        const possibleAction = actionTypes.get(selector.charCodeAt(selectorIndex));
+        if (possibleAction) {
+          action = possibleAction;
+          if (selector.charCodeAt(selectorIndex + 1) !== CharCode.Equal) {
+            throw new Error("Expected `=`");
+          }
+          stripWhitespace(2);
+        } else if (selector.charCodeAt(selectorIndex) === CharCode.Equal) {
+          action = AttributeAction.Equals;
+          stripWhitespace(1);
+        }
+        let value = "";
+        let ignoreCase = null;
+        if (action !== "exists") {
+          if (isQuote(selector.charCodeAt(selectorIndex))) {
+            const quote = selector.charCodeAt(selectorIndex);
+            selectorIndex += 1;
+            const sectionStart = selectorIndex;
+            while (selectorIndex < selector.length && selector.charCodeAt(selectorIndex) !== quote) {
+              selectorIndex += // Skip next character if it is escaped
+              selector.charCodeAt(selectorIndex) === CharCode.BackSlash ? 2 : 1;
+            }
+            if (selector.charCodeAt(selectorIndex) !== quote) {
+              throw new Error("Attribute value didn't end");
+            }
+            value = unescapeCSS(selector.slice(sectionStart, selectorIndex));
+            selectorIndex += 1;
+          } else {
+            const valueStart = selectorIndex;
+            while (selectorIndex < selector.length && !isWhitespace$1(selector.charCodeAt(selectorIndex)) && selector.charCodeAt(selectorIndex) !== CharCode.RightSquareBracket) {
+              selectorIndex += // Skip next character if it is escaped
+              selector.charCodeAt(selectorIndex) === CharCode.BackSlash ? 2 : 1;
+            }
+            value = unescapeCSS(selector.slice(valueStart, selectorIndex));
+          }
+          stripWhitespace(0);
+          switch (selector.charCodeAt(selectorIndex) | 32) {
+            // If the forceIgnore flag is set (either `i` or `s`), use that value
+            case CharCode.LowerI: {
+              ignoreCase = true;
+              stripWhitespace(1);
+              break;
+            }
+            case CharCode.LowerS: {
+              ignoreCase = false;
+              stripWhitespace(1);
+              break;
+            }
+          }
+        }
+        if (selector.charCodeAt(selectorIndex) !== CharCode.RightSquareBracket) {
+          throw new Error("Attribute selector didn't terminate");
+        }
+        selectorIndex += 1;
+        const attributeSelector = {
+          type: SelectorType.Attribute,
+          name,
+          action,
+          value,
+          namespace,
+          ignoreCase
+        };
+        tokens.push(attributeSelector);
+        break;
+      }
+      case CharCode.Colon: {
+        if (selector.charCodeAt(selectorIndex + 1) === CharCode.Colon) {
+          tokens.push({
+            type: SelectorType.PseudoElement,
+            name: getName2(2).toLowerCase(),
+            data: selector.charCodeAt(selectorIndex) === CharCode.LeftParenthesis ? readValueWithParenthesis() : null
+          });
+          break;
+        }
+        const name = getName2(1).toLowerCase();
+        if (pseudosToPseudoElements.has(name)) {
+          tokens.push({
+            type: SelectorType.PseudoElement,
+            name,
+            data: null
+          });
+          break;
+        }
+        let data = null;
+        if (selector.charCodeAt(selectorIndex) === CharCode.LeftParenthesis) {
+          if (unpackPseudos.has(name)) {
+            if (isQuote(selector.charCodeAt(selectorIndex + 1))) {
+              throw new Error(`Pseudo-selector ${name} cannot be quoted`);
+            }
+            data = [];
+            selectorIndex = parseSelector(data, selector, selectorIndex + 1);
+            if (selector.charCodeAt(selectorIndex) !== CharCode.RightParenthesis) {
+              throw new Error(`Missing closing parenthesis in :${name} (${selector})`);
+            }
+            selectorIndex += 1;
+          } else {
+            data = readValueWithParenthesis();
+            if (stripQuotesFromPseudos.has(name)) {
+              const quot = data.charCodeAt(0);
+              if (quot === data.charCodeAt(data.length - 1) && isQuote(quot)) {
+                data = data.slice(1, -1);
+              }
+            }
+            data = unescapeCSS(data);
+          }
+        }
+        tokens.push({ type: SelectorType.Pseudo, name, data });
+        break;
+      }
+      case CharCode.Comma: {
+        finalizeSubselector();
+        tokens = [];
+        stripWhitespace(1);
+        break;
+      }
+      default: {
+        if (selector.startsWith("/*", selectorIndex)) {
+          const endIndex = selector.indexOf("*/", selectorIndex + 2);
+          if (endIndex < 0) {
+            throw new Error("Comment was not terminated");
+          }
+          selectorIndex = endIndex + 2;
+          if (tokens.length === 0) {
+            stripWhitespace(0);
+          }
+          break;
+        }
+        let namespace = null;
+        let name;
+        if (firstChar === CharCode.Asterisk) {
+          selectorIndex += 1;
+          name = "*";
+        } else if (firstChar === CharCode.Pipe) {
+          name = "";
+          if (selector.charCodeAt(selectorIndex + 1) === CharCode.Pipe) {
+            addTraversal(SelectorType.ColumnCombinator);
+            stripWhitespace(2);
+            break;
+          }
+        } else if (reName.test(selector.slice(selectorIndex))) {
+          name = getName2(0);
+        } else {
+          break loop;
+        }
+        if (selector.charCodeAt(selectorIndex) === CharCode.Pipe && selector.charCodeAt(selectorIndex + 1) !== CharCode.Pipe) {
+          namespace = name;
+          if (selector.charCodeAt(selectorIndex + 1) === CharCode.Asterisk) {
+            name = "*";
+            selectorIndex += 2;
+          } else {
+            name = getName2(1);
+          }
+        }
+        tokens.push(name === "*" ? { type: SelectorType.Universal, namespace } : { type: SelectorType.Tag, name, namespace });
+      }
+    }
+  }
+  finalizeSubselector();
+  return selectorIndex;
+}
 var ElementType;
 (function(ElementType2) {
   ElementType2["Root"] = "root";
@@ -22018,14 +22462,14 @@ var unencodedElements = /* @__PURE__ */ new Set([
 function replaceQuotes(value) {
   return value.replace(/"/g, "&quot;");
 }
-function formatAttributes(attributes2, opts) {
+function formatAttributes(attributes, opts) {
   var _a2;
-  if (!attributes2)
+  if (!attributes)
     return;
   const encode = ((_a2 = opts.encodeEntities) !== null && _a2 !== void 0 ? _a2 : opts.decodeEntities) === false ? replaceQuotes : opts.xmlMode || opts.encodeEntities !== "utf8" ? encodeXML : escapeAttribute;
-  return Object.keys(attributes2).map((key) => {
+  return Object.keys(attributes).map((key) => {
     var _a3, _b;
-    const value = (_a3 = attributes2[key]) !== null && _a3 !== void 0 ? _a3 : "";
+    const value = (_a3 = attributes[key]) !== null && _a3 !== void 0 ? _a3 : "";
     if (opts.xmlMode === "foreign") {
       key = (_b = attributeNames.get(key)) !== null && _b !== void 0 ? _b : key;
     }
@@ -22351,7 +22795,7 @@ function find(test, nodes, recurse, limit) {
 function findOneChild(test, nodes) {
   return nodes.find(test);
 }
-function findOne(test, nodes, recurse = true) {
+function findOne$1(test, nodes, recurse = true) {
   const searchedNodes = Array.isArray(nodes) ? nodes : [nodes];
   for (let i = 0; i < searchedNodes.length; i++) {
     const node2 = searchedNodes[i];
@@ -22359,7 +22803,7 @@ function findOne(test, nodes, recurse = true) {
       return node2;
     }
     if (recurse && hasChildren(node2) && node2.children.length > 0) {
-      const found = findOne(test, node2.children, true);
+      const found = findOne$1(test, node2.children, true);
       if (found)
         return found;
     }
@@ -22369,7 +22813,7 @@ function findOne(test, nodes, recurse = true) {
 function existsOne(test, nodes) {
   return (Array.isArray(nodes) ? nodes : [nodes]).some((node2) => isTag(node2) && test(node2) || hasChildren(node2) && existsOne(test, node2.children));
 }
-function findAll(test, nodes) {
+function findAll$1(test, nodes) {
   const result2 = [];
   const nodeStack = [Array.isArray(nodes) ? nodes : [nodes]];
   const indexStack = [0];
@@ -22440,7 +22884,7 @@ function getElements(options, nodes, recurse, limit = Infinity) {
 function getElementById(id, nodes, recurse = true) {
   if (!Array.isArray(nodes))
     nodes = [nodes];
-  return findOne(getAttribCheck("id", id), nodes, recurse);
+  return findOne$1(getAttribCheck("id", id), nodes, recurse);
 }
 function getElementsByTagName(tagName, nodes, recurse = true, limit = Infinity) {
   return filter(Checks["tag_name"](tagName), nodes, recurse, limit);
@@ -22660,8 +23104,8 @@ var DomUtils = Object.freeze({
   existsOne,
   filter,
   find,
-  findAll,
-  findOne,
+  findAll: findAll$1,
+  findOne: findOne$1,
   findOneChild,
   getAttributeValue,
   getChildren,
@@ -22696,450 +23140,6 @@ var DomUtils = Object.freeze({
   textContent,
   uniqueSort
 });
-var boolbase$1;
-var hasRequiredBoolbase;
-function requireBoolbase() {
-  if (hasRequiredBoolbase) return boolbase$1;
-  hasRequiredBoolbase = 1;
-  boolbase$1 = {
-    trueFunc: function trueFunc() {
-      return true;
-    },
-    falseFunc: function falseFunc() {
-      return false;
-    }
-  };
-  return boolbase$1;
-}
-var boolbaseExports = requireBoolbase();
-var boolbase = getDefaultExportFromCjs(boolbaseExports);
-var SelectorType;
-(function(SelectorType2) {
-  SelectorType2["Attribute"] = "attribute";
-  SelectorType2["Pseudo"] = "pseudo";
-  SelectorType2["PseudoElement"] = "pseudo-element";
-  SelectorType2["Tag"] = "tag";
-  SelectorType2["Universal"] = "universal";
-  SelectorType2["Adjacent"] = "adjacent";
-  SelectorType2["Child"] = "child";
-  SelectorType2["Descendant"] = "descendant";
-  SelectorType2["Parent"] = "parent";
-  SelectorType2["Sibling"] = "sibling";
-  SelectorType2["ColumnCombinator"] = "column-combinator";
-})(SelectorType || (SelectorType = {}));
-var AttributeAction;
-(function(AttributeAction2) {
-  AttributeAction2["Any"] = "any";
-  AttributeAction2["Element"] = "element";
-  AttributeAction2["End"] = "end";
-  AttributeAction2["Equals"] = "equals";
-  AttributeAction2["Exists"] = "exists";
-  AttributeAction2["Hyphen"] = "hyphen";
-  AttributeAction2["Not"] = "not";
-  AttributeAction2["Start"] = "start";
-})(AttributeAction || (AttributeAction = {}));
-var reName = /^[^\\#]?(?:\\(?:[\da-f]{1,6}\s?|.)|[\w\-\u00b0-\uFFFF])+/;
-var reEscape = /\\([\da-f]{1,6}\s?|(\s)|.)/gi;
-var actionTypes = /* @__PURE__ */ new Map([
-  [126, AttributeAction.Element],
-  [94, AttributeAction.Start],
-  [36, AttributeAction.End],
-  [42, AttributeAction.Any],
-  [33, AttributeAction.Not],
-  [124, AttributeAction.Hyphen]
-]);
-var unpackPseudos = /* @__PURE__ */ new Set([
-  "has",
-  "not",
-  "matches",
-  "is",
-  "where",
-  "host",
-  "host-context"
-]);
-function isTraversal$1(selector) {
-  switch (selector.type) {
-    case SelectorType.Adjacent:
-    case SelectorType.Child:
-    case SelectorType.Descendant:
-    case SelectorType.Parent:
-    case SelectorType.Sibling:
-    case SelectorType.ColumnCombinator:
-      return true;
-    default:
-      return false;
-  }
-}
-var stripQuotesFromPseudos = /* @__PURE__ */ new Set(["contains", "icontains"]);
-function funescape(_, escaped, escapedWhitespace) {
-  const high = parseInt(escaped, 16) - 65536;
-  return high !== high || escapedWhitespace ? escaped : high < 0 ? (
-    // BMP codepoint
-    String.fromCharCode(high + 65536)
-  ) : (
-    // Supplemental Plane codepoint (surrogate pair)
-    String.fromCharCode(high >> 10 | 55296, high & 1023 | 56320)
-  );
-}
-function unescapeCSS(str) {
-  return str.replace(reEscape, funescape);
-}
-function isQuote(c) {
-  return c === 39 || c === 34;
-}
-function isWhitespace$1(c) {
-  return c === 32 || c === 9 || c === 10 || c === 12 || c === 13;
-}
-function parse$1(selector) {
-  const subselects2 = [];
-  const endIndex = parseSelector(subselects2, `${selector}`, 0);
-  if (endIndex < selector.length) {
-    throw new Error(`Unmatched selector: ${selector.slice(endIndex)}`);
-  }
-  return subselects2;
-}
-function parseSelector(subselects2, selector, selectorIndex) {
-  let tokens = [];
-  function getName2(offset) {
-    const match = selector.slice(selectorIndex + offset).match(reName);
-    if (!match) {
-      throw new Error(`Expected name, found ${selector.slice(selectorIndex)}`);
-    }
-    const [name] = match;
-    selectorIndex += offset + name.length;
-    return unescapeCSS(name);
-  }
-  function stripWhitespace(offset) {
-    selectorIndex += offset;
-    while (selectorIndex < selector.length && isWhitespace$1(selector.charCodeAt(selectorIndex))) {
-      selectorIndex++;
-    }
-  }
-  function readValueWithParenthesis() {
-    selectorIndex += 1;
-    const start = selectorIndex;
-    let counter = 1;
-    for (; counter > 0 && selectorIndex < selector.length; selectorIndex++) {
-      if (selector.charCodeAt(selectorIndex) === 40 && !isEscaped(selectorIndex)) {
-        counter++;
-      } else if (selector.charCodeAt(selectorIndex) === 41 && !isEscaped(selectorIndex)) {
-        counter--;
-      }
-    }
-    if (counter) {
-      throw new Error("Parenthesis not matched");
-    }
-    return unescapeCSS(selector.slice(start, selectorIndex - 1));
-  }
-  function isEscaped(pos) {
-    let slashCount = 0;
-    while (selector.charCodeAt(--pos) === 92)
-      slashCount++;
-    return (slashCount & 1) === 1;
-  }
-  function ensureNotTraversal() {
-    if (tokens.length > 0 && isTraversal$1(tokens[tokens.length - 1])) {
-      throw new Error("Did not expect successive traversals.");
-    }
-  }
-  function addTraversal(type) {
-    if (tokens.length > 0 && tokens[tokens.length - 1].type === SelectorType.Descendant) {
-      tokens[tokens.length - 1].type = type;
-      return;
-    }
-    ensureNotTraversal();
-    tokens.push({ type });
-  }
-  function addSpecialAttribute(name, action) {
-    tokens.push({
-      type: SelectorType.Attribute,
-      name,
-      action,
-      value: getName2(1),
-      namespace: null,
-      ignoreCase: "quirks"
-    });
-  }
-  function finalizeSubselector() {
-    if (tokens.length && tokens[tokens.length - 1].type === SelectorType.Descendant) {
-      tokens.pop();
-    }
-    if (tokens.length === 0) {
-      throw new Error("Empty sub-selector");
-    }
-    subselects2.push(tokens);
-  }
-  stripWhitespace(0);
-  if (selector.length === selectorIndex) {
-    return selectorIndex;
-  }
-  loop: while (selectorIndex < selector.length) {
-    const firstChar = selector.charCodeAt(selectorIndex);
-    switch (firstChar) {
-      // Whitespace
-      case 32:
-      case 9:
-      case 10:
-      case 12:
-      case 13: {
-        if (tokens.length === 0 || tokens[0].type !== SelectorType.Descendant) {
-          ensureNotTraversal();
-          tokens.push({ type: SelectorType.Descendant });
-        }
-        stripWhitespace(1);
-        break;
-      }
-      // Traversals
-      case 62: {
-        addTraversal(SelectorType.Child);
-        stripWhitespace(1);
-        break;
-      }
-      case 60: {
-        addTraversal(SelectorType.Parent);
-        stripWhitespace(1);
-        break;
-      }
-      case 126: {
-        addTraversal(SelectorType.Sibling);
-        stripWhitespace(1);
-        break;
-      }
-      case 43: {
-        addTraversal(SelectorType.Adjacent);
-        stripWhitespace(1);
-        break;
-      }
-      // Special attribute selectors: .class, #id
-      case 46: {
-        addSpecialAttribute("class", AttributeAction.Element);
-        break;
-      }
-      case 35: {
-        addSpecialAttribute("id", AttributeAction.Equals);
-        break;
-      }
-      case 91: {
-        stripWhitespace(1);
-        let name;
-        let namespace = null;
-        if (selector.charCodeAt(selectorIndex) === 124) {
-          name = getName2(1);
-        } else if (selector.startsWith("*|", selectorIndex)) {
-          namespace = "*";
-          name = getName2(2);
-        } else {
-          name = getName2(0);
-          if (selector.charCodeAt(selectorIndex) === 124 && selector.charCodeAt(selectorIndex + 1) !== 61) {
-            namespace = name;
-            name = getName2(1);
-          }
-        }
-        stripWhitespace(0);
-        let action = AttributeAction.Exists;
-        const possibleAction = actionTypes.get(selector.charCodeAt(selectorIndex));
-        if (possibleAction) {
-          action = possibleAction;
-          if (selector.charCodeAt(selectorIndex + 1) !== 61) {
-            throw new Error("Expected `=`");
-          }
-          stripWhitespace(2);
-        } else if (selector.charCodeAt(selectorIndex) === 61) {
-          action = AttributeAction.Equals;
-          stripWhitespace(1);
-        }
-        let value = "";
-        let ignoreCase = null;
-        if (action !== "exists") {
-          if (isQuote(selector.charCodeAt(selectorIndex))) {
-            const quote = selector.charCodeAt(selectorIndex);
-            let sectionEnd = selectorIndex + 1;
-            while (sectionEnd < selector.length && (selector.charCodeAt(sectionEnd) !== quote || isEscaped(sectionEnd))) {
-              sectionEnd += 1;
-            }
-            if (selector.charCodeAt(sectionEnd) !== quote) {
-              throw new Error("Attribute value didn't end");
-            }
-            value = unescapeCSS(selector.slice(selectorIndex + 1, sectionEnd));
-            selectorIndex = sectionEnd + 1;
-          } else {
-            const valueStart = selectorIndex;
-            while (selectorIndex < selector.length && (!isWhitespace$1(selector.charCodeAt(selectorIndex)) && selector.charCodeAt(selectorIndex) !== 93 || isEscaped(selectorIndex))) {
-              selectorIndex += 1;
-            }
-            value = unescapeCSS(selector.slice(valueStart, selectorIndex));
-          }
-          stripWhitespace(0);
-          const forceIgnore = selector.charCodeAt(selectorIndex) | 32;
-          if (forceIgnore === 115) {
-            ignoreCase = false;
-            stripWhitespace(1);
-          } else if (forceIgnore === 105) {
-            ignoreCase = true;
-            stripWhitespace(1);
-          }
-        }
-        if (selector.charCodeAt(selectorIndex) !== 93) {
-          throw new Error("Attribute selector didn't terminate");
-        }
-        selectorIndex += 1;
-        const attributeSelector = {
-          type: SelectorType.Attribute,
-          name,
-          action,
-          value,
-          namespace,
-          ignoreCase
-        };
-        tokens.push(attributeSelector);
-        break;
-      }
-      case 58: {
-        if (selector.charCodeAt(selectorIndex + 1) === 58) {
-          tokens.push({
-            type: SelectorType.PseudoElement,
-            name: getName2(2).toLowerCase(),
-            data: selector.charCodeAt(selectorIndex) === 40 ? readValueWithParenthesis() : null
-          });
-          continue;
-        }
-        const name = getName2(1).toLowerCase();
-        let data = null;
-        if (selector.charCodeAt(selectorIndex) === 40) {
-          if (unpackPseudos.has(name)) {
-            if (isQuote(selector.charCodeAt(selectorIndex + 1))) {
-              throw new Error(`Pseudo-selector ${name} cannot be quoted`);
-            }
-            data = [];
-            selectorIndex = parseSelector(data, selector, selectorIndex + 1);
-            if (selector.charCodeAt(selectorIndex) !== 41) {
-              throw new Error(`Missing closing parenthesis in :${name} (${selector})`);
-            }
-            selectorIndex += 1;
-          } else {
-            data = readValueWithParenthesis();
-            if (stripQuotesFromPseudos.has(name)) {
-              const quot = data.charCodeAt(0);
-              if (quot === data.charCodeAt(data.length - 1) && isQuote(quot)) {
-                data = data.slice(1, -1);
-              }
-            }
-            data = unescapeCSS(data);
-          }
-        }
-        tokens.push({ type: SelectorType.Pseudo, name, data });
-        break;
-      }
-      case 44: {
-        finalizeSubselector();
-        tokens = [];
-        stripWhitespace(1);
-        break;
-      }
-      default: {
-        if (selector.startsWith("/*", selectorIndex)) {
-          const endIndex = selector.indexOf("*/", selectorIndex + 2);
-          if (endIndex < 0) {
-            throw new Error("Comment was not terminated");
-          }
-          selectorIndex = endIndex + 2;
-          if (tokens.length === 0) {
-            stripWhitespace(0);
-          }
-          break;
-        }
-        let namespace = null;
-        let name;
-        if (firstChar === 42) {
-          selectorIndex += 1;
-          name = "*";
-        } else if (firstChar === 124) {
-          name = "";
-          if (selector.charCodeAt(selectorIndex + 1) === 124) {
-            addTraversal(SelectorType.ColumnCombinator);
-            stripWhitespace(2);
-            break;
-          }
-        } else if (reName.test(selector.slice(selectorIndex))) {
-          name = getName2(0);
-        } else {
-          break loop;
-        }
-        if (selector.charCodeAt(selectorIndex) === 124 && selector.charCodeAt(selectorIndex + 1) !== 124) {
-          namespace = name;
-          if (selector.charCodeAt(selectorIndex + 1) === 42) {
-            name = "*";
-            selectorIndex += 2;
-          } else {
-            name = getName2(1);
-          }
-        }
-        tokens.push(name === "*" ? { type: SelectorType.Universal, namespace } : { type: SelectorType.Tag, name, namespace });
-      }
-    }
-  }
-  finalizeSubselector();
-  return selectorIndex;
-}
-var procedure = /* @__PURE__ */ new Map([
-  [SelectorType.Universal, 50],
-  [SelectorType.Tag, 30],
-  [SelectorType.Attribute, 1],
-  [SelectorType.Pseudo, 0]
-]);
-function isTraversal(token) {
-  return !procedure.has(token.type);
-}
-var attributes = /* @__PURE__ */ new Map([
-  [AttributeAction.Exists, 10],
-  [AttributeAction.Equals, 8],
-  [AttributeAction.Not, 7],
-  [AttributeAction.Start, 6],
-  [AttributeAction.End, 6],
-  [AttributeAction.Any, 5]
-]);
-function sortByProcedure(arr) {
-  const procs = arr.map(getProcedure);
-  for (let i = 1; i < arr.length; i++) {
-    const procNew = procs[i];
-    if (procNew < 0)
-      continue;
-    for (let j = i - 1; j >= 0 && procNew < procs[j]; j--) {
-      const token = arr[j + 1];
-      arr[j + 1] = arr[j];
-      arr[j] = token;
-      procs[j + 1] = procs[j];
-      procs[j] = procNew;
-    }
-  }
-}
-function getProcedure(token) {
-  var _a2, _b;
-  let proc = (_a2 = procedure.get(token.type)) !== null && _a2 !== void 0 ? _a2 : -1;
-  if (token.type === SelectorType.Attribute) {
-    proc = (_b = attributes.get(token.action)) !== null && _b !== void 0 ? _b : 4;
-    if (token.action === AttributeAction.Equals && token.name === "id") {
-      proc = 9;
-    }
-    if (token.ignoreCase) {
-      proc >>= 1;
-    }
-  } else if (token.type === SelectorType.Pseudo) {
-    if (!token.data) {
-      proc = 3;
-    } else if (token.name === "has" || token.name === "contains") {
-      proc = 0;
-    } else if (Array.isArray(token.data)) {
-      proc = Math.min(...token.data.map((d) => Math.min(...d.map(getProcedure))));
-      if (proc < 0) {
-        proc = 0;
-      }
-    } else {
-      proc = 2;
-    }
-  }
-  return proc;
-}
 var reChars = /[-[\]{}()*+?.,\\^$|#\s]/g;
 function escapeRegex(value) {
   return value.replace(reChars, "\\$&");
@@ -23230,7 +23230,7 @@ var attributeRules = {
     const { adapter } = options;
     const { name, value } = data;
     if (/\s/.test(value)) {
-      return boolbase.falseFunc;
+      return boolbaseExports.falseFunc;
     }
     const regex = new RegExp(`(?:^|\\s)${escapeRegex(value)}(?:$|\\s)`, shouldIgnoreCase(data, options) ? "i" : "");
     return function element(elem) {
@@ -23247,7 +23247,7 @@ var attributeRules = {
     let { value } = data;
     const len = value.length;
     if (len === 0) {
-      return boolbase.falseFunc;
+      return boolbaseExports.falseFunc;
     }
     if (shouldIgnoreCase(data, options)) {
       value = value.toLowerCase();
@@ -23256,10 +23256,7 @@ var attributeRules = {
         return attr != null && attr.length >= len && attr.substr(0, len).toLowerCase() === value && next(elem);
       };
     }
-    return (elem) => {
-      var _a2;
-      return !!((_a2 = adapter.getAttributeValue(elem, name)) === null || _a2 === void 0 ? void 0 : _a2.startsWith(value)) && next(elem);
-    };
+    return (elem) => !!adapter.getAttributeValue(elem, name)?.startsWith(value) && next(elem);
   },
   end(next, data, options) {
     const { adapter } = options;
@@ -23267,25 +23264,19 @@ var attributeRules = {
     let { value } = data;
     const len = -value.length;
     if (len === 0) {
-      return boolbase.falseFunc;
+      return boolbaseExports.falseFunc;
     }
     if (shouldIgnoreCase(data, options)) {
       value = value.toLowerCase();
-      return (elem) => {
-        var _a2;
-        return ((_a2 = adapter.getAttributeValue(elem, name)) === null || _a2 === void 0 ? void 0 : _a2.substr(len).toLowerCase()) === value && next(elem);
-      };
+      return (elem) => adapter.getAttributeValue(elem, name)?.substr(len).toLowerCase() === value && next(elem);
     }
-    return (elem) => {
-      var _a2;
-      return !!((_a2 = adapter.getAttributeValue(elem, name)) === null || _a2 === void 0 ? void 0 : _a2.endsWith(value)) && next(elem);
-    };
+    return (elem) => !!adapter.getAttributeValue(elem, name)?.endsWith(value) && next(elem);
   },
   any(next, data, options) {
     const { adapter } = options;
     const { name, value } = data;
     if (value === "") {
-      return boolbase.falseFunc;
+      return boolbaseExports.falseFunc;
     }
     if (shouldIgnoreCase(data, options)) {
       const regex = new RegExp(escapeRegex(value), "i");
@@ -23294,10 +23285,7 @@ var attributeRules = {
         return attr != null && attr.length >= value.length && regex.test(attr) && next(elem);
       };
     }
-    return (elem) => {
-      var _a2;
-      return !!((_a2 = adapter.getAttributeValue(elem, name)) === null || _a2 === void 0 ? void 0 : _a2.includes(value)) && next(elem);
-    };
+    return (elem) => !!adapter.getAttributeValue(elem, name)?.includes(value) && next(elem);
   },
   not(next, data, options) {
     const { adapter } = options;
@@ -23305,7 +23293,8 @@ var attributeRules = {
     let { value } = data;
     if (value === "") {
       return (elem) => !!adapter.getAttributeValue(elem, name) && next(elem);
-    } else if (shouldIgnoreCase(data, options)) {
+    }
+    if (shouldIgnoreCase(data, options)) {
       value = value.toLowerCase();
       return (elem) => {
         const attr = adapter.getAttributeValue(elem, name);
@@ -23314,6 +23303,121 @@ var attributeRules = {
     }
     return (elem) => adapter.getAttributeValue(elem, name) !== value && next(elem);
   }
+};
+function findAll(query, elems, options) {
+  const { adapter, xmlMode = false } = options;
+  const result2 = [];
+  const nodeStack = [elems];
+  const indexStack = [0];
+  for (; ; ) {
+    if (indexStack[0] >= nodeStack[0].length) {
+      if (nodeStack.length === 1) {
+        return result2;
+      }
+      nodeStack.shift();
+      indexStack.shift();
+      continue;
+    }
+    const elem = nodeStack[0][indexStack[0]++];
+    if (!adapter.isTag(elem)) {
+      continue;
+    }
+    if (query(elem)) {
+      result2.push(elem);
+    }
+    if (xmlMode || adapter.getName(elem) !== "template") {
+      const children = adapter.getChildren(elem);
+      if (children.length > 0) {
+        nodeStack.unshift(children);
+        indexStack.unshift(0);
+      }
+    }
+  }
+}
+function findOne(query, elems, options) {
+  const { adapter, xmlMode = false } = options;
+  const nodeStack = [elems];
+  const indexStack = [0];
+  for (; ; ) {
+    if (indexStack[0] >= nodeStack[0].length) {
+      if (nodeStack.length === 1) {
+        return null;
+      }
+      nodeStack.shift();
+      indexStack.shift();
+      continue;
+    }
+    const elem = nodeStack[0][indexStack[0]++];
+    if (!adapter.isTag(elem)) {
+      continue;
+    }
+    if (query(elem)) {
+      return elem;
+    }
+    if (xmlMode || adapter.getName(elem) !== "template") {
+      const children = adapter.getChildren(elem);
+      if (children.length > 0) {
+        nodeStack.unshift(children);
+        indexStack.unshift(0);
+      }
+    }
+  }
+}
+function getNextSiblings(elem, adapter) {
+  const siblings = adapter.getSiblings(elem);
+  if (siblings.length <= 1) {
+    return [];
+  }
+  const elemIndex = siblings.indexOf(elem);
+  if (elemIndex < 0 || elemIndex === siblings.length - 1) {
+    return [];
+  }
+  return siblings.slice(elemIndex + 1).filter(adapter.isTag);
+}
+function getElementParent(node2, adapter) {
+  const parent = adapter.getParent(node2);
+  return parent != null && adapter.isTag(parent) ? parent : null;
+}
+var textControl = "input:is([type=text i],[type=search i],[type=url i],[type=tel i],[type=email i],[type=password i],[type=date i],[type=month i],[type=week i],[type=time i],[type=datetime-local i],[type=number i])";
+var aliases = {
+  // Links
+  "any-link": ":is(a, area, link)[href]",
+  link: ":any-link:not(:visited)",
+  // Forms
+  // https://html.spec.whatwg.org/multipage/scripting.html#disabled-elements
+  disabled: `:is(
+        :is(button, input, select, textarea, optgroup, option)[disabled],
+        optgroup[disabled] > option,
+        fieldset[disabled]:not(fieldset[disabled] legend:first-of-type *)
+    )`,
+  enabled: ":not(:disabled)",
+  checked: ":is(:is(input[type=radio], input[type=checkbox])[checked], :selected)",
+  required: ":is(input, select, textarea)[required]",
+  optional: ":is(input, select, textarea):not([required])",
+  "read-only": `[readonly]:is(textarea, ${textControl})`,
+  "read-write": `:not([readonly]):is(textarea, ${textControl})`,
+  // JQuery extensions
+  /**
+   * `:selected` matches option elements that have the `selected` attribute,
+   * or are the first option element in a select element that does not have
+   * the `multiple` attribute and does not have any option elements with the
+   * `selected` attribute.
+   *
+   * @see https://html.spec.whatwg.org/multipage/form-elements.html#concept-option-selectedness
+   */
+  selected: "option:is([selected], select:not([multiple]):not(:has(> option[selected])) > :first-of-type)",
+  checkbox: "[type=checkbox]",
+  file: "[type=file]",
+  password: "[type=password]",
+  radio: "[type=radio]",
+  reset: "[type=reset]",
+  image: "[type=image]",
+  submit: "[type=submit]",
+  parent: ":not(:empty)",
+  header: ":is(h1, h2, h3, h4, h5, h6)",
+  button: ":is(button, input[type=button])",
+  input: ":is(input, textarea, select, button)",
+  text: "input:is(:not([type!='']), [type=text])"
 };
 var whitespace = /* @__PURE__ */ new Set([9, 10, 12, 13, 32]);
 var ZERO = "0".charCodeAt(0);
@@ -23388,37 +23492,60 @@ function compile(parsed) {
 function nthCheck(formula) {
   return compile(parse(formula));
 }
-function getChildFunc(next, adapter) {
-  return (elem) => {
-    const parent = adapter.getParent(elem);
-    return parent != null && adapter.isTag(parent) && next(elem);
+function cacheParentResults(next, { adapter, cacheResults }, matches) {
+  if (cacheResults === false || typeof WeakMap === "undefined") {
+    return (elem) => next(elem) && matches(elem);
+  }
+  const resultCache = /* @__PURE__ */ new WeakMap();
+  function addResultToCache(elem) {
+    const result2 = matches(elem);
+    resultCache.set(elem, result2);
+    return result2;
+  }
+  return function cachedMatcher(elem) {
+    if (!next(elem)) {
+      return false;
+    }
+    if (resultCache.has(elem)) {
+      return resultCache.get(elem);
+    }
+    let node2 = elem;
+    do {
+      const parent = getElementParent(node2, adapter);
+      if (parent === null) {
+        return addResultToCache(elem);
+      }
+      node2 = parent;
+    } while (!resultCache.has(node2));
+    return resultCache.get(node2) && addResultToCache(elem);
   };
 }
 var filters = {
-  contains(next, text, { adapter }) {
-    return function contains(elem) {
-      return next(elem) && adapter.getText(elem).includes(text);
-    };
+  contains(next, text, options) {
+    const { getText: getText2 } = options.adapter;
+    return cacheParentResults(next, options, (elem) => getText2(elem).includes(text));
   },
-  icontains(next, text, { adapter }) {
+  icontains(next, text, options) {
     const itext = text.toLowerCase();
-    return function icontains(elem) {
-      return next(elem) && adapter.getText(elem).toLowerCase().includes(itext);
-    };
+    const { getText: getText2 } = options.adapter;
+    return cacheParentResults(next, options, (elem) => getText2(elem).toLowerCase().includes(itext));
   },
   // Location specific methods
   "nth-child"(next, rule2, { adapter, equals }) {
     const func = nthCheck(rule2);
-    if (func === boolbase.falseFunc)
-      return boolbase.falseFunc;
-    if (func === boolbase.trueFunc)
-      return getChildFunc(next, adapter);
+    if (func === boolbaseExports.falseFunc) {
+      return boolbaseExports.falseFunc;
+    }
+    if (func === boolbaseExports.trueFunc) {
+      return (elem) => getElementParent(elem, adapter) !== null && next(elem);
+    }
     return function nthChild(elem) {
       const siblings = adapter.getSiblings(elem);
       let pos = 0;
       for (let i = 0; i < siblings.length; i++) {
-        if (equals(elem, siblings[i]))
+        if (equals(elem, siblings[i])) {
           break;
+        }
         if (adapter.isTag(siblings[i])) {
           pos++;
         }
@@ -23428,16 +23555,19 @@ var filters = {
   },
   "nth-last-child"(next, rule2, { adapter, equals }) {
     const func = nthCheck(rule2);
-    if (func === boolbase.falseFunc)
-      return boolbase.falseFunc;
-    if (func === boolbase.trueFunc)
-      return getChildFunc(next, adapter);
+    if (func === boolbaseExports.falseFunc) {
+      return boolbaseExports.falseFunc;
+    }
+    if (func === boolbaseExports.trueFunc) {
+      return (elem) => getElementParent(elem, adapter) !== null && next(elem);
+    }
     return function nthLastChild(elem) {
       const siblings = adapter.getSiblings(elem);
       let pos = 0;
       for (let i = siblings.length - 1; i >= 0; i--) {
-        if (equals(elem, siblings[i]))
+        if (equals(elem, siblings[i])) {
           break;
+        }
         if (adapter.isTag(siblings[i])) {
           pos++;
         }
@@ -23447,17 +23577,20 @@ var filters = {
   },
   "nth-of-type"(next, rule2, { adapter, equals }) {
     const func = nthCheck(rule2);
-    if (func === boolbase.falseFunc)
-      return boolbase.falseFunc;
-    if (func === boolbase.trueFunc)
-      return getChildFunc(next, adapter);
+    if (func === boolbaseExports.falseFunc) {
+      return boolbaseExports.falseFunc;
+    }
+    if (func === boolbaseExports.trueFunc) {
+      return (elem) => getElementParent(elem, adapter) !== null && next(elem);
+    }
     return function nthOfType(elem) {
       const siblings = adapter.getSiblings(elem);
       let pos = 0;
       for (let i = 0; i < siblings.length; i++) {
         const currentSibling = siblings[i];
-        if (equals(elem, currentSibling))
+        if (equals(elem, currentSibling)) {
           break;
+        }
         if (adapter.isTag(currentSibling) && adapter.getName(currentSibling) === adapter.getName(elem)) {
           pos++;
         }
@@ -23467,17 +23600,20 @@ var filters = {
   },
   "nth-last-of-type"(next, rule2, { adapter, equals }) {
     const func = nthCheck(rule2);
-    if (func === boolbase.falseFunc)
-      return boolbase.falseFunc;
-    if (func === boolbase.trueFunc)
-      return getChildFunc(next, adapter);
+    if (func === boolbaseExports.falseFunc) {
+      return boolbaseExports.falseFunc;
+    }
+    if (func === boolbaseExports.trueFunc) {
+      return (elem) => getElementParent(elem, adapter) !== null && next(elem);
+    }
     return function nthLastOfType(elem) {
       const siblings = adapter.getSiblings(elem);
       let pos = 0;
       for (let i = siblings.length - 1; i >= 0; i--) {
         const currentSibling = siblings[i];
-        if (equals(elem, currentSibling))
+        if (equals(elem, currentSibling)) {
           break;
+        }
         if (adapter.isTag(currentSibling) && adapter.getName(currentSibling) === adapter.getName(elem)) {
           pos++;
         }
@@ -23487,10 +23623,7 @@ var filters = {
   },
   // TODO determine the actual root element
   root(next, _rule, { adapter }) {
-    return (elem) => {
-      const parent = adapter.getParent(elem);
-      return (parent == null || !adapter.isTag(parent)) && next(elem);
-    };
+    return (elem) => getElementParent(elem, adapter) === null && next(elem);
   },
   scope(next, rule2, options, context) {
     const { equals } = options;
@@ -23510,19 +23643,25 @@ function dynamicStatePseudo(name) {
   return function dynamicPseudo(next, _rule, { adapter }) {
     const func = adapter[name];
     if (typeof func !== "function") {
-      return boolbase.falseFunc;
+      return boolbaseExports.falseFunc;
     }
     return function active(elem) {
       return func(elem) && next(elem);
     };
   };
 }
+var isDocumentWhiteSpace = /^[ \t\r\n]*$/;
 var pseudos = {
   empty(elem, { adapter }) {
-    return !adapter.getChildren(elem).some((elem2) => (
-      // FIXME: `getText` call is potentially expensive.
-      adapter.isTag(elem2) || adapter.getText(elem2) !== ""
-    ));
+    const children = adapter.getChildren(elem);
+    return (
+      // First, make sure the tag does not have any element children.
+      children.every((elem2) => !adapter.isTag(elem2)) && // Then, check that the text content is only whitespace.
+      children.every((elem2) => (
+        // FIXME: `getText` call is potentially expensive.
+        isDocumentWhiteSpace.test(adapter.getText(elem2))
+      ))
+    );
   },
   "first-child"(elem, { adapter, equals }) {
     if (adapter.prevElementSibling) {
@@ -23534,10 +23673,12 @@ var pseudos = {
   "last-child"(elem, { adapter, equals }) {
     const siblings = adapter.getSiblings(elem);
     for (let i = siblings.length - 1; i >= 0; i--) {
-      if (equals(elem, siblings[i]))
+      if (equals(elem, siblings[i])) {
         return true;
-      if (adapter.isTag(siblings[i]))
+      }
+      if (adapter.isTag(siblings[i])) {
         break;
+      }
     }
     return false;
   },
@@ -23546,8 +23687,9 @@ var pseudos = {
     const elemName = adapter.getName(elem);
     for (let i = 0; i < siblings.length; i++) {
       const currentSibling = siblings[i];
-      if (equals(elem, currentSibling))
+      if (equals(elem, currentSibling)) {
         return true;
+      }
       if (adapter.isTag(currentSibling) && adapter.getName(currentSibling) === elemName) {
         break;
       }
@@ -23559,8 +23701,9 @@ var pseudos = {
     const elemName = adapter.getName(elem);
     for (let i = siblings.length - 1; i >= 0; i--) {
       const currentSibling = siblings[i];
-      if (equals(elem, currentSibling))
+      if (equals(elem, currentSibling)) {
         return true;
+      }
       if (adapter.isTag(currentSibling) && adapter.getName(currentSibling) === elemName) {
         break;
       }
@@ -23584,51 +23727,89 @@ function verifyPseudoArgs(func, name, subselect, argIndex) {
     throw new Error(`Pseudo-class :${name} doesn't have any arguments`);
   }
 }
-var aliases = {
-  // Links
-  "any-link": ":is(a, area, link)[href]",
-  link: ":any-link:not(:visited)",
-  // Forms
-  // https://html.spec.whatwg.org/multipage/scripting.html#disabled-elements
-  disabled: `:is(
-        :is(button, input, select, textarea, optgroup, option)[disabled],
-        optgroup[disabled] > option,
-        fieldset[disabled]:not(fieldset[disabled] legend:first-of-type *)
-    )`,
-  enabled: ":not(:disabled)",
-  checked: ":is(:is(input[type=radio], input[type=checkbox])[checked], option:selected)",
-  required: ":is(input, select, textarea)[required]",
-  optional: ":is(input, select, textarea):not([required])",
-  // JQuery extensions
-  // https://html.spec.whatwg.org/multipage/form-elements.html#concept-option-selectedness
-  selected: "option:is([selected], select:not([multiple]):not(:has(> option[selected])) > :first-of-type)",
-  checkbox: "[type=checkbox]",
-  file: "[type=file]",
-  password: "[type=password]",
-  radio: "[type=radio]",
-  reset: "[type=reset]",
-  image: "[type=image]",
-  submit: "[type=submit]",
-  parent: ":not(:empty)",
-  header: ":is(h1, h2, h3, h4, h5, h6)",
-  button: ":is(button, input[type=button])",
-  input: ":is(input, textarea, select, button)",
-  text: "input:is(:not([type!='']), [type=text])"
-};
-var PLACEHOLDER_ELEMENT = {};
-function ensureIsTag(next, adapter) {
-  if (next === boolbase.falseFunc)
-    return boolbase.falseFunc;
-  return (elem) => adapter.isTag(elem) && next(elem);
+function isTraversal(token) {
+  return token.type === "_flexibleDescendant" || isTraversal$1(token);
 }
-function getNextSiblings(elem, adapter) {
-  const siblings = adapter.getSiblings(elem);
-  if (siblings.length <= 1)
-    return [];
-  const elemIndex = siblings.indexOf(elem);
-  if (elemIndex < 0 || elemIndex === siblings.length - 1)
-    return [];
-  return siblings.slice(elemIndex + 1).filter(adapter.isTag);
+function sortRules(arr) {
+  const ratings = arr.map(getQuality);
+  for (let i = 1; i < arr.length; i++) {
+    const procNew = ratings[i];
+    if (procNew < 0) {
+      continue;
+    }
+    for (let j = i; j > 0 && procNew < ratings[j - 1]; j--) {
+      const token = arr[j];
+      arr[j] = arr[j - 1];
+      arr[j - 1] = token;
+      ratings[j] = ratings[j - 1];
+      ratings[j - 1] = procNew;
+    }
+  }
+}
+function getAttributeQuality(token) {
+  switch (token.action) {
+    case AttributeAction.Exists: {
+      return 10;
+    }
+    case AttributeAction.Equals: {
+      return token.name === "id" ? 9 : 8;
+    }
+    case AttributeAction.Not: {
+      return 7;
+    }
+    case AttributeAction.Start: {
+      return 6;
+    }
+    case AttributeAction.End: {
+      return 6;
+    }
+    case AttributeAction.Any: {
+      return 5;
+    }
+    case AttributeAction.Hyphen: {
+      return 4;
+    }
+    case AttributeAction.Element: {
+      return 3;
+    }
+  }
+}
+function getQuality(token) {
+  switch (token.type) {
+    case SelectorType.Universal: {
+      return 50;
+    }
+    case SelectorType.Tag: {
+      return 30;
+    }
+    case SelectorType.Attribute: {
+      return Math.floor(getAttributeQuality(token) / // `ignoreCase` adds some overhead, half the result if applicable.
+      (token.ignoreCase ? 2 : 1));
+    }
+    case SelectorType.Pseudo: {
+      return !token.data ? 3 : token.name === "has" || token.name === "contains" || token.name === "icontains" ? (
+        // Expensive in any case — run as late as possible.
+        0
+      ) : Array.isArray(token.data) ? (
+        // Eg. `:is`, `:not`
+        Math.max(
+          // If we have traversals, try to avoid executing this selector
+          0,
+          Math.min(...token.data.map((d) => Math.min(...d.map(getQuality))))
+        )
+      ) : 2;
+    }
+    default: {
+      return -1;
+    }
+  }
+}
+function includesScopePseudo(t) {
+  return t.type === SelectorType.Pseudo && (t.name === "scope" || Array.isArray(t.data) && t.data.some((data) => data.some(includesScopePseudo)));
+}
+var PLACEHOLDER_ELEMENT = {};
+function hasDependsOnCurrentElement(selector) {
+  return selector.some((sel) => sel.length > 0 && (isTraversal(sel[0]) || sel.some(includesScopePseudo)));
 }
 function copyOptions(options) {
   return {
@@ -23644,7 +23825,7 @@ function copyOptions(options) {
 }
 var is = (next, token, options, context, compileToken2) => {
   const func = compileToken2(token, copyOptions(options), context);
-  return func === boolbase.trueFunc ? next : func === boolbase.falseFunc ? boolbase.falseFunc : (elem) => func(elem) && next(elem);
+  return func === boolbaseExports.trueFunc ? next : func === boolbaseExports.falseFunc ? boolbaseExports.falseFunc : (elem) => func(elem) && next(elem);
 };
 var subselects = {
   is,
@@ -23655,7 +23836,7 @@ var subselects = {
   where: is,
   not(next, token, options, context, compileToken2) {
     const func = compileToken2(token, copyOptions(options), context);
-    return func === boolbase.falseFunc ? next : func === boolbase.trueFunc ? boolbase.falseFunc : (elem) => !func(elem) && next(elem);
+    return func === boolbaseExports.falseFunc ? next : func === boolbaseExports.trueFunc ? boolbaseExports.falseFunc : (elem) => !func(elem) && next(elem);
   },
   has(next, subselect, options, _context, compileToken2) {
     const { adapter } = options;
@@ -23665,26 +23846,32 @@ var subselects = {
       // Used as a placeholder. Will be replaced with the actual element.
       [PLACEHOLDER_ELEMENT]
     ) : void 0;
+    const skipCache = hasDependsOnCurrentElement(subselect);
     const compiled = compileToken2(subselect, opts, context);
-    if (compiled === boolbase.falseFunc)
-      return boolbase.falseFunc;
-    const hasElement = ensureIsTag(compiled, adapter);
-    if (context && compiled !== boolbase.trueFunc) {
-      const { shouldTestNextSiblings = false } = compiled;
-      return (elem) => {
-        if (!next(elem))
+    if (compiled === boolbaseExports.falseFunc) {
+      return boolbaseExports.falseFunc;
+    }
+    if (context && compiled !== boolbaseExports.trueFunc) {
+      return skipCache ? (elem) => {
+        if (!next(elem)) {
           return false;
+        }
         context[0] = elem;
         const childs = adapter.getChildren(elem);
-        const nextElements = shouldTestNextSiblings ? [...childs, ...getNextSiblings(elem, adapter)] : childs;
-        return adapter.existsOne(hasElement, nextElements);
-      };
+        return findOne(compiled, compiled.shouldTestNextSiblings ? [
+          ...childs,
+          ...getNextSiblings(elem, adapter)
+        ] : childs, options) !== null;
+      } : cacheParentResults(next, options, (elem) => {
+        context[0] = elem;
+        return findOne(compiled, adapter.getChildren(elem), options) !== null;
+      });
     }
-    return (elem) => next(elem) && adapter.existsOne(hasElement, adapter.getChildren(elem));
+    const hasOne = (elem) => findOne(compiled, adapter.getChildren(elem), options) !== null;
+    return skipCache ? (elem) => next(elem) && hasOne(elem) : cacheParentResults(next, options, hasOne);
   }
 };
 function compilePseudoSelector(next, selector, options, context, compileToken2) {
-  var _a2;
   const { name, data } = selector;
   if (Array.isArray(data)) {
     if (!(name in subselects)) {
@@ -23692,7 +23879,7 @@ function compilePseudoSelector(next, selector, options, context, compileToken2) 
     }
     return subselects[name](next, data, options, context, compileToken2);
   }
-  const userPseudo = (_a2 = options.pseudos) === null || _a2 === void 0 ? void 0 : _a2[name];
+  const userPseudo = options.pseudos?.[name];
   const stringPseudo = typeof userPseudo === "string" ? userPseudo : aliases[name];
   if (typeof stringPseudo === "string") {
     if (data != null) {
@@ -23715,15 +23902,8 @@ function compilePseudoSelector(next, selector, options, context, compileToken2) 
   }
   throw new Error(`Unknown pseudo-class :${name}`);
 }
-function getElementParent(node2, adapter) {
-  const parent = adapter.getParent(node2);
-  if (parent && adapter.isTag(parent)) {
-    return parent;
-  }
-  return null;
-}
-function compileGeneralSelector(next, selector, options, context, compileToken2) {
-  const { adapter, equals } = options;
+function compileGeneralSelector(next, selector, options, context, compileToken2, hasExpensiveSubselector) {
+  const { adapter, equals, cacheResults } = options;
   switch (selector.type) {
     case SelectorType.PseudoElement: {
       throw new Error("Pseudo-elements are not supported by css-select");
@@ -23758,7 +23938,7 @@ function compileGeneralSelector(next, selector, options, context, compileToken2)
     }
     // Traversal
     case SelectorType.Descendant: {
-      if (options.cacheResults === false || typeof WeakSet === "undefined") {
+      if (!hasExpensiveSubselector || cacheResults === false || typeof WeakMap === "undefined") {
         return function descendant(elem) {
           let current = elem;
           while (current = getElementParent(current, adapter)) {
@@ -23769,15 +23949,24 @@ function compileGeneralSelector(next, selector, options, context, compileToken2)
           return false;
         };
       }
-      const isFalseCache = /* @__PURE__ */ new WeakSet();
+      const resultCache = /* @__PURE__ */ new WeakMap();
       return function cachedDescendant(elem) {
         let current = elem;
+        let result2;
         while (current = getElementParent(current, adapter)) {
-          if (!isFalseCache.has(current)) {
-            if (adapter.isTag(current) && next(current)) {
+          const cached = resultCache.get(current);
+          if (cached === void 0) {
+            result2 ?? (result2 = { matches: false });
+            result2.matches = next(current);
+            resultCache.set(current, result2);
+            if (result2.matches) {
               return true;
             }
-            isFalseCache.add(current);
+          } else {
+            if (result2) {
+              result2.matches = cached.matches;
+            }
+            return cached.matches;
           }
         }
         return false;
@@ -23787,9 +23976,11 @@ function compileGeneralSelector(next, selector, options, context, compileToken2)
       return function flexibleDescendant(elem) {
         let current = elem;
         do {
-          if (next(current))
+          if (next(current)) {
             return true;
-        } while (current = getElementParent(current, adapter));
+          }
+          current = getElementParent(current, adapter);
+        } while (current);
         return false;
       };
     }
@@ -23800,8 +23991,8 @@ function compileGeneralSelector(next, selector, options, context, compileToken2)
     }
     case SelectorType.Child: {
       return function child(elem) {
-        const parent = adapter.getParent(elem);
-        return parent != null && adapter.isTag(parent) && next(parent);
+        const parent = getElementParent(elem, adapter);
+        return parent !== null && next(parent);
       };
     }
     case SelectorType.Sibling: {
@@ -23809,8 +24000,9 @@ function compileGeneralSelector(next, selector, options, context, compileToken2)
         const siblings = adapter.getSiblings(elem);
         for (let i = 0; i < siblings.length; i++) {
           const currentSibling = siblings[i];
-          if (equals(elem, currentSibling))
+          if (equals(elem, currentSibling)) {
             break;
+          }
           if (adapter.isTag(currentSibling) && next(currentSibling)) {
             return true;
           }
@@ -23830,8 +24022,9 @@ function compileGeneralSelector(next, selector, options, context, compileToken2)
         let lastElement;
         for (let i = 0; i < siblings.length; i++) {
           const currentSibling = siblings[i];
-          if (equals(elem, currentSibling))
+          if (equals(elem, currentSibling)) {
             break;
+          }
           if (adapter.isTag(currentSibling)) {
             lastElement = currentSibling;
           }
@@ -23847,13 +24040,6 @@ function compileGeneralSelector(next, selector, options, context, compileToken2)
     }
   }
 }
-function compileUnsafe(selector, options, context) {
-  const token = typeof selector === "string" ? parse$1(selector) : selector;
-  return compileToken(token, options, context);
-}
-function includesScopePseudo(t) {
-  return t.type === SelectorType.Pseudo && (t.name === "scope" || Array.isArray(t.data) && t.data.some((data) => data.some(includesScopePseudo)));
-}
 var DESCENDANT_TOKEN = { type: SelectorType.Descendant };
 var FLEXIBLE_DESCENDANT_TOKEN = {
   type: "_flexibleDescendant"
@@ -23864,10 +24050,7 @@ var SCOPE_TOKEN = {
   data: null
 };
 function absolutize(token, { adapter }, context) {
-  const hasContext = !!(context === null || context === void 0 ? void 0 : context.every((e) => {
-    const parent = adapter.isTag(e) && adapter.getParent(e);
-    return e === PLACEHOLDER_ELEMENT || parent && adapter.isTag(parent);
-  }));
+  const hasContext = !!context?.every((e) => e === PLACEHOLDER_ELEMENT || adapter.isTag(e) && getElementParent(e, adapter) !== null);
   for (const t of token) {
     if (t.length > 0 && isTraversal(t[0]) && t[0].type !== SelectorType.Descendant) ;
     else if (hasContext && !t.some(includesScopePseudo)) {
@@ -23878,10 +24061,9 @@ function absolutize(token, { adapter }, context) {
     t.unshift(SCOPE_TOKEN);
   }
 }
-function compileToken(token, options, context) {
-  var _a2;
-  token.forEach(sortByProcedure);
-  context = (_a2 = options.context) !== null && _a2 !== void 0 ? _a2 : context;
+function compileToken(token, options, ctx) {
+  token.forEach(sortRules);
+  const { context = ctx, rootFunc = boolbaseExports.trueFunc } = options;
   const isArrayContext = Array.isArray(context);
   const finalContext = context && (Array.isArray(context) ? context : [context]);
   if (options.relativeSelector !== false) {
@@ -23890,7 +24072,8 @@ function compileToken(token, options, context) {
     throw new Error("Relative selectors are not allowed when the `relativeSelector` option is disabled");
   }
   let shouldTestNextSiblings = false;
-  const query = token.map((rules) => {
+  let query = boolbaseExports.falseFunc;
+  combineLoop: for (const rules of token) {
     if (rules.length >= 2) {
       const [first, second] = rules;
       if (first.type !== SelectorType.Pseudo || first.name !== "scope") ;
@@ -23900,25 +24083,28 @@ function compileToken(token, options, context) {
         shouldTestNextSiblings = true;
       }
     }
-    return compileRules(rules, options, finalContext);
-  }).reduce(reduceRules, boolbase.falseFunc);
+    let next = rootFunc;
+    let hasExpensiveSubselector = false;
+    for (const rule2 of rules) {
+      next = compileGeneralSelector(next, rule2, options, finalContext, compileToken, hasExpensiveSubselector);
+      const quality = getQuality(rule2);
+      if (quality === 0) {
+        hasExpensiveSubselector = true;
+      }
+      if (next === boolbaseExports.falseFunc) {
+        continue combineLoop;
+      }
+    }
+    if (next === rootFunc) {
+      return rootFunc;
+    }
+    query = query === boolbaseExports.falseFunc ? next : or(query, next);
+  }
   query.shouldTestNextSiblings = shouldTestNextSiblings;
   return query;
 }
-function compileRules(rules, options, context) {
-  var _a2;
-  return rules.reduce((previous, rule2) => previous === boolbase.falseFunc ? boolbase.falseFunc : compileGeneralSelector(previous, rule2, options, context, compileToken), (_a2 = options.rootFunc) !== null && _a2 !== void 0 ? _a2 : boolbase.trueFunc);
-}
-function reduceRules(a, b) {
-  if (b === boolbase.falseFunc || a === boolbase.trueFunc) {
-    return a;
-  }
-  if (a === boolbase.falseFunc || b === boolbase.trueFunc) {
-    return b;
-  }
-  return function combine(elem) {
-    return a(elem) || b(elem);
-  };
+function or(a, b) {
+  return (elem) => a(elem) || b(elem);
 }
 var defaultEquals = (a, b) => a === b;
 var defaultOptions = {
@@ -23926,17 +24112,22 @@ var defaultOptions = {
   equals: defaultEquals
 };
 function convertOptionFormats(options) {
-  var _a2, _b, _c, _d;
-  const opts = options !== null && options !== void 0 ? options : defaultOptions;
-  (_a2 = opts.adapter) !== null && _a2 !== void 0 ? _a2 : opts.adapter = DomUtils;
-  (_b = opts.equals) !== null && _b !== void 0 ? _b : opts.equals = (_d = (_c = opts.adapter) === null || _c === void 0 ? void 0 : _c.equals) !== null && _d !== void 0 ? _d : defaultEquals;
+  const opts = options ?? defaultOptions;
+  opts.adapter ?? (opts.adapter = DomUtils);
+  opts.equals ?? (opts.equals = opts.adapter?.equals ?? defaultEquals);
   return opts;
+}
+function _compileUnsafe(selector, options, context) {
+  return _compileToken(typeof selector === "string" ? parse$1(selector) : selector, options, context);
+}
+function _compileToken(selector, options, context) {
+  return compileToken(selector, convertOptionFormats(options), context);
 }
 function getSelectorFunc(searchFunc) {
   return function select(query, elements, options) {
     const opts = convertOptionFormats(options);
     if (typeof query !== "function") {
-      query = compileUnsafe(query, opts, elements);
+      query = _compileUnsafe(query, opts, elements);
     }
     const filteredElements = prepareContext(elements, opts.adapter, query.shouldTestNextSiblings);
     return searchFunc(query, filteredElements, opts);
@@ -23957,8 +24148,8 @@ function appendNextSiblings(elem, adapter) {
   }
   return elems;
 }
-var selectAll = getSelectorFunc((query, elems, options) => query === boolbase.falseFunc || !elems || elems.length === 0 ? [] : options.adapter.findAll(query, elems));
-var selectOne = getSelectorFunc((query, elems, options) => query === boolbase.falseFunc || !elems || elems.length === 0 ? null : options.adapter.findOne(query, elems));
+var selectAll = getSelectorFunc((query, elems, options) => query === boolbaseExports.falseFunc || !elems || elems.length === 0 ? [] : findAll(query, elems, options));
+var selectOne = getSelectorFunc((query, elems, options) => query === boolbaseExports.falseFunc || !elems || elems.length === 0 ? null : findOne(query, elems, options));
 var htmlDecodeTree = new Uint16Array(
   // prettier-ignore
   'ᵁ<Õıʊҝջאٵ۞ޢߖࠏ੊ઑඡ๭༉༦჊ረዡᐕᒝᓃᓟᔥ\0\0\0\0\0\0ᕫᛍᦍᰒᷝ὾⁠↰⊍⏀⏻⑂⠤⤒ⴈ⹈⿎〖㊺㘹㞬㣾㨨㩱㫠㬮ࠀEMabcfglmnoprstu\\bfms¦³¹ÈÏlig耻Æ䃆P耻&䀦cute耻Á䃁reve;䄂Āiyx}rc耻Â䃂;䐐r;쀀𝔄rave耻À䃀pha;䎑acr;䄀d;橓Āgp¡on;䄄f;쀀𝔸plyFunction;恡ing耻Å䃅Ācs¾Ãr;쀀𝒜ign;扔ilde耻Ã䃃ml耻Ä䃄ЀaceforsuåûþėĜĢħĪĀcrêòkslash;或Ŷöø;櫧ed;挆y;䐑ƀcrtąċĔause;戵noullis;愬a;䎒r;쀀𝔅pf;쀀𝔹eve;䋘còēmpeq;扎܀HOacdefhilorsuōőŖƀƞƢƵƷƺǜȕɳɸɾcy;䐧PY耻©䂩ƀcpyŝŢźute;䄆Ā;iŧŨ拒talDifferentialD;慅leys;愭ȀaeioƉƎƔƘron;䄌dil耻Ç䃇rc;䄈nint;戰ot;䄊ĀdnƧƭilla;䂸terDot;䂷òſi;䎧rcleȀDMPTǇǋǑǖot;抙inus;抖lus;投imes;抗oĀcsǢǸkwiseContourIntegral;戲eCurlyĀDQȃȏoubleQuote;思uote;怙ȀlnpuȞȨɇɕonĀ;eȥȦ户;橴ƀgitȯȶȺruent;扡nt;戯ourIntegral;戮ĀfrɌɎ;愂oduct;成nterClockwiseContourIntegral;戳oss;樯cr;쀀𝒞pĀ;Cʄʅ拓ap;才րDJSZacefiosʠʬʰʴʸˋ˗ˡ˦̳ҍĀ;oŹʥtrahd;椑cy;䐂cy;䐅cy;䐏ƀgrsʿ˄ˇger;怡r;憡hv;櫤Āayː˕ron;䄎;䐔lĀ;t˝˞戇a;䎔r;쀀𝔇Āaf˫̧Ācm˰̢riticalȀADGT̖̜̀̆cute;䂴oŴ̋̍;䋙bleAcute;䋝rave;䁠ilde;䋜ond;拄ferentialD;慆Ѱ̽\0\0\0͔͂\0Ѕf;쀀𝔻ƀ;DE͈͉͍䂨ot;惜qual;扐blèCDLRUVͣͲ΂ϏϢϸontourIntegraìȹoɴ͹\0\0ͻ»͉nArrow;懓Āeo·ΤftƀARTΐΖΡrrow;懐ightArrow;懔eåˊngĀLRΫτeftĀARγιrrow;柸ightArrow;柺ightArrow;柹ightĀATϘϞrrow;懒ee;抨pɁϩ\0\0ϯrrow;懑ownArrow;懕erticalBar;戥ǹABLRTaВЪаўѿͼrrowƀ;BUНОТ憓ar;椓pArrow;懵reve;䌑eft˒к\0ц\0ѐightVector;楐eeVector;楞ectorĀ;Bљњ憽ar;楖ightǔѧ\0ѱeeVector;楟ectorĀ;BѺѻ懁ar;楗eeĀ;A҆҇护rrow;憧ĀctҒҗr;쀀𝒟rok;䄐ࠀNTacdfglmopqstuxҽӀӄӋӞӢӧӮӵԡԯԶՒ՝ՠեG;䅊H耻Ð䃐cute耻É䃉ƀaiyӒӗӜron;䄚rc耻Ê䃊;䐭ot;䄖r;쀀𝔈rave耻È䃈ement;戈ĀapӺӾcr;䄒tyɓԆ\0\0ԒmallSquare;旻erySmallSquare;斫ĀgpԦԪon;䄘f;쀀𝔼silon;䎕uĀaiԼՉlĀ;TՂՃ橵ilde;扂librium;懌Āci՗՚r;愰m;橳a;䎗ml耻Ë䃋Āipժկsts;戃onentialE;慇ʀcfiosօֈ֍ֲ׌y;䐤r;쀀𝔉lledɓ֗\0\0֣mallSquare;旼erySmallSquare;斪Ͱֺ\0ֿ\0\0ׄf;쀀𝔽All;戀riertrf;愱cò׋؀JTabcdfgorstר׬ׯ׺؀ؒؖ؛؝أ٬ٲcy;䐃耻>䀾mmaĀ;d׷׸䎓;䏜reve;䄞ƀeiy؇،ؐdil;䄢rc;䄜;䐓ot;䄠r;쀀𝔊;拙pf;쀀𝔾eater̀EFGLSTصلَٖٛ٦qualĀ;Lؾؿ扥ess;招ullEqual;执reater;檢ess;扷lantEqual;橾ilde;扳cr;쀀𝒢;扫ЀAacfiosuڅڋږڛڞڪھۊRDcy;䐪Āctڐڔek;䋇;䁞irc;䄤r;愌lbertSpace;愋ǰگ\0ڲf;愍izontalLine;攀Āctۃۅòکrok;䄦mpńېۘownHumðįqual;扏܀EJOacdfgmnostuۺ۾܃܇܎ܚܞܡܨ݄ݸދޏޕcy;䐕lig;䄲cy;䐁cute耻Í䃍Āiyܓܘrc耻Î䃎;䐘ot;䄰r;愑rave耻Ì䃌ƀ;apܠܯܿĀcgܴܷr;䄪inaryI;慈lieóϝǴ݉\0ݢĀ;eݍݎ戬Āgrݓݘral;戫section;拂isibleĀCTݬݲomma;恣imes;恢ƀgptݿރވon;䄮f;쀀𝕀a;䎙cr;愐ilde;䄨ǫޚ\0ޞcy;䐆l耻Ï䃏ʀcfosuެ޷޼߂ߐĀiyޱ޵rc;䄴;䐙r;쀀𝔍pf;쀀𝕁ǣ߇\0ߌr;쀀𝒥rcy;䐈kcy;䐄΀HJacfosߤߨ߽߬߱ࠂࠈcy;䐥cy;䐌ppa;䎚Āey߶߻dil;䄶;䐚r;쀀𝔎pf;쀀𝕂cr;쀀𝒦րJTaceflmostࠥࠩࠬࡐࡣ঳সে্਷ੇcy;䐉耻<䀼ʀcmnpr࠷࠼ࡁࡄࡍute;䄹bda;䎛g;柪lacetrf;愒r;憞ƀaeyࡗ࡜ࡡron;䄽dil;䄻;䐛Āfsࡨ॰tԀACDFRTUVarࡾࢩࢱࣦ࣠ࣼयज़ΐ४Ānrࢃ࢏gleBracket;柨rowƀ;BR࢙࢚࢞憐ar;懤ightArrow;懆eiling;挈oǵࢷ\0ࣃbleBracket;柦nǔࣈ\0࣒eeVector;楡ectorĀ;Bࣛࣜ懃ar;楙loor;挊ightĀAV࣯ࣵrrow;憔ector;楎Āerँगeƀ;AVउऊऐ抣rrow;憤ector;楚iangleƀ;BEतथऩ抲ar;槏qual;抴pƀDTVषूौownVector;楑eeVector;楠ectorĀ;Bॖॗ憿ar;楘ectorĀ;B॥०憼ar;楒ightáΜs̀EFGLSTॾঋকঝঢভqualGreater;拚ullEqual;扦reater;扶ess;檡lantEqual;橽ilde;扲r;쀀𝔏Ā;eঽা拘ftarrow;懚idot;䄿ƀnpw৔ਖਛgȀLRlr৞৷ਂਐeftĀAR০৬rrow;柵ightArrow;柷ightArrow;柶eftĀarγਊightáοightáϊf;쀀𝕃erĀLRਢਬeftArrow;憙ightArrow;憘ƀchtਾੀੂòࡌ;憰rok;䅁;扪Ѐacefiosuਗ਼੝੠੷੼અઋ઎p;椅y;䐜Ādl੥੯iumSpace;恟lintrf;愳r;쀀𝔐nusPlus;戓pf;쀀𝕄cò੶;䎜ҀJacefostuણધભીଔଙඑ඗ඞcy;䐊cute;䅃ƀaey઴હાron;䅇dil;䅅;䐝ƀgswે૰଎ativeƀMTV૓૟૨ediumSpace;怋hiĀcn૦૘ë૙eryThiî૙tedĀGL૸ଆreaterGreateòٳessLesóੈLine;䀊r;쀀𝔑ȀBnptଢନଷ଺reak;恠BreakingSpace;䂠f;愕ڀ;CDEGHLNPRSTV୕ୖ୪୼஡௫ఄ౞಄ದ೘ൡඅ櫬Āou୛୤ngruent;扢pCap;扭oubleVerticalBar;戦ƀlqxஃஊ஛ement;戉ualĀ;Tஒஓ扠ilde;쀀≂̸ists;戄reater΀;EFGLSTஶஷ஽௉௓௘௥扯qual;扱ullEqual;쀀≧̸reater;쀀≫̸ess;批lantEqual;쀀⩾̸ilde;扵umpń௲௽ownHump;쀀≎̸qual;쀀≏̸eĀfsఊధtTriangleƀ;BEచఛడ拪ar;쀀⧏̸qual;括s̀;EGLSTవశ఼ౄోౘ扮qual;扰reater;扸ess;쀀≪̸lantEqual;쀀⩽̸ilde;扴estedĀGL౨౹reaterGreater;쀀⪢̸essLess;쀀⪡̸recedesƀ;ESಒಓಛ技qual;쀀⪯̸lantEqual;拠ĀeiಫಹverseElement;戌ghtTriangleƀ;BEೋೌ೒拫ar;쀀⧐̸qual;拭ĀquೝഌuareSuĀbp೨೹setĀ;E೰ೳ쀀⊏̸qual;拢ersetĀ;Eഃആ쀀⊐̸qual;拣ƀbcpഓതൎsetĀ;Eഛഞ쀀⊂⃒qual;抈ceedsȀ;ESTലള഻െ抁qual;쀀⪰̸lantEqual;拡ilde;쀀≿̸ersetĀ;E൘൛쀀⊃⃒qual;抉ildeȀ;EFT൮൯൵ൿ扁qual;扄ullEqual;扇ilde;扉erticalBar;戤cr;쀀𝒩ilde耻Ñ䃑;䎝܀Eacdfgmoprstuvලෂ෉෕ෛ෠෧෼ขภยา฿ไlig;䅒cute耻Ó䃓Āiy෎ීrc耻Ô䃔;䐞blac;䅐r;쀀𝔒rave耻Ò䃒ƀaei෮ෲ෶cr;䅌ga;䎩cron;䎟pf;쀀𝕆enCurlyĀDQฎบoubleQuote;怜uote;怘;橔Āclวฬr;쀀𝒪ash耻Ø䃘iŬื฼de耻Õ䃕es;樷ml耻Ö䃖erĀBP๋๠Āar๐๓r;怾acĀek๚๜;揞et;掴arenthesis;揜Ҁacfhilors๿ງຊຏຒດຝະ໼rtialD;戂y;䐟r;쀀𝔓i;䎦;䎠usMinus;䂱Āipຢອncareplanåڝf;愙Ȁ;eio຺ູ໠໤檻cedesȀ;EST່້໏໚扺qual;檯lantEqual;扼ilde;找me;怳Ādp໩໮uct;戏ortionĀ;aȥ໹l;戝Āci༁༆r;쀀𝒫;䎨ȀUfos༑༖༛༟OT耻"䀢r;쀀𝔔pf;愚cr;쀀𝒬؀BEacefhiorsu༾གྷཇའཱིྦྷྪྭ႖ႩႴႾarr;椐G耻®䂮ƀcnrཎནབute;䅔g;柫rĀ;tཛྷཝ憠l;椖ƀaeyཧཬཱron;䅘dil;䅖;䐠Ā;vླྀཹ愜erseĀEUྂྙĀlq྇ྎement;戋uilibrium;懋pEquilibrium;楯r»ཹo;䎡ghtЀACDFTUVa࿁࿫࿳ဢဨၛႇϘĀnr࿆࿒gleBracket;柩rowƀ;BL࿜࿝࿡憒ar;懥eftArrow;懄eiling;按oǵ࿹\0စbleBracket;柧nǔည\0နeeVector;楝ectorĀ;Bဝသ懂ar;楕loor;挋Āerိ၃eƀ;AVဵံြ抢rrow;憦ector;楛iangleƀ;BEၐၑၕ抳ar;槐qual;抵pƀDTVၣၮၸownVector;楏eeVector;楜ectorĀ;Bႂႃ憾ar;楔ectorĀ;B႑႒懀ar;楓Āpuႛ႞f;愝ndImplies;楰ightarrow;懛ĀchႹႼr;愛;憱leDelayed;槴ڀHOacfhimoqstuფჱჷჽᄙᄞᅑᅖᅡᅧᆵᆻᆿĀCcჩხHcy;䐩y;䐨FTcy;䐬cute;䅚ʀ;aeiyᄈᄉᄎᄓᄗ檼ron;䅠dil;䅞rc;䅜;䐡r;쀀𝔖ortȀDLRUᄪᄴᄾᅉownArrow»ОeftArrow»࢚ightArrow»࿝pArrow;憑gma;䎣allCircle;战pf;쀀𝕊ɲᅭ\0\0ᅰt;戚areȀ;ISUᅻᅼᆉᆯ斡ntersection;抓uĀbpᆏᆞsetĀ;Eᆗᆘ抏qual;抑ersetĀ;Eᆨᆩ抐qual;抒nion;抔cr;쀀𝒮ar;拆ȀbcmpᇈᇛሉላĀ;sᇍᇎ拐etĀ;Eᇍᇕqual;抆ĀchᇠህeedsȀ;ESTᇭᇮᇴᇿ扻qual;檰lantEqual;扽ilde;承Tháྌ;我ƀ;esሒሓሣ拑rsetĀ;Eሜም抃qual;抇et»ሓրHRSacfhiorsሾቄ቉ቕ቞ቱቶኟዂወዑORN耻Þ䃞ADE;愢ĀHc቎ቒcy;䐋y;䐦Ābuቚቜ;䀉;䎤ƀaeyብቪቯron;䅤dil;䅢;䐢r;쀀𝔗Āeiቻ኉ǲኀ\0ኇefore;戴a;䎘Ācn኎ኘkSpace;쀀  Space;怉ldeȀ;EFTካኬኲኼ戼qual;扃ullEqual;扅ilde;扈pf;쀀𝕋ipleDot;惛Āctዖዛr;쀀𝒯rok;䅦ૡዷጎጚጦ\0ጬጱ\0\0\0\0\0ጸጽ፷ᎅ\0᏿ᐄᐊᐐĀcrዻጁute耻Ú䃚rĀ;oጇገ憟cir;楉rǣጓ\0጖y;䐎ve;䅬Āiyጞጣrc耻Û䃛;䐣blac;䅰r;쀀𝔘rave耻Ù䃙acr;䅪Ādiፁ፩erĀBPፈ፝Āarፍፐr;䁟acĀekፗፙ;揟et;掵arenthesis;揝onĀ;P፰፱拃lus;抎Āgp፻፿on;䅲f;쀀𝕌ЀADETadps᎕ᎮᎸᏄϨᏒᏗᏳrrowƀ;BDᅐᎠᎤar;椒ownArrow;懅ownArrow;憕quilibrium;楮eeĀ;AᏋᏌ报rrow;憥ownáϳerĀLRᏞᏨeftArrow;憖ightArrow;憗iĀ;lᏹᏺ䏒on;䎥ing;䅮cr;쀀𝒰ilde;䅨ml耻Ü䃜ҀDbcdefosvᐧᐬᐰᐳᐾᒅᒊᒐᒖash;披ar;櫫y;䐒ashĀ;lᐻᐼ抩;櫦Āerᑃᑅ;拁ƀbtyᑌᑐᑺar;怖Ā;iᑏᑕcalȀBLSTᑡᑥᑪᑴar;戣ine;䁼eparator;杘ilde;所ThinSpace;怊r;쀀𝔙pf;쀀𝕍cr;쀀𝒱dash;抪ʀcefosᒧᒬᒱᒶᒼirc;䅴dge;拀r;쀀𝔚pf;쀀𝕎cr;쀀𝒲Ȁfiosᓋᓐᓒᓘr;쀀𝔛;䎞pf;쀀𝕏cr;쀀𝒳ҀAIUacfosuᓱᓵᓹᓽᔄᔏᔔᔚᔠcy;䐯cy;䐇cy;䐮cute耻Ý䃝Āiyᔉᔍrc;䅶;䐫r;쀀𝔜pf;쀀𝕐cr;쀀𝒴ml;䅸ЀHacdefosᔵᔹᔿᕋᕏᕝᕠᕤcy;䐖cute;䅹Āayᕄᕉron;䅽;䐗ot;䅻ǲᕔ\0ᕛoWidtè૙a;䎖r;愨pf;愤cr;쀀𝒵௡ᖃᖊᖐ\0ᖰᖶᖿ\0\0\0\0ᗆᗛᗫᙟ᙭\0ᚕ᚛ᚲᚹ\0ᚾcute耻á䃡reve;䄃̀;Ediuyᖜᖝᖡᖣᖨᖭ戾;쀀∾̳;房rc耻â䃢te肻´̆;䐰lig耻æ䃦Ā;r²ᖺ;쀀𝔞rave耻à䃠ĀepᗊᗖĀfpᗏᗔsym;愵èᗓha;䎱ĀapᗟcĀclᗤᗧr;䄁g;樿ɤᗰ\0\0ᘊʀ;adsvᗺᗻᗿᘁᘇ戧nd;橕;橜lope;橘;橚΀;elmrszᘘᘙᘛᘞᘿᙏᙙ戠;榤e»ᘙsdĀ;aᘥᘦ戡ѡᘰᘲᘴᘶᘸᘺᘼᘾ;榨;榩;榪;榫;榬;榭;榮;榯tĀ;vᙅᙆ戟bĀ;dᙌᙍ抾;榝Āptᙔᙗh;戢»¹arr;捼Āgpᙣᙧon;䄅f;쀀𝕒΀;Eaeiop዁ᙻᙽᚂᚄᚇᚊ;橰cir;橯;扊d;手s;䀧roxĀ;e዁ᚒñᚃing耻å䃥ƀctyᚡᚦᚨr;쀀𝒶;䀪mpĀ;e዁ᚯñʈilde耻ã䃣ml耻ä䃤Āciᛂᛈoninôɲnt;樑ࠀNabcdefiklnoprsu᛭ᛱᜰ᜼ᝃᝈ᝸᝽០៦ᠹᡐᜍ᤽᥈ᥰot;櫭Ācrᛶ᜞kȀcepsᜀᜅᜍᜓong;扌psilon;䏶rime;怵imĀ;e᜚᜛戽q;拍Ŷᜢᜦee;抽edĀ;gᜬᜭ挅e»ᜭrkĀ;t፜᜷brk;掶Āoyᜁᝁ;䐱quo;怞ʀcmprtᝓ᝛ᝡᝤᝨausĀ;eĊĉptyv;榰séᜌnoõēƀahwᝯ᝱ᝳ;䎲;愶een;扬r;쀀𝔟g΀costuvwឍឝឳេ៕៛៞ƀaiuបពរðݠrc;旯p»፱ƀdptឤឨឭot;樀lus;樁imes;樂ɱឹ\0\0ើcup;樆ar;昅riangleĀdu៍្own;施p;斳plus;樄eåᑄåᒭarow;植ƀako៭ᠦᠵĀcn៲ᠣkƀlst៺֫᠂ozenge;槫riangleȀ;dlr᠒᠓᠘᠝斴own;斾eft;旂ight;斸k;搣Ʊᠫ\0ᠳƲᠯ\0ᠱ;斒;斑4;斓ck;斈ĀeoᠾᡍĀ;qᡃᡆ쀀=⃥uiv;쀀≡⃥t;挐Ȁptwxᡙᡞᡧᡬf;쀀𝕓Ā;tᏋᡣom»Ꮜtie;拈؀DHUVbdhmptuvᢅᢖᢪᢻᣗᣛᣬ᣿ᤅᤊᤐᤡȀLRlrᢎᢐᢒᢔ;敗;敔;敖;敓ʀ;DUduᢡᢢᢤᢦᢨ敐;敦;敩;敤;敧ȀLRlrᢳᢵᢷᢹ;敝;敚;敜;教΀;HLRhlrᣊᣋᣍᣏᣑᣓᣕ救;敬;散;敠;敫;敢;敟ox;槉ȀLRlrᣤᣦᣨᣪ;敕;敒;攐;攌ʀ;DUduڽ᣷᣹᣻᣽;敥;敨;攬;攴inus;抟lus;択imes;抠ȀLRlrᤙᤛᤝ᤟;敛;敘;攘;攔΀;HLRhlrᤰᤱᤳᤵᤷ᤻᤹攂;敪;敡;敞;攼;攤;攜Āevģ᥂bar耻¦䂦Ȁceioᥑᥖᥚᥠr;쀀𝒷mi;恏mĀ;e᜚᜜lƀ;bhᥨᥩᥫ䁜;槅sub;柈Ŭᥴ᥾lĀ;e᥹᥺怢t»᥺pƀ;Eeįᦅᦇ;檮Ā;qۜۛೡᦧ\0᧨ᨑᨕᨲ\0ᨷᩐ\0\0᪴\0\0᫁\0\0ᬡᬮ᭍᭒\0᯽\0ᰌƀcpr᦭ᦲ᧝ute;䄇̀;abcdsᦿᧀᧄ᧊᧕᧙戩nd;橄rcup;橉Āau᧏᧒p;橋p;橇ot;橀;쀀∩︀Āeo᧢᧥t;恁îړȀaeiu᧰᧻ᨁᨅǰ᧵\0᧸s;橍on;䄍dil耻ç䃧rc;䄉psĀ;sᨌᨍ橌m;橐ot;䄋ƀdmnᨛᨠᨦil肻¸ƭptyv;榲t脀¢;eᨭᨮ䂢räƲr;쀀𝔠ƀceiᨽᩀᩍy;䑇ckĀ;mᩇᩈ朓ark»ᩈ;䏇r΀;Ecefms᩟᩠ᩢᩫ᪤᪪᪮旋;槃ƀ;elᩩᩪᩭ䋆q;扗eɡᩴ\0\0᪈rrowĀlr᩼᪁eft;憺ight;憻ʀRSacd᪒᪔᪖᪚᪟»ཇ;擈st;抛irc;抚ash;抝nint;樐id;櫯cir;槂ubsĀ;u᪻᪼晣it»᪼ˬ᫇᫔᫺\0ᬊonĀ;eᫍᫎ䀺Ā;qÇÆɭ᫙\0\0᫢aĀ;t᫞᫟䀬;䁀ƀ;fl᫨᫩᫫戁îᅠeĀmx᫱᫶ent»᫩eóɍǧ᫾\0ᬇĀ;dኻᬂot;橭nôɆƀfryᬐᬔᬗ;쀀𝕔oäɔ脀©;sŕᬝr;愗Āaoᬥᬩrr;憵ss;朗Ācuᬲᬷr;쀀𝒸Ābpᬼ᭄Ā;eᭁᭂ櫏;櫑Ā;eᭉᭊ櫐;櫒dot;拯΀delprvw᭠᭬᭷ᮂᮬᯔ᯹arrĀlr᭨᭪;椸;椵ɰ᭲\0\0᭵r;拞c;拟arrĀ;p᭿ᮀ憶;椽̀;bcdosᮏᮐᮖᮡᮥᮨ截rcap;橈Āauᮛᮞp;橆p;橊ot;抍r;橅;쀀∪︀Ȁalrv᮵ᮿᯞᯣrrĀ;mᮼᮽ憷;椼yƀevwᯇᯔᯘqɰᯎ\0\0ᯒreã᭳uã᭵ee;拎edge;拏en耻¤䂤earrowĀlrᯮ᯳eft»ᮀight»ᮽeäᯝĀciᰁᰇoninôǷnt;戱lcty;挭ঀAHabcdefhijlorstuwz᰸᰻᰿ᱝᱩᱵᲊᲞᲬᲷ᳻᳿ᴍᵻᶑᶫᶻ᷆᷍rò΁ar;楥Ȁglrs᱈ᱍ᱒᱔ger;怠eth;愸òᄳhĀ;vᱚᱛ怐»ऊūᱡᱧarow;椏aã̕Āayᱮᱳron;䄏;䐴ƀ;ao̲ᱼᲄĀgrʿᲁr;懊tseq;橷ƀglmᲑᲔᲘ耻°䂰ta;䎴ptyv;榱ĀirᲣᲨsht;楿;쀀𝔡arĀlrᲳᲵ»ࣜ»သʀaegsv᳂͸᳖᳜᳠mƀ;oș᳊᳔ndĀ;ș᳑uit;晦amma;䏝in;拲ƀ;io᳧᳨᳸䃷de脀÷;o᳧ᳰntimes;拇nø᳷cy;䑒cɯᴆ\0\0ᴊrn;挞op;挍ʀlptuwᴘᴝᴢᵉᵕlar;䀤f;쀀𝕕ʀ;emps̋ᴭᴷᴽᵂqĀ;d͒ᴳot;扑inus;戸lus;戔quare;抡blebarwedgåúnƀadhᄮᵝᵧownarrowóᲃarpoonĀlrᵲᵶefôᲴighôᲶŢᵿᶅkaro÷གɯᶊ\0\0ᶎrn;挟op;挌ƀcotᶘᶣᶦĀryᶝᶡ;쀀𝒹;䑕l;槶rok;䄑Ādrᶰᶴot;拱iĀ;fᶺ᠖斿Āah᷀᷃ròЩaòྦangle;榦Āci᷒ᷕy;䑟grarr;柿ऀDacdefglmnopqrstuxḁḉḙḸոḼṉṡṾấắẽỡἪἷὄ὎὚ĀDoḆᴴoôᲉĀcsḎḔute耻é䃩ter;橮ȀaioyḢḧḱḶron;䄛rĀ;cḭḮ扖耻ê䃪lon;払;䑍ot;䄗ĀDrṁṅot;扒;쀀𝔢ƀ;rsṐṑṗ檚ave耻è䃨Ā;dṜṝ檖ot;檘Ȁ;ilsṪṫṲṴ檙nters;揧;愓Ā;dṹṺ檕ot;檗ƀapsẅẉẗcr;䄓tyƀ;svẒẓẕ戅et»ẓpĀ1;ẝẤĳạả;怄;怅怃ĀgsẪẬ;䅋p;怂ĀgpẴẸon;䄙f;쀀𝕖ƀalsỄỎỒrĀ;sỊị拕l;槣us;橱iƀ;lvỚớở䎵on»ớ;䏵ȀcsuvỪỳἋἣĀioữḱrc»Ḯɩỹ\0\0ỻíՈantĀglἂἆtr»ṝess»Ṻƀaeiἒ἖Ἒls;䀽st;扟vĀ;DȵἠD;橸parsl;槥ĀDaἯἳot;打rr;楱ƀcdiἾὁỸr;愯oô͒ĀahὉὋ;䎷耻ð䃰Āmrὓὗl耻ë䃫o;悬ƀcipὡὤὧl;䀡sôծĀeoὬὴctatioîՙnentialåչৡᾒ\0ᾞ\0ᾡᾧ\0\0ῆῌ\0ΐ\0ῦῪ \0 ⁚llingdotseñṄy;䑄male;晀ƀilrᾭᾳ῁lig;耀ﬃɩᾹ\0\0᾽g;耀ﬀig;耀ﬄ;쀀𝔣lig;耀ﬁlig;쀀fjƀaltῙ῜ῡt;晭ig;耀ﬂns;斱of;䆒ǰ΅\0ῳf;쀀𝕗ĀakֿῷĀ;vῼ´拔;櫙artint;樍Āao‌⁕Ācs‑⁒α‚‰‸⁅⁈\0⁐β•‥‧‪‬\0‮耻½䂽;慓耻¼䂼;慕;慙;慛Ƴ‴\0‶;慔;慖ʴ‾⁁\0\0⁃耻¾䂾;慗;慜5;慘ƶ⁌\0⁎;慚;慝8;慞l;恄wn;挢cr;쀀𝒻ࢀEabcdefgijlnorstv₂₉₟₥₰₴⃰⃵⃺⃿℃ℒℸ̗ℾ⅒↞Ā;lٍ₇;檌ƀcmpₐₕ₝ute;䇵maĀ;dₜ᳚䎳;檆reve;䄟Āiy₪₮rc;䄝;䐳ot;䄡Ȁ;lqsؾق₽⃉ƀ;qsؾٌ⃄lanô٥Ȁ;cdl٥⃒⃥⃕c;檩otĀ;o⃜⃝檀Ā;l⃢⃣檂;檄Ā;e⃪⃭쀀⋛︀s;檔r;쀀𝔤Ā;gٳ؛mel;愷cy;䑓Ȁ;Eajٚℌℎℐ;檒;檥;檤ȀEaesℛℝ℩ℴ;扩pĀ;p℣ℤ檊rox»ℤĀ;q℮ℯ檈Ā;q℮ℛim;拧pf;쀀𝕘Āci⅃ⅆr;愊mƀ;el٫ⅎ⅐;檎;檐茀>;cdlqr׮ⅠⅪⅮⅳⅹĀciⅥⅧ;檧r;橺ot;拗Par;榕uest;橼ʀadelsↄⅪ←ٖ↛ǰ↉\0↎proø₞r;楸qĀlqؿ↖lesó₈ií٫Āen↣↭rtneqq;쀀≩︀Å↪ԀAabcefkosy⇄⇇⇱⇵⇺∘∝∯≨≽ròΠȀilmr⇐⇔⇗⇛rsðᒄf»․ilôکĀdr⇠⇤cy;䑊ƀ;cwࣴ⇫⇯ir;楈;憭ar;意irc;䄥ƀalr∁∎∓rtsĀ;u∉∊晥it»∊lip;怦con;抹r;쀀𝔥sĀew∣∩arow;椥arow;椦ʀamopr∺∾≃≞≣rr;懿tht;戻kĀlr≉≓eftarrow;憩ightarrow;憪f;쀀𝕙bar;怕ƀclt≯≴≸r;쀀𝒽asè⇴rok;䄧Ābp⊂⊇ull;恃hen»ᱛૡ⊣\0⊪\0⊸⋅⋎\0⋕⋳\0\0⋸⌢⍧⍢⍿\0⎆⎪⎴cute耻í䃭ƀ;iyݱ⊰⊵rc耻î䃮;䐸Ācx⊼⊿y;䐵cl耻¡䂡ĀfrΟ⋉;쀀𝔦rave耻ì䃬Ȁ;inoܾ⋝⋩⋮Āin⋢⋦nt;樌t;戭fin;槜ta;愩lig;䄳ƀaop⋾⌚⌝ƀcgt⌅⌈⌗r;䄫ƀelpܟ⌏⌓inåގarôܠh;䄱f;抷ed;䆵ʀ;cfotӴ⌬⌱⌽⍁are;愅inĀ;t⌸⌹戞ie;槝doô⌙ʀ;celpݗ⍌⍐⍛⍡al;抺Āgr⍕⍙eróᕣã⍍arhk;樗rod;樼Ȁcgpt⍯⍲⍶⍻y;䑑on;䄯f;쀀𝕚a;䎹uest耻¿䂿Āci⎊⎏r;쀀𝒾nʀ;EdsvӴ⎛⎝⎡ӳ;拹ot;拵Ā;v⎦⎧拴;拳Ā;iݷ⎮lde;䄩ǫ⎸\0⎼cy;䑖l耻ï䃯̀cfmosu⏌⏗⏜⏡⏧⏵Āiy⏑⏕rc;䄵;䐹r;쀀𝔧ath;䈷pf;쀀𝕛ǣ⏬\0⏱r;쀀𝒿rcy;䑘kcy;䑔Ѐacfghjos␋␖␢␧␭␱␵␻ppaĀ;v␓␔䎺;䏰Āey␛␠dil;䄷;䐺r;쀀𝔨reen;䄸cy;䑅cy;䑜pf;쀀𝕜cr;쀀𝓀஀ABEHabcdefghjlmnoprstuv⑰⒁⒆⒍⒑┎┽╚▀♎♞♥♹♽⚚⚲⛘❝❨➋⟀⠁⠒ƀart⑷⑺⑼rò৆òΕail;椛arr;椎Ā;gঔ⒋;檋ar;楢ॣ⒥\0⒪\0⒱\0\0\0\0\0⒵Ⓔ\0ⓆⓈⓍ\0⓹ute;䄺mptyv;榴raîࡌbda;䎻gƀ;dlࢎⓁⓃ;榑åࢎ;檅uo耻«䂫rЀ;bfhlpst࢙ⓞⓦⓩ⓫⓮⓱⓵Ā;f࢝ⓣs;椟s;椝ë≒p;憫l;椹im;楳l;憢ƀ;ae⓿─┄檫il;椙Ā;s┉┊檭;쀀⪭︀ƀabr┕┙┝rr;椌rk;杲Āak┢┬cĀek┨┪;䁻;䁛Āes┱┳;榋lĀdu┹┻;榏;榍Ȁaeuy╆╋╖╘ron;䄾Ādi═╔il;䄼ìࢰâ┩;䐻Ȁcqrs╣╦╭╽a;椶uoĀ;rนᝆĀdu╲╷har;楧shar;楋h;憲ʀ;fgqs▋▌উ◳◿扤tʀahlrt▘▤▷◂◨rrowĀ;t࢙□aé⓶arpoonĀdu▯▴own»њp»०eftarrows;懇ightƀahs◍◖◞rrowĀ;sࣴࢧarpoonó྘quigarro÷⇰hreetimes;拋ƀ;qs▋ও◺lanôবʀ;cdgsব☊☍☝☨c;檨otĀ;o☔☕橿Ā;r☚☛檁;檃Ā;e☢☥쀀⋚︀s;檓ʀadegs☳☹☽♉♋pproøⓆot;拖qĀgq♃♅ôউgtò⒌ôছiíলƀilr♕࣡♚sht;楼;쀀𝔩Ā;Eজ♣;檑š♩♶rĀdu▲♮Ā;l॥♳;楪lk;斄cy;䑙ʀ;achtੈ⚈⚋⚑⚖rò◁orneòᴈard;楫ri;旺Āio⚟⚤dot;䅀ustĀ;a⚬⚭掰che»⚭ȀEaes⚻⚽⛉⛔;扨pĀ;p⛃⛄檉rox»⛄Ā;q⛎⛏檇Ā;q⛎⚻im;拦Ѐabnoptwz⛩⛴⛷✚✯❁❇❐Ānr⛮⛱g;柬r;懽rëࣁgƀlmr⛿✍✔eftĀar০✇ightá৲apsto;柼ightá৽parrowĀlr✥✩efô⓭ight;憬ƀafl✶✹✽r;榅;쀀𝕝us;樭imes;樴š❋❏st;戗áፎƀ;ef❗❘᠀旊nge»❘arĀ;l❤❥䀨t;榓ʀachmt❳❶❼➅➇ròࢨorneòᶌarĀ;d྘➃;業;怎ri;抿̀achiqt➘➝ੀ➢➮➻quo;怹r;쀀𝓁mƀ;egল➪➬;檍;檏Ābu┪➳oĀ;rฟ➹;怚rok;䅂萀<;cdhilqrࠫ⟒☹⟜⟠⟥⟪⟰Āci⟗⟙;檦r;橹reå◲mes;拉arr;楶uest;橻ĀPi⟵⟹ar;榖ƀ;ef⠀भ᠛旃rĀdu⠇⠍shar;楊har;楦Āen⠗⠡rtneqq;쀀≨︀Å⠞܀Dacdefhilnopsu⡀⡅⢂⢎⢓⢠⢥⢨⣚⣢⣤ઃ⣳⤂Dot;戺Ȁclpr⡎⡒⡣⡽r耻¯䂯Āet⡗⡙;時Ā;e⡞⡟朠se»⡟Ā;sျ⡨toȀ;dluျ⡳⡷⡻owîҌefôएðᏑker;斮Āoy⢇⢌mma;権;䐼ash;怔asuredangle»ᘦr;쀀𝔪o;愧ƀcdn⢯⢴⣉ro耻µ䂵Ȁ;acdᑤ⢽⣀⣄sôᚧir;櫰ot肻·Ƶusƀ;bd⣒ᤃ⣓戒Ā;uᴼ⣘;横ţ⣞⣡p;櫛ò−ðઁĀdp⣩⣮els;抧f;쀀𝕞Āct⣸⣽r;쀀𝓂pos»ᖝƀ;lm⤉⤊⤍䎼timap;抸ఀGLRVabcdefghijlmoprstuvw⥂⥓⥾⦉⦘⧚⧩⨕⨚⩘⩝⪃⪕⪤⪨⬄⬇⭄⭿⮮ⰴⱧⱼ⳩Āgt⥇⥋;쀀⋙̸Ā;v⥐௏쀀≫⃒ƀelt⥚⥲⥶ftĀar⥡⥧rrow;懍ightarrow;懎;쀀⋘̸Ā;v⥻ే쀀≪⃒ightarrow;懏ĀDd⦎⦓ash;抯ash;抮ʀbcnpt⦣⦧⦬⦱⧌la»˞ute;䅄g;쀀∠⃒ʀ;Eiop඄⦼⧀⧅⧈;쀀⩰̸d;쀀≋̸s;䅉roø඄urĀ;a⧓⧔普lĀ;s⧓ସǳ⧟\0⧣p肻 ଷmpĀ;e௹ఀʀaeouy⧴⧾⨃⨐⨓ǰ⧹\0⧻;橃on;䅈dil;䅆ngĀ;dൾ⨊ot;쀀⩭̸p;橂;䐽ash;怓΀;Aadqsxஒ⨩⨭⨻⩁⩅⩐rr;懗rĀhr⨳⨶k;椤Ā;oᏲᏰot;쀀≐̸uiöୣĀei⩊⩎ar;椨í஘istĀ;s஠டr;쀀𝔫ȀEest௅⩦⩹⩼ƀ;qs஼⩭௡ƀ;qs஼௅⩴lanô௢ií௪Ā;rஶ⪁»ஷƀAap⪊⪍⪑rò⥱rr;憮ar;櫲ƀ;svྍ⪜ྌĀ;d⪡⪢拼;拺cy;䑚΀AEadest⪷⪺⪾⫂⫅⫶⫹rò⥦;쀀≦̸rr;憚r;急Ȁ;fqs఻⫎⫣⫯tĀar⫔⫙rro÷⫁ightarro÷⪐ƀ;qs఻⪺⫪lanôౕĀ;sౕ⫴»శiíౝĀ;rవ⫾iĀ;eచథiäඐĀpt⬌⬑f;쀀𝕟膀¬;in⬙⬚⬶䂬nȀ;Edvஉ⬤⬨⬮;쀀⋹̸ot;쀀⋵̸ǡஉ⬳⬵;拷;拶iĀ;vಸ⬼ǡಸ⭁⭃;拾;拽ƀaor⭋⭣⭩rȀ;ast୻⭕⭚⭟lleì୻l;쀀⫽⃥;쀀∂̸lint;樔ƀ;ceಒ⭰⭳uåಥĀ;cಘ⭸Ā;eಒ⭽ñಘȀAait⮈⮋⮝⮧rò⦈rrƀ;cw⮔⮕⮙憛;쀀⤳̸;쀀↝̸ghtarrow»⮕riĀ;eೋೖ΀chimpqu⮽⯍⯙⬄୸⯤⯯Ȁ;cerല⯆ഷ⯉uå൅;쀀𝓃ortɭ⬅\0\0⯖ará⭖mĀ;e൮⯟Ā;q൴൳suĀbp⯫⯭å೸åഋƀbcp⯶ⰑⰙȀ;Ees⯿ⰀഢⰄ抄;쀀⫅̸etĀ;eഛⰋqĀ;qണⰀcĀ;eലⰗñസȀ;EesⰢⰣൟⰧ抅;쀀⫆̸etĀ;e൘ⰮqĀ;qൠⰣȀgilrⰽⰿⱅⱇìௗlde耻ñ䃱çృiangleĀlrⱒⱜeftĀ;eచⱚñదightĀ;eೋⱥñ೗Ā;mⱬⱭ䎽ƀ;esⱴⱵⱹ䀣ro;愖p;怇ҀDHadgilrsⲏⲔⲙⲞⲣⲰⲶⳓⳣash;抭arr;椄p;쀀≍⃒ash;抬ĀetⲨⲬ;쀀≥⃒;쀀>⃒nfin;槞ƀAetⲽⳁⳅrr;椂;쀀≤⃒Ā;rⳊⳍ쀀<⃒ie;쀀⊴⃒ĀAtⳘⳜrr;椃rie;쀀⊵⃒im;쀀∼⃒ƀAan⳰⳴ⴂrr;懖rĀhr⳺⳽k;椣Ā;oᏧᏥear;椧ቓ᪕\0\0\0\0\0\0\0\0\0\0\0\0\0ⴭ\0ⴸⵈⵠⵥ⵲ⶄᬇ\0\0ⶍⶫ\0ⷈⷎ\0ⷜ⸙⸫⸾⹃Ācsⴱ᪗ute耻ó䃳ĀiyⴼⵅrĀ;c᪞ⵂ耻ô䃴;䐾ʀabios᪠ⵒⵗǈⵚlac;䅑v;樸old;榼lig;䅓Ācr⵩⵭ir;榿;쀀𝔬ͯ⵹\0\0⵼\0ⶂn;䋛ave耻ò䃲;槁Ābmⶈ෴ar;榵Ȁacitⶕ⶘ⶥⶨrò᪀Āir⶝ⶠr;榾oss;榻nå๒;槀ƀaeiⶱⶵⶹcr;䅍ga;䏉ƀcdnⷀⷅǍron;䎿;榶pf;쀀𝕠ƀaelⷔ⷗ǒr;榷rp;榹΀;adiosvⷪⷫⷮ⸈⸍⸐⸖戨rò᪆Ȁ;efmⷷⷸ⸂⸅橝rĀ;oⷾⷿ愴f»ⷿ耻ª䂪耻º䂺gof;抶r;橖lope;橗;橛ƀclo⸟⸡⸧ò⸁ash耻ø䃸l;折iŬⸯ⸴de耻õ䃵esĀ;aǛ⸺s;樶ml耻ö䃶bar;挽ૡ⹞\0⹽\0⺀⺝\0⺢⺹\0\0⻋ຜ\0⼓\0\0⼫⾼\0⿈rȀ;astЃ⹧⹲຅脀¶;l⹭⹮䂶leìЃɩ⹸\0\0⹻m;櫳;櫽y;䐿rʀcimpt⺋⺏⺓ᡥ⺗nt;䀥od;䀮il;怰enk;怱r;쀀𝔭ƀimo⺨⺰⺴Ā;v⺭⺮䏆;䏕maô੶ne;明ƀ;tv⺿⻀⻈䏀chfork»´;䏖Āau⻏⻟nĀck⻕⻝kĀ;h⇴⻛;愎ö⇴sҀ;abcdemst⻳⻴ᤈ⻹⻽⼄⼆⼊⼎䀫cir;樣ir;樢Āouᵀ⼂;樥;橲n肻±ຝim;樦wo;樧ƀipu⼙⼠⼥ntint;樕f;쀀𝕡nd耻£䂣Ԁ;Eaceinosu່⼿⽁⽄⽇⾁⾉⾒⽾⾶;檳p;檷uå໙Ā;c໎⽌̀;acens່⽙⽟⽦⽨⽾pproø⽃urlyeñ໙ñ໎ƀaes⽯⽶⽺pprox;檹qq;檵im;拨iíໟmeĀ;s⾈ຮ怲ƀEas⽸⾐⽺ð⽵ƀdfp໬⾙⾯ƀals⾠⾥⾪lar;挮ine;挒urf;挓Ā;t໻⾴ï໻rel;抰Āci⿀⿅r;쀀𝓅;䏈ncsp;怈̀fiopsu⿚⋢⿟⿥⿫⿱r;쀀𝔮pf;쀀𝕢rime;恗cr;쀀𝓆ƀaeo⿸〉〓tĀei⿾々rnionóڰnt;樖stĀ;e【】䀿ñἙô༔઀ABHabcdefhilmnoprstux぀けさすムㄎㄫㅇㅢㅲㆎ㈆㈕㈤㈩㉘㉮㉲㊐㊰㊷ƀartぇおがròႳòϝail;検aròᱥar;楤΀cdenqrtとふへみわゔヌĀeuねぱ;쀀∽̱te;䅕iãᅮmptyv;榳gȀ;del࿑らるろ;榒;榥å࿑uo耻»䂻rր;abcfhlpstw࿜ガクシスゼゾダッデナp;極Ā;f࿠ゴs;椠;椳s;椞ë≝ð✮l;楅im;楴l;憣;憝Āaiパフil;椚oĀ;nホボ戶aló༞ƀabrョリヮrò៥rk;杳ĀakンヽcĀekヹ・;䁽;䁝Āes㄂㄄;榌lĀduㄊㄌ;榎;榐Ȁaeuyㄗㄜㄧㄩron;䅙Ādiㄡㄥil;䅗ì࿲âヺ;䑀Ȁclqsㄴㄷㄽㅄa;椷dhar;楩uoĀ;rȎȍh;憳ƀacgㅎㅟངlȀ;ipsླྀㅘㅛႜnåႻarôྩt;断ƀilrㅩဣㅮsht;楽;쀀𝔯ĀaoㅷㆆrĀduㅽㅿ»ѻĀ;l႑ㆄ;楬Ā;vㆋㆌ䏁;䏱ƀgns㆕ㇹㇼht̀ahlrstㆤㆰ㇂㇘㇤㇮rrowĀ;t࿜ㆭaéトarpoonĀduㆻㆿowîㅾp»႒eftĀah㇊㇐rrowó࿪arpoonóՑightarrows;應quigarro÷ニhreetimes;拌g;䋚ingdotseñἲƀahm㈍㈐㈓rò࿪aòՑ;怏oustĀ;a㈞㈟掱che»㈟mid;櫮Ȁabpt㈲㈽㉀㉒Ānr㈷㈺g;柭r;懾rëဃƀafl㉇㉊㉎r;榆;쀀𝕣us;樮imes;樵Āap㉝㉧rĀ;g㉣㉤䀩t;榔olint;樒arò㇣Ȁachq㉻㊀Ⴜ㊅quo;怺r;쀀𝓇Ābu・㊊oĀ;rȔȓƀhir㊗㊛㊠reåㇸmes;拊iȀ;efl㊪ၙᠡ㊫方tri;槎luhar;楨;愞ൡ㋕㋛㋟㌬㌸㍱\0㍺㎤\0\0㏬㏰\0㐨㑈㑚㒭㒱㓊㓱\0㘖\0\0㘳cute;䅛quï➺Ԁ;Eaceinpsyᇭ㋳㋵㋿㌂㌋㌏㌟㌦㌩;檴ǰ㋺\0㋼;檸on;䅡uåᇾĀ;dᇳ㌇il;䅟rc;䅝ƀEas㌖㌘㌛;檶p;檺im;择olint;樓iíሄ;䑁otƀ;be㌴ᵇ㌵担;橦΀Aacmstx㍆㍊㍗㍛㍞㍣㍭rr;懘rĀhr㍐㍒ë∨Ā;oਸ਼਴t耻§䂧i;䀻war;椩mĀin㍩ðnuóñt;朶rĀ;o㍶⁕쀀𝔰Ȁacoy㎂㎆㎑㎠rp;景Āhy㎋㎏cy;䑉;䑈rtɭ㎙\0\0㎜iäᑤaraì⹯耻­䂭Āgm㎨㎴maƀ;fv㎱㎲㎲䏃;䏂Ѐ;deglnprካ㏅㏉㏎㏖㏞㏡㏦ot;橪Ā;q኱ኰĀ;E㏓㏔檞;檠Ā;E㏛㏜檝;檟e;扆lus;樤arr;楲aròᄽȀaeit㏸㐈㐏㐗Āls㏽㐄lsetmé㍪hp;樳parsl;槤Ādlᑣ㐔e;挣Ā;e㐜㐝檪Ā;s㐢㐣檬;쀀⪬︀ƀflp㐮㐳㑂tcy;䑌Ā;b㐸㐹䀯Ā;a㐾㐿槄r;挿f;쀀𝕤aĀdr㑍ЂesĀ;u㑔㑕晠it»㑕ƀcsu㑠㑹㒟Āau㑥㑯pĀ;sᆈ㑫;쀀⊓︀pĀ;sᆴ㑵;쀀⊔︀uĀbp㑿㒏ƀ;esᆗᆜ㒆etĀ;eᆗ㒍ñᆝƀ;esᆨᆭ㒖etĀ;eᆨ㒝ñᆮƀ;afᅻ㒦ְrť㒫ֱ»ᅼaròᅈȀcemt㒹㒾㓂㓅r;쀀𝓈tmîñiì㐕aræᆾĀar㓎㓕rĀ;f㓔ឿ昆Āan㓚㓭ightĀep㓣㓪psiloîỠhé⺯s»⡒ʀbcmnp㓻㕞ሉ㖋㖎Ҁ;Edemnprs㔎㔏㔑㔕㔞㔣㔬㔱㔶抂;櫅ot;檽Ā;dᇚ㔚ot;櫃ult;櫁ĀEe㔨㔪;櫋;把lus;檿arr;楹ƀeiu㔽㕒㕕tƀ;en㔎㕅㕋qĀ;qᇚ㔏eqĀ;q㔫㔨m;櫇Ābp㕚㕜;櫕;櫓c̀;acensᇭ㕬㕲㕹㕻㌦pproø㋺urlyeñᇾñᇳƀaes㖂㖈㌛pproø㌚qñ㌗g;晪ڀ123;Edehlmnps㖩㖬㖯ሜ㖲㖴㗀㗉㗕㗚㗟㗨㗭耻¹䂹耻²䂲耻³䂳;櫆Āos㖹㖼t;檾ub;櫘Ā;dሢ㗅ot;櫄sĀou㗏㗒l;柉b;櫗arr;楻ult;櫂ĀEe㗤㗦;櫌;抋lus;櫀ƀeiu㗴㘉㘌tƀ;enሜ㗼㘂qĀ;qሢ㖲eqĀ;q㗧㗤m;櫈Ābp㘑㘓;櫔;櫖ƀAan㘜㘠㘭rr;懙rĀhr㘦㘨ë∮Ā;oਫ਩war;椪lig耻ß䃟௡㙑㙝㙠ዎ㙳㙹\0㙾㛂\0\0\0\0\0㛛㜃\0㜉㝬\0\0\0㞇ɲ㙖\0\0㙛get;挖;䏄rë๟ƀaey㙦㙫㙰ron;䅥dil;䅣;䑂lrec;挕r;쀀𝔱Ȁeiko㚆㚝㚵㚼ǲ㚋\0㚑eĀ4fኄኁaƀ;sv㚘㚙㚛䎸ym;䏑Ācn㚢㚲kĀas㚨㚮pproø዁im»ኬsðኞĀas㚺㚮ð዁rn耻þ䃾Ǭ̟㛆⋧es膀×;bd㛏㛐㛘䃗Ā;aᤏ㛕r;樱;樰ƀeps㛡㛣㜀á⩍Ȁ;bcf҆㛬㛰㛴ot;挶ir;櫱Ā;o㛹㛼쀀𝕥rk;櫚á㍢rime;怴ƀaip㜏㜒㝤dåቈ΀adempst㜡㝍㝀㝑㝗㝜㝟ngleʀ;dlqr㜰㜱㜶㝀㝂斵own»ᶻeftĀ;e⠀㜾ñम;扜ightĀ;e㊪㝋ñၚot;旬inus;樺lus;樹b;槍ime;樻ezium;揢ƀcht㝲㝽㞁Āry㝷㝻;쀀𝓉;䑆cy;䑛rok;䅧Āio㞋㞎xô᝷headĀlr㞗㞠eftarro÷ࡏightarrow»ཝऀAHabcdfghlmoprstuw㟐㟓㟗㟤㟰㟼㠎㠜㠣㠴㡑㡝㡫㢩㣌㣒㣪㣶ròϭar;楣Ācr㟜㟢ute耻ú䃺òᅐrǣ㟪\0㟭y;䑞ve;䅭Āiy㟵㟺rc耻û䃻;䑃ƀabh㠃㠆㠋ròᎭlac;䅱aòᏃĀir㠓㠘sht;楾;쀀𝔲rave耻ù䃹š㠧㠱rĀlr㠬㠮»ॗ»ႃlk;斀Āct㠹㡍ɯ㠿\0\0㡊rnĀ;e㡅㡆挜r»㡆op;挏ri;旸Āal㡖㡚cr;䅫肻¨͉Āgp㡢㡦on;䅳f;쀀𝕦̀adhlsuᅋ㡸㡽፲㢑㢠ownáᎳarpoonĀlr㢈㢌efô㠭ighô㠯iƀ;hl㢙㢚㢜䏅»ᏺon»㢚parrows;懈ƀcit㢰㣄㣈ɯ㢶\0\0㣁rnĀ;e㢼㢽挝r»㢽op;挎ng;䅯ri;旹cr;쀀𝓊ƀdir㣙㣝㣢ot;拰lde;䅩iĀ;f㜰㣨»᠓Āam㣯㣲rò㢨l耻ü䃼angle;榧ހABDacdeflnoprsz㤜㤟㤩㤭㦵㦸㦽㧟㧤㧨㧳㧹㧽㨁㨠ròϷarĀ;v㤦㤧櫨;櫩asèϡĀnr㤲㤷grt;榜΀eknprst㓣㥆㥋㥒㥝㥤㦖appá␕othinçẖƀhir㓫⻈㥙opô⾵Ā;hᎷ㥢ïㆍĀiu㥩㥭gmá㎳Ābp㥲㦄setneqĀ;q㥽㦀쀀⊊︀;쀀⫋︀setneqĀ;q㦏㦒쀀⊋︀;쀀⫌︀Āhr㦛㦟etá㚜iangleĀlr㦪㦯eft»थight»ၑy;䐲ash»ံƀelr㧄㧒㧗ƀ;beⷪ㧋㧏ar;抻q;扚lip;拮Ābt㧜ᑨaòᑩr;쀀𝔳tré㦮suĀbp㧯㧱»ജ»൙pf;쀀𝕧roð໻tré㦴Ācu㨆㨋r;쀀𝓋Ābp㨐㨘nĀEe㦀㨖»㥾nĀEe㦒㨞»㦐igzag;榚΀cefoprs㨶㨻㩖㩛㩔㩡㩪irc;䅵Ādi㩀㩑Ābg㩅㩉ar;機eĀ;qᗺ㩏;扙erp;愘r;쀀𝔴pf;쀀𝕨Ā;eᑹ㩦atèᑹcr;쀀𝓌ૣណ㪇\0㪋\0㪐㪛\0\0㪝㪨㪫㪯\0\0㫃㫎\0㫘ៜ៟tré៑r;쀀𝔵ĀAa㪔㪗ròσrò৶;䎾ĀAa㪡㪤ròθrò৫að✓is;拻ƀdptឤ㪵㪾Āfl㪺ឩ;쀀𝕩imåឲĀAa㫇㫊ròώròਁĀcq㫒ីr;쀀𝓍Āpt៖㫜ré។Ѐacefiosu㫰㫽㬈㬌㬑㬕㬛㬡cĀuy㫶㫻te耻ý䃽;䑏Āiy㬂㬆rc;䅷;䑋n耻¥䂥r;쀀𝔶cy;䑗pf;쀀𝕪cr;쀀𝓎Ācm㬦㬩y;䑎l耻ÿ䃿Ԁacdefhiosw㭂㭈㭔㭘㭤㭩㭭㭴㭺㮀cute;䅺Āay㭍㭒ron;䅾;䐷ot;䅼Āet㭝㭡træᕟa;䎶r;쀀𝔷cy;䐶grarr;懝pf;쀀𝕫cr;쀀𝓏Ājn㮅㮇;怍j;怌'.split("").map((c) => c.charCodeAt(0))
@@ -25993,6 +26184,24 @@ var Beasties = class {
     });
   }
   /**
+   * Write content to a file
+   */
+  writeFile(filename, data) {
+    const fs = this.fs;
+    return new Promise((resolve2, reject) => {
+      const callback = (err) => {
+        if (err)
+          reject(err);
+        else resolve2();
+      };
+      if (fs && fs.writeFile) {
+        fs.writeFile(filename, data, callback);
+      } else {
+        writeFile(filename, data, callback);
+      }
+    });
+  }
+  /**
    * Apply critical CSS processing to the html
    */
   process(html) {
@@ -26419,6 +26628,8 @@ var Beasties = class {
         const percent2 = sheetInverse.length / before.length * 100;
         afterText = `, reducing non-inlined size ${percent2 | 0}% to ${formatSize(sheetInverse.length)}`;
       }
+      const cssFilePath = _pathModule.resolve(this.options.path, name);
+      this.writeFile(cssFilePath, sheetInverse).then(() => this.logger.info?.(`${name} was successfully updated`)).catch((err) => this.logger.error?.(err));
     }
     if (!styleInlinedCompletely) {
       style.textContent = sheet;
@@ -26618,7 +26829,7 @@ function renderAngular(html, bootstrap, url, platformProviders, serverContext) {
         const moduleRef = yield platformRef.bootstrapModule(bootstrap);
         applicationRef = moduleRef.injector.get(ApplicationRef);
       } else {
-        applicationRef = yield bootstrap();
+        applicationRef = yield bootstrap({ platformRef });
       }
       yield applicationRef.whenStable();
       const envInjector = applicationRef.injector;
@@ -27170,7 +27381,7 @@ function getRoutesFromAngularRouterConfig(bootstrap, document2, url, invokeGetPr
         const moduleRef = yield platformRef.bootstrapModule(bootstrap);
         applicationRef = moduleRef.injector.get(ApplicationRef);
       } else {
-        applicationRef = yield bootstrap();
+        applicationRef = yield bootstrap({ platformRef });
       }
       const injector = applicationRef.injector;
       const router = injector.get(Router);
@@ -28232,4 +28443,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-Z2XLPXOR.js.map
+//# sourceMappingURL=chunk-OFUAOAQ3.js.map

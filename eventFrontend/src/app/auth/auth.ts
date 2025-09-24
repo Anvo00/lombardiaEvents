@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Footer } from "../footer/footer";
 
+
 @Component({
   selector: 'app-auth',
   standalone: true,
@@ -10,6 +11,7 @@ import { Footer } from "../footer/footer";
   styleUrls: ['./auth.scss']
 })
 export class Auth {
+
   registerFormActive = false;
 
   onRegisterClick(): void {
