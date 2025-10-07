@@ -19,7 +19,7 @@ export class EventsController {
     }
 
     // Ritorna tutti gli eventi con un filtro sul campo "Nome"
-    @Get(':name')
+    @Get('search/:name')
     async getEventsByName(@Param('name', SafeStringPipe) name: string) : Promise<EventDto[]>{
         return this.eventsService.findEventsByName(name);
     }

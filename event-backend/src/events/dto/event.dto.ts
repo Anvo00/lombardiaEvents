@@ -14,6 +14,10 @@ export class EventDto {
     @IsString()
     type: string;
 
+    @Expose({name: 'descriz'})
+    @IsString()
+    description?: string;
+
     @Expose({name: 'data_in'})
     @IsString()
     startDate: string;

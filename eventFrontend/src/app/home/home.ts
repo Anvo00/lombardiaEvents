@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { EventModel } from '../models/event.model';
+import { EventService } from '../event/event.service';
 
 @Component({
   selector: 'app-home',
@@ -8,83 +10,73 @@ import { CommonModule } from '@angular/common';
   styleUrl: './home.scss'
 })
 
-export class Home {
+export class Home implements OnInit{
+  events: EventModel[] = []; // Array per memorizzare gli eventi
 
-  events = [
-    {
-      title: 'Concerto di Musica Classica',
-      description: 'Un concerto emozionante con i migliori artisti locali.',
-      date: new Date('2025-08-05'),
-      image: 'assets/images/classical-concert.jpg'
-    },
-    {
-      title: 'Festival del Cibo di Strada',
-      description: 'Assaggia le migliori specialità regionali.',
-      date: new Date('2025-08-10'),
-      image: 'assets/images/food-festival.jpg'
-    },
-    {
-      title: 'Fiera dell’Artigianato',
-      description: 'Esposizione di prodotti artigianali da tutta Italia.',
-      date: new Date('2025-08-15'),
-      image: 'assets/images/crafts-fair.jpg'
-    },{
-      title: 'Concerto di Musica Classica',
-      description: 'Un concerto emozionante con i migliori artisti locali.',
-      date: new Date('2025-08-05'),
-      image: 'assets/images/classical-concert.jpg'
-    },
-    {
-      title: 'Festival del Cibo di Strada',
-      description: 'Assaggia le migliori specialità regionali.',
-      date: new Date('2025-08-10'),
-      image: 'assets/images/food-festival.jpg'
-    },
-    {
-      title: 'Fiera dell’Artigianato',
-      description: 'Esposizione di prodotti artigianali da tutta Italia.',
-      date: new Date('2025-08-15'),
-      image: 'assets/images/crafts-fair.jpg'
-    },{
-      title: 'Concerto di Musica Classica',
-      description: 'Un concerto emozionante con i migliori artisti locali.',
-      date: new Date('2025-08-05'),
-      image: 'assets/images/classical-concert.jpg'
-    },
-    {
-      title: 'Festival del Cibo di Strada',
-      description: 'Assaggia le migliori specialità regionali.',
-      date: new Date('2025-08-10'),
-      image: 'assets/images/food-festival.jpg'
-    },
-    {
-      title: 'Fiera dell’Artigianato',
-      description: 'Esposizione di prodotti artigianali da tutta Italia.',
-      date: new Date('2025-08-15'),
-      image: 'assets/images/crafts-fair.jpg'
-    },{
-      title: 'Concerto di Musica Classica',
-      description: 'Un concerto emozionante con i migliori artisti locali.',
-      date: new Date('2025-08-05'),
-      image: 'assets/images/classical-concert.jpg'
-    },
-    {
-      title: 'Festival del Cibo di Strada',
-      description: 'Assaggia le migliori specialità regionali.',
-      date: new Date('2025-08-10'),
-      image: 'assets/images/food-festival.jpg'
-    },
-    {
-      title: 'Fiera dell’Artigianato',
-      description: 'Esposizione di prodotti artigianali da tutta Italia.',
-      date: new Date('2025-08-15'),
-      image: 'assets/images/crafts-fair.jpg'
+  //Paginazione
+  currentPage: number = 1;
+  pageSize: number = 15;
+  totalPages: number = 0;
+  paginatedEvents: EventModel[] = [];
+
+  Math = Math;
+
+  constructor(private eventService: EventService) {}
+
+  ngOnInit(): void {
+    this.loadEvents();
+  }
+
+  loadEvents(): void {
+    this.eventService.getEvents().subscribe({
+      next: (data) => {
+        this.events = data; // Assegna i dati ricevuti all'array events
+        this.totalPages = Math.ceil(this.events.length / this.pageSize);
+        this.updatePaginatedEvents();
+      },
+      error: (error) => {
+        console.error('Errore caricamento eventi:', error);
+      }
+    });
+  }
+
+  updatePaginatedEvents() : void {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedEvents = this.events.slice(startIndex, endIndex);
+  }
+
+  goToPage(page: number) : void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePaginatedEvents();
     }
-  ];
-
-  constructor() {
-    
   }
 
 
+  // Pulsanti paginazione
+  firstPage(): void {this.goToPage(1);}
+  lastPage(): void {this.goToPage(this.totalPages);}
+  nextPage(): void {this.goToPage(this.currentPage + 1);}
+  previousPage(): void {this.goToPage(this.currentPage - 1);}
+
+
+  /*
+  trackById(index: number, event: EventModel){
+    return event.id;
+  }
+    */
+
+  onSignup(event: EventModel) {
+    console.log('Iscritto all’evento:', event.eventName);
+  }
+
+  onOpenMap(event: EventModel) {
+    if (event.address) {
+      const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+        event.address
+      )}`;
+      window.open(url, '_blank');
+    }
+  }
 }

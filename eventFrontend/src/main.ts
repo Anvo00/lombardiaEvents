@@ -1,11 +1,11 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { App } from './app/app';
-import { provideRouter, withPreloading, withDebugTracing } from '@angular/router';
-import { routes } from './app/app.routes';
-import { PreloadAllModules } from '@angular/router';
+import { appConfig } from './app/app.config';
 
+/*
 bootstrapApplication(App, {
   providers: [
+    provideHttpClient(),
     provideRouter(
       routes,
       withPreloading(PreloadAllModules),  //  specifica la strategia
@@ -13,3 +13,7 @@ bootstrapApplication(App, {
     )
   ]
 }).catch(err => console.error(err));
+*/
+
+bootstrapApplication(App, appConfig)
+  .catch(err => console.error(err));

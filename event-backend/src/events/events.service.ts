@@ -11,12 +11,14 @@ export class EventsService {
     constructor(private readonly httpService: HttpService) {}
 
     // Endpoint API
-    private url = "https://www.dati.lombardia.it/resource/hs8z-dcey.json";
+    private limit = 5000;
+    private url = `https://www.dati.lombardia.it/resource/hs8z-dcey.json?$limit=${this.limit}`;
 
     async findAllEvents() : Promise<EventDto[]> {
         try {
             const response = await firstValueFrom(this.httpService.get<EventDto[]>(this.url));
-            return plainToInstance(EventDto, response.data, { excludeExtraneousValues: true });
+
+            return plainToInstance(EventDto, response.data, { excludeExtraneousValues: true }); // Trasforma i dati JSON in istanze di EventDto
         } catch (error) {
             throw error;
         }

@@ -2,8 +2,6 @@ import { Routes } from '@angular/router';
 
 import { Auth } from './auth/auth';
 import { Home } from './home/home';
-import { Navbar } from './navbar/navbar';
-import { Footer } from './footer/footer';
 import { Profile } from './profile/profile';
 import { Event } from './event/event';
 
