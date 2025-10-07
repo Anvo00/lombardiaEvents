@@ -17,4 +17,10 @@ export class EventService {
     getEvents() : Observable<EventModel[]>{
         return this.http.get<EventModel[]>(this.baseUrl);
     }
+
+    getEventById(id: string) : Observable<EventModel> {
+      console.log('Chiamata getEventById con id:', id);
+      console.log('URL chiamata:', this.baseUrl + `/${id}`);
+      return this.http.get<EventModel>(this.baseUrl + `/${id}`);
+    }
 }

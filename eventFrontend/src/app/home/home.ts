@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventModel } from '../models/event.model';
 import { EventService } from '../event/event.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -11,6 +12,7 @@ import { EventService } from '../event/event.service';
 })
 
 export class Home implements OnInit{
+
   events: EventModel[] = []; // Array per memorizzare gli eventi
 
   //Paginazione
@@ -21,7 +23,7 @@ export class Home implements OnInit{
 
   Math = Math;
 
-  constructor(private eventService: EventService) {}
+  constructor(private eventService: EventService, private router : Router) {}
 
   ngOnInit(): void {
     this.loadEvents();
@@ -53,30 +55,13 @@ export class Home implements OnInit{
     }
   }
 
-
   // Pulsanti paginazione
   firstPage(): void {this.goToPage(1);}
   lastPage(): void {this.goToPage(this.totalPages);}
   nextPage(): void {this.goToPage(this.currentPage + 1);}
   previousPage(): void {this.goToPage(this.currentPage - 1);}
 
-
-  /*
-  trackById(index: number, event: EventModel){
-    return event.id;
-  }
-    */
-
-  onSignup(event: EventModel) {
-    console.log('Iscritto all’evento:', event.eventName);
-  }
-
-  onOpenMap(event: EventModel) {
-    if (event.address) {
-      const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-        event.address
-      )}`;
-      window.open(url, '_blank');
-    }
+  onSelectEvent(id: string) {
+    this.router.navigate(['/event', id]);
   }
 }

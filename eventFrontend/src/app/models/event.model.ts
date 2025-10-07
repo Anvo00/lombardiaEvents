@@ -1,18 +1,18 @@
 export interface EventModel {
     id: string;
     eventName: string;
-    type?: string;
+    type: string;
     description?: string;
-    startDate?: string;
-    startTime?: string;
-    endDate?: string;
-    endTime?: string;
-    year?: string;
-    provincia?: string;
-    comune?: string;
-    toponimo?: string;
-    address?: string;
-    cap?: string;
+    startDate: string;
+    startTime: string;
+    endDate: string;
+    endTime: string;
+    year: string;
+    provincia: string;
+    comune: string;
+    toponimo: string;
+    address: string;
+    cap: string;
 
     //TODO Mancano le coordinate
 }

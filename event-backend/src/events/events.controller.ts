@@ -25,8 +25,10 @@ export class EventsController {
     }
 
     @Get(':id')
+    /*
     @UseGuards(RolesGuard, JwtAuthGuard)
     @Roles(Role.ADMIN)
+    */
     async getEventById(@Param('id', SafeStringPipe) id: string) : Promise<EventDto> {
         return this.eventsService.findEventById(id);
     }
