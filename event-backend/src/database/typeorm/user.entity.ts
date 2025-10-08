@@ -1,6 +1,6 @@
 import { Exclude } from "class-transformer";
 import { Entity, Column,  PrimaryGeneratedColumn } from "typeorm";
-import { Role } from "../../common/role.enum";
+import { Role } from '@shared/role.enum';
 
 @Entity()
 export class User {

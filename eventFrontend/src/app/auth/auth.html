@@ -10,12 +10,12 @@
     <div class="form-container register" [ngClass]="{'active': registerFormActive}">
       <h1>Crea account</h1>
       <form>
-        <input type="text" placeholder="Nome">
-        <input type="text" placeholder="Cognome">
-        <input type="text" placeholder="Nome utente">
-        <input type="email" placeholder="Email">
-        <input type="password" placeholder="Password">
-        <button type="button">Registrati</button>
+        <input type="text" placeholder="Nome" #nome>
+        <input type="text" placeholder="Cognome" #cognome>
+        <input type="text" placeholder="Nome utente" #username>
+        <input type="email" placeholder="Email" #email>
+        <input type="password" placeholder="Password" #password>
+        <button type="button" (click)="registerUser(nome.value, cognome.value, username.value, email.value, password.value)">Registrati</button>
       </form>
     </div>
 

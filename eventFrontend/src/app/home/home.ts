@@ -64,4 +64,25 @@ export class Home implements OnInit{
   onSelectEvent(id: string) {
     this.router.navigate(['/event', id]);
   }
+
+  onSearchFilter(value: string) {
+    if(!value) {
+      this.loadEvents();
+      return;
+    }
+
+    this.eventService.getEventsByName(value).subscribe({
+      next: (data) => {
+        this.events = data; // Assegna i dati ricevuti all'array events
+        this.totalPages = Math.ceil(this.events.length / this.pageSize);
+        this.updatePaginatedEvents();
+      },
+      error: (NotFoundException) => {
+        console.log("Nessun evento trovato con il filtro: " + value);
+        this.events = [];
+        this.totalPages = 0;
+        this.updatePaginatedEvents();
+      }
+    });
+  }
 }

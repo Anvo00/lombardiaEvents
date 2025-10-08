@@ -27,18 +27,6 @@ export class Event implements OnInit{
     }
   }
 
-
-  /*
-  event: EventDetail = {
-    title: 'Concerto Jazz sotto le Stelle',
-    description: 'Una serata indimenticabile di jazz con i migliori artisti internazionali.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    location: 'Piazza Grande, Firenze',
-    date: '15 Agosto 2025',
-    image: 'assets/images/jazz-concert.jpg',
-    time: '17:00-21:00'
-  };
-  */
-
   onSignup(event: EventModel) {
     console.log('Iscritto all’evento:', event.eventName);
   }

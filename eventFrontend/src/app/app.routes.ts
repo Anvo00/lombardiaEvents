@@ -4,6 +4,7 @@ import { Auth } from './auth/auth';
 import { Home } from './home/home';
 import { Profile } from './profile/profile';
 import { Event } from './event/event';
+import { FakeHome } from './fake-home/fake-home';
 
 
 export const routes: Routes = [
@@ -12,5 +13,6 @@ export const routes: Routes = [
   { path: 'profile', component: Profile },
   { path: 'event/:id', component: Event },
   { path: 'auth', component: Auth },
+  { path: 'fakeHome', component: FakeHome},
   { path: '**', redirectTo: 'home' } // wildcard per le route 
 ];

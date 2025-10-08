@@ -4,8 +4,8 @@ import { CreateTicketDto } from './dto/create-ticket.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { Roles } from 'src/common/roles.decorator';
-import { Role } from 'src/common/role.enum';
+import { Roles } from '@shared/roles.decorator';
+import { Role } from '@shared/role.enum';
 
 @Controller('tickets')
 export class TicketsController {

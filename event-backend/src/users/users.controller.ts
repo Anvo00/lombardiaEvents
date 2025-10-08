@@ -7,8 +7,8 @@ import { TicketsService } from 'src/tickets/tickets.service';
 import { Ticket } from 'src/database/typeorm';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { Role } from 'src/common/role.enum';
-import { Roles } from 'src/common/roles.decorator';
+import { Role } from '@shared/role.enum';
+import { Roles } from '@shared/roles.decorator';
 
 @Controller('users')
 export class UsersController {
