@@ -1,14 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-interface User {
-  firstName: string;
-  lastName: string;
-  username: string;
-  email: string;
-  password: string;
-}
+import { UserModel } from '../models/user.model';
+import { AuthService } from '../auth/auth.service';
 
 interface EventItem {
   title: string;
@@ -24,18 +18,12 @@ interface EventItem {
   templateUrl: './profile.html',
   styleUrls: ['./profile.scss']
 })
-export class Profile {
+export class Profile implements OnInit {
+
   editing = false;
 
-  user: User = {
-    firstName: 'Mario',
-    lastName: 'Rossi',
-    username: 'mrossi',
-    email: 'mario.rossi@example.com',
-    password: '••••••••'
-  };
-
-  formUser: User = { ...this.user };
+  user!: UserModel;
+  formUser: UserModel = { ...this.user };
 
   events: EventItem[] = [
     {
@@ -58,6 +46,24 @@ export class Profile {
     },
   ];
 
+  constructor(private authService : AuthService) {}
+ 
+  ngOnInit(): void {
+    const currentUser = this.authService.getCurrentUser();
+    if(currentUser != null) {
+      try {
+        this.user = currentUser;
+      } catch (error) {
+        console.error('Errore nel parsing dell\'utente dal localStorage:', error);
+      }
+    } else {
+      console.warn('Nessun utente trovato nel localStorage.');
+    }
+  }
+
+  // TODO Implementare modifica profilo
+
+  
   startEditing(): void {
     this.formUser = { ...this.user };
     this.editing = true;
@@ -70,5 +76,10 @@ export class Profile {
 
   cancelEditing(): void {
     this.editing = false;
+  }
+
+  // TODO Implementare cambio password
+  changePassword() {
+    throw new Error('Method not implemented.');
   }
 }

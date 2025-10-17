@@ -4,11 +4,11 @@
     <h1>Il mio profilo</h1>
 
     <div *ngIf="!editing" class="view-mode">
-      <p><strong>Nome:</strong> {{ user.firstName }}</p>
-      <p><strong>Cognome:</strong> {{ user.lastName }}</p>
+      <p><strong>Nome:</strong> {{ user.name }}</p>
+      <p><strong>Cognome:</strong> {{ user.surname }}</p>
       <p><strong>Nome utente:</strong> {{ user.username }}</p>
       <p><strong>Email:</strong> {{ user.email }}</p>
-      <p><strong>Password:</strong> {{ user.password }}</p> <!-- forse non è il caso -->
+      <p><strong>Ruolo:</strong> {{ user.role }}</p>
 
       <button class="btn" (click)="startEditing()">Cambia informazioni</button>
 
@@ -28,16 +28,17 @@
       </div>
     </div>
 
-    <!--parte per edit profilo-->
+    <!-- EDIT PROFILE -->
+
     <div *ngIf="editing" class="edit-mode">
       <form (ngSubmit)="saveChanges()" #profileForm="ngForm">
         <label>
           Nome:
-          <input type="text" [(ngModel)]="formUser.firstName" name="firstName" required />
+          <input type="text" [(ngModel)]="formUser.name" name="name" required />
         </label>
         <label>
           Cognome:
-          <input type="text" [(ngModel)]="formUser.lastName" name="lastName" required />
+          <input type="text" [(ngModel)]="formUser.surname" name="surname" required />
         </label>
         <label>
           Nome utente:
@@ -48,8 +49,12 @@
           <input type="email" [(ngModel)]="formUser.email" name="email" required />
         </label>
         <label>
+          Role:
+          <input type="email" [(ngModel)]="formUser.role" name="role" disabled />
+        </label>
+        <label>
           Password:
-          <input type="password" [(ngModel)]="formUser.password" name="password" required />
+          <button type="button" class="btn" (click)="changePassword()">Cambia password</button>
         </label>
 
         <div class="buttons">
@@ -58,6 +63,5 @@
         </div>
       </form>
     </div>
-
   </div>
 </div>
