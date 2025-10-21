@@ -27958,11 +27958,10 @@ var AngularServerApp = class {
    */
   textDecoder = new TextEncoder();
   /**
-   * Cache for storing critical CSS for pages.
-   * Stores a maximum of MAX_INLINE_CSS_CACHE_ENTRIES entries.
+   * A cache that stores critical CSS to avoid re-processing for every request, improving performance.
+   * This cache uses a Least Recently Used (LRU) eviction policy.
    *
-   * Uses an LRU (Least Recently Used) eviction policy, meaning that when the cache is full,
-   * the least recently accessed page's critical CSS will be removed to make space for new entries.
+   * @see {@link MAX_INLINE_CSS_CACHE_ENTRIES} for the maximum number of entries this cache can hold.
    */
   criticalCssLRUCache = new LRUCache(MAX_INLINE_CSS_CACHE_ENTRIES);
   /**
@@ -28004,7 +28003,6 @@ var AngularServerApp = class {
    *
    * @param request - The incoming HTTP request for serving a static page.
    * @param matchedRoute - The metadata of the matched route for rendering.
-   * If not provided, the method attempts to find a matching route based on the request URL.
    * @returns A promise that resolves to a `Response` object if the prerendered page is found, or `null`.
    */
   handleServe(request, matchedRoute) {
@@ -28039,7 +28037,6 @@ var AngularServerApp = class {
    *
    * @param request - The incoming HTTP request to be processed.
    * @param matchedRoute - The metadata of the matched route for rendering.
-   * If not provided, the method attempts to find a matching route based on the request URL.
    * @param requestContext - Optional additional context for rendering, such as request metadata.
    *
    * @returns A promise that resolves to the rendered response, or null if no matching route is found.
@@ -28091,37 +28088,70 @@ var AngularServerApp = class {
       if (result2.redirectTo) {
         return createRedirectResponse(result2.redirectTo, status);
       }
-      const { inlineCriticalCssProcessor, criticalCssLRUCache, textDecoder } = this;
+      if (renderMode === RenderMode.Prerender) {
+        const renderedHtml = yield result2.content();
+        const finalHtml = yield this.inlineCriticalCss(renderedHtml, url);
+        return new Response(finalHtml, responseInit);
+      }
       const stream = new ReadableStream({
-        start(controller) {
-          return __async(this, null, function* () {
-            const renderedHtml = yield result2.content();
-            if (!inlineCriticalCssProcessor) {
-              controller.enqueue(textDecoder.encode(renderedHtml));
-              controller.close();
-              return;
-            }
-            let htmlWithCriticalCss;
-            try {
-              if (renderMode === RenderMode.Server) {
-                const cacheKey = yield sha256(renderedHtml);
-                htmlWithCriticalCss = criticalCssLRUCache.get(cacheKey);
-                if (!htmlWithCriticalCss) {
-                  htmlWithCriticalCss = yield inlineCriticalCssProcessor.process(renderedHtml);
-                  criticalCssLRUCache.put(cacheKey, htmlWithCriticalCss);
-                }
-              } else {
-                htmlWithCriticalCss = yield inlineCriticalCssProcessor.process(renderedHtml);
-              }
-            } catch (error) {
-              console.error(`An error occurred while inlining critical CSS for: ${url}.`, error);
-            }
-            controller.enqueue(textDecoder.encode(htmlWithCriticalCss ?? renderedHtml));
-            controller.close();
-          });
-        }
+        start: (controller) => __async(this, null, function* () {
+          const renderedHtml = yield result2.content();
+          const finalHtml = yield this.inlineCriticalCssWithCache(renderedHtml, url);
+          controller.enqueue(finalHtml);
+          controller.close();
+        })
       });
       return new Response(stream, responseInit);
+    });
+  }
+  /**
+   * Inlines critical CSS into the given HTML content.
+   *
+   * @param html The HTML content to process.
+   * @param url The URL associated with the request, for logging purposes.
+   * @returns A promise that resolves to the HTML with inlined critical CSS.
+   */
+  inlineCriticalCss(html, url) {
+    return __async(this, null, function* () {
+      const { inlineCriticalCssProcessor } = this;
+      if (!inlineCriticalCssProcessor) {
+        return html;
+      }
+      try {
+        return yield inlineCriticalCssProcessor.process(html);
+      } catch (error) {
+        console.error(`An error occurred while inlining critical CSS for: ${url}.`, error);
+        return html;
+      }
+    });
+  }
+  /**
+   * Inlines critical CSS into the given HTML content.
+   * This method uses a cache to avoid reprocessing the same HTML content multiple times.
+   *
+   * @param html The HTML content to process.
+   * @param url The URL associated with the request, for logging purposes.
+   * @returns A promise that resolves to the HTML with inlined critical CSS.
+   */
+  inlineCriticalCssWithCache(html, url) {
+    return __async(this, null, function* () {
+      const { inlineCriticalCssProcessor, criticalCssLRUCache, textDecoder } = this;
+      if (!inlineCriticalCssProcessor) {
+        return textDecoder.encode(html);
+      }
+      const cacheKey = url.toString();
+      const cached = criticalCssLRUCache.get(cacheKey);
+      const shaOfContentPreInlinedCss = yield sha256(html);
+      if (cached?.shaOfContentPreInlinedCss === shaOfContentPreInlinedCss) {
+        return cached.contentWithCriticialCSS;
+      }
+      const processedHtml = yield this.inlineCriticalCss(html, url);
+      const finalHtml = textDecoder.encode(processedHtml);
+      criticalCssLRUCache.put(cacheKey, {
+        shaOfContentPreInlinedCss,
+        contentWithCriticialCSS: finalHtml
+      });
+      return finalHtml;
     });
   }
   /**
@@ -28449,4 +28479,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-W2UKDWPT.js.map
+//# sourceMappingURL=chunk-CFDSR6DZ.js.map

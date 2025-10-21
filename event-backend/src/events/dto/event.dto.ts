@@ -57,7 +57,4 @@ export class EventDto {
     @Expose({name: 'cap'})
     @IsString()
     cap: string;
-
-
-    //TODO Mancano le coordinate
 }

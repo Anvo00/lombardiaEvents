@@ -63,6 +63,10 @@
   margin-top: 25px;
 }
 
+.buttons button:first-child {
+  margin-right: auto; /* spinge gli altri bottoni a destra */
+}
+
 .btn {
   padding: 12px 24px;
   font-size: 1em;

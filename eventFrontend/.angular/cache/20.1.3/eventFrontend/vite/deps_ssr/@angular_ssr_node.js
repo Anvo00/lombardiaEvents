@@ -5,7 +5,7 @@ import {
   SERVER_CONTEXT,
   renderApplication,
   renderModule
-} from "./chunk-W2UKDWPT.js";
+} from "./chunk-CFDSR6DZ.js";
 import "./chunk-OYZKTPNK.js";
 import "./chunk-OCYV7KD5.js";
 import "./chunk-RGMI4SY3.js";
@@ -247,7 +247,7 @@ function createRequestUrl(nodeRequest) {
       hostnameWithPort += `:${port}`;
     }
   }
-  return new URL(originalUrl ?? url, `${protocol}://${hostnameWithPort}`);
+  return new URL(`${protocol}://${hostnameWithPort}${originalUrl ?? url}`);
 }
 function getFirstHeaderValue(value) {
   return value?.toString().split(",", 1)[0]?.trim();

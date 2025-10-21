@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { environment } from "src/environments/environment.development";
-import { BehaviorSubject, Observable, switchMap, tap } from "rxjs";
+import { environment } from "src/environments/environment";
+import { Observable, tap } from "rxjs";
 import { UserModel } from "../models/user.model";
 import { CreateUserDto } from "./dto/user-create.dto";
 import { UserLoginDto } from "./dto/user-login.dto";
@@ -39,25 +39,6 @@ export class AuthService {
       })
     );
   }
-
-  /*
-  login(loginUser: UserLoginDto) : Observable<UserModel> {
-    return this.http.post<string>(this.baseUrl + `/login`, loginUser).pipe(
-      tap(res => {
-        console.log('Token ricevuto:', res);
-        localStorage.setItem('token', res);
-      }),
-      switchMap(res => 
-        this.http.get<UserModel>(this.baseUrl + `/profile`, {headers: {Authorization: `Bearer ${res}`}})
-      ),
-      tap(user => {
-        this.currentUserSubject.next(user);
-        this.saveUserToStorage(user);
-      })
-    );
-  }
-    */
-
   
   login(loginUser: UserLoginDto) : Observable<any> {
     return this.http.post(this.baseUrl + `/login`, loginUser).pipe(

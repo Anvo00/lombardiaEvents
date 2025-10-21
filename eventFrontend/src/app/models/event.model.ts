@@ -13,6 +13,4 @@ export interface EventModel {
     toponimo: string;
     address: string;
     cap: string;
-
-    //TODO Mancano le coordinate
 }

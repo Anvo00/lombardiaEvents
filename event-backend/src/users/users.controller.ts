@@ -4,7 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { SafeStringPipe } from 'src/common/safe-string.pipe';
 import { TicketsService } from 'src/tickets/tickets.service';
-import { Ticket } from 'src/database/typeorm';
+import { Ticket, User } from 'src/database/typeorm';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Role } from '@shared/role.enum';
@@ -18,7 +18,7 @@ export class UsersController {
     ) {}
 
     @Get()
-    @UseGuards(RolesGuard, JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     getUsers(){
         return this.userService.findAllUsers();
@@ -72,9 +72,10 @@ export class UsersController {
 
 
     @Patch(':id')
-    updateUser(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto : UpdateUserDto, @Req() req){
+    @UseGuards(JwtAuthGuard)
+    updateUser(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto : UpdateUserDto, @Req() req) : Promise<User>{
         const user = req.user;
-        if(user.role !== Role.ADMIN && user.id !== id) {
+        if(user.sub !== id) {
             throw new ForbiddenException('Non hai i permessi per aggiornare questo utente');
         }
         

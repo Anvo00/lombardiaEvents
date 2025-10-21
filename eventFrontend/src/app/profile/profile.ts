@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserModel } from '../models/user.model';
 import { AuthService } from '../auth/auth.service';
+import { ProfileService } from './profile.service';
+import Swal from 'sweetalert2';
 
 interface EventItem {
   title: string;
@@ -46,7 +48,7 @@ export class Profile implements OnInit {
     },
   ];
 
-  constructor(private authService : AuthService) {}
+  constructor(private authService : AuthService, private profileService : ProfileService) {}
  
   ngOnInit(): void {
     const currentUser = this.authService.getCurrentUser();
@@ -60,9 +62,6 @@ export class Profile implements OnInit {
       console.warn('Nessun utente trovato nel localStorage.');
     }
   }
-
-  // TODO Implementare modifica profilo
-
   
   startEditing(): void {
     this.formUser = { ...this.user };
@@ -70,8 +69,33 @@ export class Profile implements OnInit {
   }
 
   saveChanges(): void {
-    this.user = { ...this.formUser };
-    this.editing = false;
+    if(!this.formUser || !this.formUser.id) {
+      console.error('Nessun dato utente da salvare.');
+      return;
+    }
+
+    const updatedUser = { ...this.formUser };
+
+    this.profileService.updateUser(updatedUser).subscribe({
+      next: (response) => {
+        console.log('Utente aggiornato con successo:', response);
+        this.user = { ...updatedUser };
+        this.authService.saveUserToStorage(this.user);
+        Swal.fire({
+          icon: 'success',
+          title: 'Profilo aggiornato con successo',
+        });
+        this.editing = false;
+      }, 
+      error: (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Errore',
+          text: 'Si è verificato un errore durante l\'aggiornamento del profilo. Riprova più tardi.'
+        });
+        console.error('Errore durante l\'aggiornamento dell\'utente:', error);
+      }
+    });
   }
 
   cancelEditing(): void {

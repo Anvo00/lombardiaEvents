@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from './auth.service';
 import { Role } from '@shared/role.enum';
 import { Router } from '@angular/router';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-auth',
@@ -29,6 +29,35 @@ export class Auth {
   registerUser(name:string, surname:string, username:string, email:string, password:string): void {
     console.log('Registrazione utente...');
 
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if(!password) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Errore',
+        text: 'Devi inserire una password!'
+      });
+      return;
+    }
+
+    if(password.length < 8) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Errore',
+        text: 'La password deve essere lunga almeno 8 caratteri!'
+      });
+      return;
+    }
+
+    if(!passwordPattern.test(password)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Errore',
+        text: 'La password deve contenere almeno una lettera maiuscola, una lettera minuscola, un numero e un carattere speciale!'
+      });
+      return;
+    }
+
     this.authService.register({username, password, name, surname, email, role: Role.USER}).subscribe({
       next: (response) => {
         console.log('Utente registrato e loggato con successo:', response);
@@ -39,30 +68,23 @@ export class Auth {
             console.error('Errore durante il recupero del profilo utente:', error);
           }
         });
+        Swal.fire({
+          icon: 'success',
+          title: 'Registrazione avvenuta con successo!',
+          text: 'Benvenut*, ' + name + '!'
+        });
         this.router.navigate(['/home']); // Reindirizza alla home page dopo la registrazione
       },
       error: (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Errore durante la registrazione',
+          text: 'Si è verificato un errore durante la registrazione. Riprova.'
+        });
         console.error('Errore durante la registrazione:', error);
       }
     });
   }
-
-  /*
-  loginUser(username:string, password:string): void {
-    console.log('Login utente...');
-
-    this.authService.login({username, password}).subscribe({
-      next: (response) => {
-        console.log('Utente loggato con successo:', response);
-        this.router.navigate(['/home']); // Reindirizza alla home page dopo il login
-      },
-      error: (error) => {
-        console.error('Errore durante il login:', error);
-      }
-    });
-  }
-    */
-
   
   loginUser(username:string, password:string): void {
     console.log('Login utente...'); 
@@ -77,9 +99,19 @@ export class Auth {
             console.error('Errore durante il recupero del profilo utente:', error);
           }
         });
+        Swal.fire({
+          icon: 'success',
+          title: 'Login avvenuto con successo!',
+          text: 'Bentornat*, ' + this.authService.getCurrentUser()!.name + '!'
+        });
         this.router.navigate(['/home']); // Reindirizza alla home page dopo il login
       },
       error: (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Errore durante il login',
+          text: 'Credenziali non valide. Riprova.'
+        });
         console.error('Errore durante il login:', error);
       }
     });
