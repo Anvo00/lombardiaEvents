@@ -21,7 +21,7 @@ export class EventsController {
     }
 
     @Get(':id')
-    async getEventById(@Param('id', SafeStringPipe) id: string) : Promise<EventDto> {
+    async getEventById(@Param('id', SafeStringPipe) id: number) : Promise<EventDto> {
         return this.eventsService.findEventById(id);
     }
 }

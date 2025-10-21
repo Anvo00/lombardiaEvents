@@ -5,13 +5,7 @@ import { UserModel } from '../models/user.model';
 import { AuthService } from '../auth/auth.service';
 import { ProfileService } from './profile.service';
 import Swal from 'sweetalert2';
-
-interface EventItem {
-  title: string;
-  description: string;
-  date: Date;
-  image: string;
-}
+import { TicketModel } from '../models/ticket.model';
 
 @Component({
   selector: 'app-profile',
@@ -27,26 +21,7 @@ export class Profile implements OnInit {
   user!: UserModel;
   formUser: UserModel = { ...this.user };
 
-  events: EventItem[] = [
-    {
-      title: 'Concerto di Musica Classica',
-      description: 'Un concerto emozionante con i migliori artisti locali.',
-      date: new Date('2025-08-05'),
-      image: 'assets/images/classical-concert.jpg'
-    },
-    {
-      title: 'Festival del Cibo di Strada',
-      description: 'Assaggia le migliori specialità regionali.',
-      date: new Date('2025-08-10'),
-      image: 'assets/images/food-festival.jpg'
-    },
-    {
-      title: 'Fiera dell’Artigianato',
-      description: 'Esposizione di prodotti artigianali da tutta Italia.',
-      date: new Date('2025-08-15'),
-      image: 'assets/images/crafts-fair.jpg'
-    },
-  ];
+  tickets!: TicketModel[];
 
   constructor(private authService : AuthService, private profileService : ProfileService) {}
  
@@ -55,13 +30,16 @@ export class Profile implements OnInit {
     if(currentUser != null) {
       try {
         this.user = currentUser;
+        this.loadUserTickets();
       } catch (error) {
-        console.error('Errore nel parsing dell\'utente dal localStorage:', error);
+        console.error('Errore nel parsing dell\'utente dal sessionStorage:', error);
       }
     } else {
-      console.warn('Nessun utente trovato nel localStorage.');
+      console.warn('Nessun utente trovato nel sessionStorage.');
     }
   }
+
+  // === USER ===
   
   startEditing(): void {
     this.formUser = { ...this.user };
@@ -105,5 +83,23 @@ export class Profile implements OnInit {
   // TODO Implementare cambio password
   changePassword() {
     throw new Error('Method not implemented.');
+  }
+
+  // === TICKETS ===
+
+  loadUserTickets(): void {
+    if(!this.user || !this.user.id) {
+      console.error('Nessun utente loggato per caricare i biglietti.');
+      return;
+    }
+
+    this.profileService.getUserTickets().subscribe({
+      next: (tickets) => {
+        this.tickets = tickets;
+      },
+      error: (error) => {
+        console.error('Errore durante il caricamento dei biglietti:', error);
+      }
+    });
   }
 }

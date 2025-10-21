@@ -31,8 +31,8 @@ export class TicketsController {
     //--- CRUD Operations ---//
     
 
-    @UseGuards(JwtAuthGuard)
     @Post('purchase')
+    @UseGuards(JwtAuthGuard)
     purchaseTicket(@Req() req, @Body() createTicketDto : CreateTicketDto) {
         const userId = req.user.sub;
         return this.ticketsService.createTicket(userId, createTicketDto);

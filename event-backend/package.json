@@ -18,10 +18,10 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migration:generate": "npx ts-node -P ./tsconfig.json ./node_modules/typeorm/cli.js migration:generate ./src/database/migrations/Migration -d ./src/data-source.ts",
-    "migration:create": "npx ts-node -P ./tsconfig.json ./node_modules/typeorm/cli.js migration:create ./src/database/migrations/Migration -d ./src/data-source.ts",
-    "migration:run": "npx ts-node -P ./tsconfig.json ./node_modules/typeorm/cli.js migration:run -d ./src/data-source.ts",
-    "migration:revert": "npx ts-node -P ./tsconfig.json ./node_modules/typeorm/cli.js migration:revert -d ./src/data-source.ts"
+    "migration:generate": "npx ts-node -r tsconfig-paths/register -P ./tsconfig.json ./node_modules/typeorm/cli.js migration:generate ./src/database/migrations/Migration -d ./src/data-source.ts",
+    "migration:create": "npx ts-node -r tsconfig-paths/register -P ./tsconfig.json ./node_modules/typeorm/cli.js migration:create ./src/database/migrations/Migration -d ./src/data-source.ts",
+    "migration:run": "npx ts-node -r tsconfig-paths/register -P ./tsconfig.json ./node_modules/typeorm/cli.js migration:run -d ./src/data-source.ts",
+    "migration:revert": "npx ts-node -r tsconfig-paths/register -P ./tsconfig.json ./node_modules/typeorm/cli.js migration:revert -d ./src/data-source.ts"
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.1",

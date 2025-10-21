@@ -37,7 +37,7 @@ export class EventsService {
         return filteredEvents;
     }
 
-    async findEventById(id: string) : Promise<EventDto> {
+    async findEventById(id: number) : Promise<EventDto> {
         const events = await this.findAllEvents();
         const event = events.find((e: EventDto) => e.id === id);
 

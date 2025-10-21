@@ -4,7 +4,7 @@ export class CreateTicketDto {
 
     @IsNotEmpty()
     @IsString()
-    eventId: string;
+    eventId: number;
 
     @IsNotEmpty()
     @IsNumber()

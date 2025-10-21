@@ -71,7 +71,7 @@ export class Auth {
         Swal.fire({
           icon: 'success',
           title: 'Registrazione avvenuta con successo!',
-          text: 'Benvenut*, ' + name + '!'
+          text: 'Benvenut*, ' + username + '!'
         });
         this.router.navigate(['/home']); // Reindirizza alla home page dopo la registrazione
       },
@@ -102,7 +102,7 @@ export class Auth {
         Swal.fire({
           icon: 'success',
           title: 'Login avvenuto con successo!',
-          text: 'Bentornat*, ' + this.authService.getCurrentUser()!.name + '!'
+          text: 'Bentornat*, ' + username + '!'
         });
         this.router.navigate(['/home']); // Reindirizza alla home page dopo il login
       },

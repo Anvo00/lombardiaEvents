@@ -17,7 +17,7 @@ export class Home implements OnInit{
 
   //Paginazione
   currentPage: number = 1;
-  pageSize: number = 15;
+  pageSize: number = 12;
   totalPages: number = 0;
   paginatedEvents: EventModel[] = [];
 

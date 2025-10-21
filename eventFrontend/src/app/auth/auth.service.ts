@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "src/environments/environment";
-import { Observable, tap } from "rxjs";
+import { BehaviorSubject, Observable, tap } from "rxjs";
 import { UserModel } from "../models/user.model";
 import { CreateUserDto } from "./dto/user-create.dto";
 import { UserLoginDto } from "./dto/user-login.dto";
@@ -12,7 +12,8 @@ import { UserLoginDto } from "./dto/user-login.dto";
 
 
 export class AuthService {
-  //private isAuthenticated: boolean = false;
+  private isAuthenticated = new BehaviorSubject<boolean>(false);
+  isAuthenticated$ = this.isAuthenticated.asObservable();
 
   private baseUrl = `${environment.apiUrl}/auth`; // URL del backend
 
@@ -20,14 +21,14 @@ export class AuthService {
 
   saveUserToStorage(user: UserModel | null) {
     if (user) {
-      localStorage.setItem('currentUser', JSON.stringify(user));
+      sessionStorage.setItem('currentUser', JSON.stringify(user));
     } else {
-      localStorage.removeItem('currentUser');
+      sessionStorage.removeItem('currentUser');
     }
   }
 
   getCurrentUser(): UserModel | null {
-    const userJson = localStorage.getItem('currentUser');
+    const userJson = sessionStorage.getItem('currentUser');
     return userJson ? JSON.parse(userJson) : null;
   }
 
@@ -35,7 +36,8 @@ export class AuthService {
     return this.http.post(this.baseUrl + `/register`, newUser).pipe(
       tap(res => {
         console.log('Risposta registrazione e login ricevuta:', res);
-        localStorage.setItem('token', (res as any).access_token);
+        sessionStorage.setItem('token', (res as any).access_token);
+        this.isAuthenticated.next(true)
       })
     );
   }
@@ -44,7 +46,8 @@ export class AuthService {
     return this.http.post(this.baseUrl + `/login`, loginUser).pipe(
       tap(res => {
         console.log('Risposta login ricevuta:', res);
-        localStorage.setItem('token', (res as any).access_token);
+        sessionStorage.setItem('token', (res as any).access_token);
+        this.isAuthenticated.next(true)
       })
     );
   }
@@ -58,7 +61,7 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('currentUser');
+    sessionStorage.clear();
+    this.isAuthenticated.next(false);
   }
 }

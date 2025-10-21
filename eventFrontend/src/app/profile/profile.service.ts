@@ -14,7 +14,15 @@ export class ProfileService {
 
     constructor(private http : HttpClient){}
 
+    // === USER ===
+
     updateUser(user : UserModel) : Observable<any> {
-        return this.http.patch(this.baseUrl + `/${user.id}`, user, {headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}});
+        return this.http.patch(this.baseUrl + `/${user.id}`, user, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
+    }
+
+    // === TICKETS ===
+
+    getUserTickets(): Observable<any> {
+      return this.http.get(this.baseUrl + `/tickets`, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
     }
 }

@@ -998,7 +998,7 @@ var require_browser = __commonJS({
     exports.save = save;
     exports.load = load;
     exports.useColors = useColors;
-    exports.storage = localstorage();
+    exports.storage = sessionStorage();
     exports.destroy = /* @__PURE__ */ (() => {
       let warned = false;
       return () => {
@@ -1143,9 +1143,9 @@ var require_browser = __commonJS({
       }
       return r;
     }
-    function localstorage() {
+    function sessionStorage() {
       try {
-        return localStorage;
+        return sessionStorage;
       } catch (error) {
       }
     }

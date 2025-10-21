@@ -4,7 +4,7 @@ import { IsString } from "class-validator";
 export class EventDto {
     @Expose({name: 'id'})
     @IsString()
-    id: string;
+    id: number;
 
     @Expose({name: 'denom'})
     @IsString()
