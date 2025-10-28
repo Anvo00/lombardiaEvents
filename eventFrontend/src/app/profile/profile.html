@@ -52,9 +52,8 @@
           <input type="email" [(ngModel)]="formUser.role" name="role" disabled />
         </label>
 
-        <!-- TODO Controllare colore bottone cambio password -->
         <div class="buttons">
-          <button type="button" class="btn" (click)="changePassword()">Cambia password</button>
+          <button type="button" class="login-button" (click)="startPasswordChanging()">Cambia password</button>
           <button type="submit" class="btn">Aggiorna</button>
           <button type="button" class="btn btn-secondary" (click)="cancelEditing()">Annulla</button>
         </div>

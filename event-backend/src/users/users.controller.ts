@@ -39,14 +39,14 @@ export class UsersController {
     }
 
     @Get(':id')
-    @UseGuards(RolesGuard, JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     getUserById(@Param('id', ParseIntPipe) userId: number){
         return this.userService.findUserById(userId);
     }
 
     @Get(':username')
-    @UseGuards(RolesGuard, JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     getUserByUsername(@Param('username', SafeStringPipe) username : string) {
         return this.userService.findUserByUsername(username);
@@ -64,7 +64,7 @@ export class UsersController {
 
 
     @Delete(':id')
-    @UseGuards(RolesGuard, JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     deleteUser(@Param('id', ParseIntPipe) id : number){
         return this.userService.deleteUser(id);

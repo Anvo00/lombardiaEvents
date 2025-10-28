@@ -127,6 +127,31 @@
     display: block;
 }
 
+.login-button {
+    padding: 17px 40px;
+    border-radius: 50px;
+    cursor: pointer;
+    border: 0;
+    background-color: transparent;
+    box-shadow: rgb(0 0 0 / 10%) 0 0 8px;
+    letter-spacing: 1.5px;
+    font-size: 14px;
+    transition: all 0.5s ease;
+}
+
+.login-button:hover {
+    letter-spacing: 2px;
+    background-color: #799851;
+    
+}
+
+.login-button:active {
+    letter-spacing: 3px;
+    background-color: #6c6438;
+    color: hsl(0, 0%, 100%);
+    transition: 100ms;
+}
+
 @media (max-width: 600px) {
   .event-card {
         width: 100%;

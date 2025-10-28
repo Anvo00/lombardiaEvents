@@ -29,10 +29,15 @@
       <div *ngIf="paginatedEvents.length === 0" class="no-events">
         <p>Nessun evento trovato.</p>
       </div>
-      <a *ngFor="let event of paginatedEvents" class="event-card" (click)="onSelectEvent(event.id)">
-        <div class="event-details">
+      <a *ngFor="let event of paginatedEvents" class="event-card" (click)="onSelectEvent(event.id)" style="color:#131313; text-decoration: none;">
+        <div class="card-title">
           <h3>{{ event.eventName }}</h3>
-          <p>{{ event.startDate }}</p>
+        </div>
+        
+        <!-- TODO Controllare la posizione nella card -->
+        <div class="card-footer">
+          <p style="margin-bottom: 4px;"> <strong> DATA: </strong> {{ event.startDate | date:'dd/MM/yyyy' }}</p>
+          <p> <strong> ORA: </strong> {{ event.startTime }} - {{ event.endTime }}</p>
         </div>
       </a>
     </div>

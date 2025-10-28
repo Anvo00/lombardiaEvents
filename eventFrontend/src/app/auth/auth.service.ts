@@ -10,7 +10,6 @@ import { UserLoginDto } from "./dto/user-login.dto";
   providedIn: 'root'
 })
 
-
 export class AuthService {
   private isAuthenticated = new BehaviorSubject<boolean>(false);
   isAuthenticated$ = this.isAuthenticated.asObservable();
@@ -60,6 +59,7 @@ export class AuthService {
     );
   }
 
+  // TODO Richiedere conferma dopo il click
   logout() {
     sessionStorage.clear();
     this.isAuthenticated.next(false);

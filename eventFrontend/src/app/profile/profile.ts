@@ -6,6 +6,7 @@ import { AuthService } from '../auth/auth.service';
 import { ProfileService } from './profile.service';
 import Swal from 'sweetalert2';
 import { TicketModel } from '../models/ticket.model';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +24,7 @@ export class Profile implements OnInit {
 
   tickets!: TicketModel[];
 
-  constructor(private authService : AuthService, private profileService : ProfileService) {}
+  constructor(private authService : AuthService, private profileService : ProfileService, private router : Router, private route : ActivatedRoute) {}
  
   ngOnInit(): void {
     const currentUser = this.authService.getCurrentUser();
@@ -31,6 +32,9 @@ export class Profile implements OnInit {
       try {
         this.user = currentUser;
         this.loadUserTickets();
+        this.route.queryParams.subscribe(params => {
+        if(params['editing'] === 'true') this.startEditing();
+    });
       } catch (error) {
         console.error('Errore nel parsing dell\'utente dal sessionStorage:', error);
       }
@@ -44,6 +48,10 @@ export class Profile implements OnInit {
   startEditing(): void {
     this.formUser = { ...this.user };
     this.editing = true;
+  }
+
+  startPasswordChanging() : void {
+    this.router.navigate(['/passwordchange']);
   }
 
   saveChanges(): void {
@@ -78,11 +86,6 @@ export class Profile implements OnInit {
 
   cancelEditing(): void {
     this.editing = false;
-  }
-
-  // TODO Implementare cambio password
-  changePassword() {
-    throw new Error('Method not implemented.');
   }
 
   // === TICKETS ===

@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 export class Home implements OnInit{
 
   events: EventModel[] = []; // Array per memorizzare gli eventi
+  today = new Date();
 
   //Paginazione
   currentPage: number = 1;
@@ -32,7 +33,11 @@ export class Home implements OnInit{
   loadEvents(): void {
     this.eventService.getEvents().subscribe({
       next: (data) => {
-        this.events = data; // Assegna i dati ricevuti all'array events
+        this.events = data.filter(event => {
+          const eventDate = new Date(event.startDate);
+          return eventDate >= this.today;
+        }); // Assegna i dati ricevuti all'array events e filtra per data
+        
         this.totalPages = Math.ceil(this.events.length / this.pageSize);
         this.updatePaginatedEvents();
       },

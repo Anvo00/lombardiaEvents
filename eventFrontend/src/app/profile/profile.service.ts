@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { UserModel } from "../models/user.model";
 import { environment } from "src/environments/environment";
 import { Observable } from "rxjs";
+import { UpdateUserDto } from "../auth/dto/user-update.dto";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,12 @@ export class ProfileService {
     // === USER ===
 
     updateUser(user : UserModel) : Observable<any> {
-        return this.http.patch(this.baseUrl + `/${user.id}`, user, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
+      return this.http.patch(this.baseUrl + `/${user.id}`, user, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
+    }
+
+    // TODO Controllare backend
+    updateUserPassword(id : number, user : UpdateUserDto) : Observable<any>{
+      return this.http.patch(this.baseUrl + `/${id}`, user, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
     }
 
     // === TICKETS ===

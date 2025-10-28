@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import {  Repository } from 'typeorm';
 import { User } from '../database/typeorm/user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -53,6 +54,11 @@ export class UsersService {
 
         if(!updatedUser) throw new NotFoundException(`Utente con id ${id} non trovato`);
 
+        // Se vi è la password, allora l'utente sta cercando di modificare la propria password
+        if (updateUserDto.password) {
+            updatedUser.password = await this.hashPassword(updateUserDto.password);
+        }
+
         return this.userRepository.save(updatedUser);
     }
 
@@ -64,4 +70,8 @@ export class UsersService {
         return this.userRepository.remove(removedUser);
     }
 
+    async hashPassword(password: string): Promise<string> {
+            const saltRounds = 10;
+            return bcrypt.hash(password, saltRounds);
+        }
 }
