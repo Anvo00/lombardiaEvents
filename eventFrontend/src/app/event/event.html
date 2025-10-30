@@ -10,10 +10,10 @@
         <p><strong>Data fine:</strong> {{ event.endDate | date:'dd/MM/yyyy' }}</p>
         <p><strong>Orario:</strong> {{ event.startTime + " - " + event.endTime}}</p>
         <div class="buttons">
-          <button class="btn map-btn" (click)="onOpenMap(event)">
+          <button class="btn map-btn" (click)="eventOpenMap(event)">
            Mappa
           </button>
-          <button class="btn signup-btn">Iscriviti</button>
+          <button class="btn signup-btn" (click)="purchaseTicket(event.id)">Iscriviti</button>
         </div>
       </div>
     </div>

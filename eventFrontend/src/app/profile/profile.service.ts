@@ -4,6 +4,7 @@ import { UserModel } from "../models/user.model";
 import { environment } from "src/environments/environment";
 import { Observable } from "rxjs";
 import { UpdateUserDto } from "../auth/dto/user-update.dto";
+import { TicketModel } from "../models/ticket.model";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ import { UpdateUserDto } from "../auth/dto/user-update.dto";
 
 export class ProfileService {
 
-    private baseUrl = `${environment.apiUrl}/users`; // URL del backend
+    private readonly baseUrl = `${environment.apiUrl}/users`; // URL del backend
+    private readonly ticketsUrl = `${environment.apiUrl}/tickets`;
 
     constructor(private http : HttpClient){}
 
@@ -21,14 +23,17 @@ export class ProfileService {
       return this.http.patch(this.baseUrl + `/${user.id}`, user, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
     }
 
-    // TODO Controllare backend
     updateUserPassword(id : number, user : UpdateUserDto) : Observable<any>{
       return this.http.patch(this.baseUrl + `/${id}`, user, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
     }
 
     // === TICKETS ===
 
-    getUserTickets(): Observable<any> {
-      return this.http.get(this.baseUrl + `/tickets`, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
+    getUserTickets(): Observable<TicketModel[]> {
+      return this.http.get<TicketModel[]>(this.baseUrl + `/tickets`, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
+    }
+
+    deleteTicket(id: number): Observable<any> {
+      return this.http.delete(this.ticketsUrl + `/${id}`, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
     }
 }

@@ -53,7 +53,7 @@ export class TicketsService {
             ...createTicketDto,
             userId,
             event_name: event.eventName,
-            event_date: event.startDate + ' ' + event.endDate,
+            event_date: event.startDate,
             event_location: event.toponimo + ' ' + event.address,
             purchaseDate: new Date().toISOString(),
         });

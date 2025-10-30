@@ -13,14 +13,14 @@ export class TicketsController {
     constructor(private ticketsService: TicketsService) {}
 
     @Get()
-    @UseGuards(RolesGuard, JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     getTickets() {
         return this.ticketsService.findAllTickets();
     }
 
     @Get(':id')
-    @UseGuards(RolesGuard, JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     getTicketById(@Param('id', ParseIntPipe) id: number) {
         return this.ticketsService.findTicketById(id);

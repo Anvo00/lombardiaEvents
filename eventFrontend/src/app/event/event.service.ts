@@ -9,7 +9,8 @@ import { Observable } from "rxjs";
 })
 
 export class EventService {
-  private baseUrl = `${environment.apiUrl}/events`; // URL del backend
+  private readonly baseUrl = `${environment.apiUrl}/events`; // URL del backend
+  private readonly ticketsUrl = `${environment.apiUrl}/tickets`;
 
     constructor(private http: HttpClient) {}
 
@@ -24,5 +25,11 @@ export class EventService {
 
     getEventById(id: string) : Observable<EventModel> {
       return this.http.get<EventModel>(this.baseUrl + `/${id}`);
+    }
+
+    // === TICKET ===
+
+    purchaseTicket(eventId: string) : Observable<any> {
+      return this.http.post<any>(this.ticketsUrl + `/purchase`, { eventId }, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
     }
 }

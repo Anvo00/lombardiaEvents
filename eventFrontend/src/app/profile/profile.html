@@ -15,14 +15,17 @@
       <hr class="divider" />
 
       <!-- USER TICKETS -->
-      <!-- TODO Modificare da evento a ticket -->
       <h2>I miei tickets</h2>
-      <div class="container-events">
-        <a *ngFor="let ticket of tickets" class="event-card">
-          <div class="event-details">
-            <h3>{{ ticket.eventName }}</h3>
-            <p>{{ ticket.eventDate }}</p>
+      <div class="container-tickets">
+        <a *ngFor="let ticket of tickets" class="ticket-card" style="color:#131313; text-decoration: none;" (click)="showTicketDetails(ticket)">
+          <div class="card-title">
+            <h3>{{ ticket.event_name }}</h3>
+            <p>{{ ticket.event_date | date:'dd/MM/yyyy' }}</p>
           </div>
+
+          <div class="card-footer">
+            <p> <strong> PRENOTATO IL: </strong> {{ ticket.purchaseDate | date:'dd/MM/yyyy' }}</p>
+        </div>
         </a>
       </div>
     </div>
@@ -53,7 +56,7 @@
         </label>
 
         <div class="buttons">
-          <button type="button" class="login-button" (click)="startPasswordChanging()">Cambia password</button>
+          <button type="button" class="password-button" (click)="startPasswordChanging()">Cambia password</button>
           <button type="submit" class="btn">Aggiorna</button>
           <button type="button" class="btn btn-secondary" (click)="cancelEditing()">Annulla</button>
         </div>

@@ -36,7 +36,6 @@ export class PasswordChange implements OnInit {
     }
   }
 
-  //TODO Fix password change
   saveChanges(newPassword : string, newPasswordRepeat : string): void {
     if(newPassword !== newPasswordRepeat) {
       Swal.fire({
@@ -46,16 +45,10 @@ export class PasswordChange implements OnInit {
       });
     }
 
-    //TODO Remove log
-    console.log("Ho effettuato il primo controllo!");
-
     if(!this.formUser || !this.formUser.id) {
       console.error('Nessun dato utente da salvare.');
       return;
     }
-
-    //TODO Remove log
-    console.log("Ho effettuato il secondo controllo!");
 
     const updatedUser: UpdateUserDto = {
       password : newPassword
