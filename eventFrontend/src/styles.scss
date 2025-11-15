@@ -1,13 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 html, body {
-    width: 100%;
-    height: 100vh;
-    background-color: #f4eeeb;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #f4eeeb;
 }
 
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Altezza minima: tutta la finestra */
+}
+
+/* Il contenuto centrale cresce per riempire lo spazio */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.swal2-popup .rounded-btn {
+  border-radius: 25px !important;
+  padding: 0.45rem 1.25rem !important;
+  font-weight: 450;
+}

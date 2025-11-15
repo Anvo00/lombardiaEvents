@@ -5,11 +5,14 @@ import {
   SERVER_CONTEXT,
   renderApplication,
   renderModule
-} from "./chunk-OFUAOAQ3.js";
-import "./chunk-YDAFUWQF.js";
-import "./chunk-D5OYJMTT.js";
-import "./chunk-4JBC7G34.js";
-import "./chunk-76S35VVJ.js";
+} from "./chunk-CFDSR6DZ.js";
+import "./chunk-OYZKTPNK.js";
+import "./chunk-OCYV7KD5.js";
+import "./chunk-RGMI4SY3.js";
+import "./chunk-YMTVXAW5.js";
+import "./chunk-CNGBFKFU.js";
+import "./chunk-XRRJQWZQ.js";
+import "./chunk-6KW2VHMK.js";
 import {
   __async,
   __spreadValues
@@ -244,7 +247,7 @@ function createRequestUrl(nodeRequest) {
       hostnameWithPort += `:${port}`;
     }
   }
-  return new URL(originalUrl ?? url, `${protocol}://${hostnameWithPort}`);
+  return new URL(`${protocol}://${hostnameWithPort}${originalUrl ?? url}`);
 }
 function getFirstHeaderValue(value) {
   return value?.toString().split(",", 1)[0]?.trim();

@@ -2,10 +2,9 @@ import { Routes } from '@angular/router';
 
 import { Auth } from './auth/auth';
 import { Home } from './home/home';
-import { Navbar } from './navbar/navbar';
-import { Footer } from './footer/footer';
 import { Profile } from './profile/profile';
 import { Event } from './event/event';
+import { PasswordChange } from './password-change/password-change';
 
 
 export const routes: Routes = [
@@ -14,5 +13,6 @@ export const routes: Routes = [
   { path: 'profile', component: Profile },
   { path: 'event/:id', component: Event },
   { path: 'auth', component: Auth },
+  { path: 'passwordchange', component: PasswordChange},
   { path: '**', redirectTo: 'home' } // wildcard per le route 
 ];

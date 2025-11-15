@@ -4,11 +4,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { SafeStringPipe } from 'src/common/safe-string.pipe';
 import { TicketsService } from 'src/tickets/tickets.service';
-import { Ticket } from 'src/database/typeorm';
+import { Ticket, User } from 'src/database/typeorm';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { Role } from 'src/common/role.enum';
-import { Roles } from 'src/common/roles.decorator';
+import { Role } from '@shared/role.enum';
+import { Roles } from 'src/auth/guards/roles.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -18,7 +18,7 @@ export class UsersController {
     ) {}
 
     @Get()
-    @UseGuards(RolesGuard, JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     getUsers(){
         return this.userService.findAllUsers();
@@ -39,14 +39,14 @@ export class UsersController {
     }
 
     @Get(':id')
-    @UseGuards(RolesGuard, JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     getUserById(@Param('id', ParseIntPipe) userId: number){
         return this.userService.findUserById(userId);
     }
 
     @Get(':username')
-    @UseGuards(RolesGuard, JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     getUserByUsername(@Param('username', SafeStringPipe) username : string) {
         return this.userService.findUserByUsername(username);
@@ -64,7 +64,7 @@ export class UsersController {
 
 
     @Delete(':id')
-    @UseGuards(RolesGuard, JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     deleteUser(@Param('id', ParseIntPipe) id : number){
         return this.userService.deleteUser(id);
@@ -72,9 +72,10 @@ export class UsersController {
 
 
     @Patch(':id')
-    updateUser(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto : UpdateUserDto, @Req() req){
+    @UseGuards(JwtAuthGuard)
+    updateUser(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto : UpdateUserDto, @Req() req) : Promise<User>{
         const user = req.user;
-        if(user.role !== Role.ADMIN && user.id !== id) {
+        if(user.sub !== id) {
             throw new ForbiddenException('Non hai i permessi per aggiornare questo utente');
         }
         

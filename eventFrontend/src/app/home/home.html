@@ -1,47 +1,101 @@
-
-
+<!-- NEW HTML -->
 <div class="home">
-    <div class="home-image">
-        <h1>Eventi Lombardia</h1>
-        <p>La tua guida per il territorio</p>
+  <div class="home-image">
+    <h1>Eventi Lombardia</h1>
+    <p>La tua guida per il territorio</p>
+  </div>
 
+  <div class="container">
+    <div class="search">
+      <h2 class="search__title">Scopri i nostri eventi</h2>
+      <div class="search__container">
+        <input type="text" class="search__input" placeholder="Filtra eventi..." #input (keyup.enter)="onSearchFilter(input.value)"/>
+        <button class="search__button" (click)="onSearchFilter(input.value)">
+          <svg class="search__icon" aria-hidden="true" viewBox="0 0 24 24">
+            <path
+              d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 
+              4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 
+              3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 
+              11c0-4.135 3.365-7.5 7.5-7.5s7.5 
+              3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"
+            ></path>
+          </svg>
+        </button>
+      </div>
     </div>
 
-    <div class="container">
+    <!-- Lista eventi -->
+    <div class="container-events">
+      <div *ngIf="paginatedEvents.length === 0" class="no-events">
+        <p>Nessun evento trovato.</p>
+      </div>
+      <a *ngFor="let event of paginatedEvents" class="event-card" (click)="onSelectEvent(event.id)" style="color:#131313; text-decoration: none;">
+        <div class="card-title">
+          <h3>{{ event.eventName }}</h3>
+        </div>
         
+        <!-- TODO Controllare la posizione nella card -->
+        <div class="card-footer">
+          <p style="margin-bottom: 4px;"> <strong> DATA: </strong> {{ event.startDate | date:'dd/MM/yyyy' }}</p>
+          <p> <strong> ORA: </strong> {{ event.startTime }} - {{ event.endTime }}</p>
+        </div>
+      </a>
+    </div>
 
+    <!-- Paginazione -->
+    <nav *ngIf="totalPages > 1" class="mt-4" aria-label="Page navigation">
+      <ul class="pagination justify-content-center mb-4">
+        <!-- Prima pagina -->
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <button class="page-link" (click)="firstPage()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+              <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+            </svg>
+          </button>
+        </li>
 
-<div class="search">
-  <h2 class="search__title">Scopri i nostri eventi</h2>
-  <div class="search__container">
-    <input type="text" class="search__input" placeholder="Filtra eventi...">
-    <button class="search__button">
-      <svg class="search__icon" aria-hidden="true" viewBox="0 0 24 24">
-        <g>
-          <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
-        </g>
-      </svg>
-    </button>
+        <!-- Pagina precedente -->
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <button class="page-link" (click)="previousPage()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+            </svg>
+          </button>
+        </li>
+
+        <!-- Blocchi da 3 pagine -->
+        <ng-container *ngFor="let i of [].constructor(totalPages); let idx = index">
+          <li
+            *ngIf="Math.abs(currentPage - (idx + 1)) <= 1"
+            class="page-item"
+            [class.active]="currentPage === idx + 1"
+          >
+            <button class="page-link" (click)="goToPage(idx + 1)">
+              {{ idx + 1 }}
+            </button>
+          </li>
+        </ng-container>
+
+        <!-- Pagina successiva -->
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <button class="page-link" (click)="nextPage()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+            </svg>
+          </button>
+        </li>
+
+        <!-- Ultima pagina -->
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <button class="page-link" (click)="lastPage()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708"/>
+              <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </nav>
   </div>
 </div>
-
-
-
-
-
-        <div class="container-events">
-            <a *ngFor="let event of events" class="event-card">
-                <div class="event-image">
-                    <img [src]="'https://picsum.photos/400/200'" alt="{{ event.title }}" />
-                </div>
-                <div class="event-details">
-                    <h3>{{ event.title }}</h3>
-                    <p>{{ event.description }}</p>
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
-
-
-

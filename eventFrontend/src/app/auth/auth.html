@@ -1,55 +1,43 @@
 <!---->
 <div class="auth-container">
   <div class="container" id="container" >
+
+    <!-- LOGIN -->
+
     <div class="info-container" [ngClass]="{'active': registerFormActive}">
         <h1>Bentornato!</h1>
         <p>Inserisci i dati del tuo account per accedere</p>
         <button class="hidden" id="login" (click)="onLoginClick()">Accedi</button>
     </div>
-
-    <div class="form-container register" [ngClass]="{'active': registerFormActive}">
-      <h1>Crea account</h1>
-      <form>
-        <input type="text" placeholder="Nome">
-        <input type="text" placeholder="Cognome">
-        <input type="text" placeholder="Nome utente">
-        <input type="email" placeholder="Email">
-        <input type="password" placeholder="Password">
-        <button type="button">Registrati</button>
-      </form>
-    </div>
-
+    
     <div class="form-container login" [ngClass]="{'active': !registerFormActive}">
       <form>
         <h1>Accedi</h1>
-        <input type="text" placeholder="Nome utente">
-        <input type="password" placeholder="Password">
-        <button type="button">Accedi</button>
+        <input type="text" placeholder="Nome utente" #usernameLogin>
+        <input type="password" placeholder="Password" #passwordLogin>
+        <button type="button" (click)="loginUser(usernameLogin.value, passwordLogin.value)">Accedi</button>
       </form>
     </div>
+
+    <!-- REGISTER -->
 
     <div class="info-container inverted" [ngClass]="{'active': !registerFormActive}">
       <h1>Benvenuto!</h1>
       <p>Registrati inserendo i tuoi dati personali</p>
-      <button id="register" (click)="onRegisterClick()">Registrati</button>    </div>
-
-    <!-- 
-    <div class="toggle-container">
-      <div class="toggle">
-        <div class="toggle-panel toggle-left">
-          <h1>Bentornato!</h1>
-          <p>Inserisci i dati del tuo account per accedere</p>
-          <button class="hidden" id="login" (click)="onLoginClick()">Accedi</button>
-        </div>
-        <div class="toggle-panel toggle-right">
-          <h1>Benvenuto!</h1>
-          <p>Registrati inserendo i tuoi dati personali</p>
-          <button class="hidden" id="register" (click)="onRegisterClick()">Registrati</button>
-        </div>
-      </div>
+      <button id="register" (click)="onRegisterClick()">Registrati</button>    
     </div>
-    -->
-  </div>
 
+    <div class="form-container register" [ngClass]="{'active': registerFormActive}">
+      <h1>Crea account</h1>
+      <form>
+        <input type="text" placeholder="Nome" #nome>
+        <input type="text" placeholder="Cognome" #cognome>
+        <input type="text" placeholder="Nome utente" #username>
+        <input type="email" placeholder="Email" #email>
+        <input type="password" placeholder="Password" #password>
+        <button type="button" (click)="registerUser(nome.value, cognome.value, username.value, email.value, password.value)">Registrati</button>
+      </form>
+    </div>
+  </div>
 </div>
 

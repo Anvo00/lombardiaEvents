@@ -4,7 +4,7 @@ import { IsString } from "class-validator";
 export class EventDto {
     @Expose({name: 'id'})
     @IsString()
-    id: string;
+    id: number;
 
     @Expose({name: 'denom'})
     @IsString()
@@ -13,6 +13,10 @@ export class EventDto {
     @Expose({name: 'tipo'})
     @IsString()
     type: string;
+
+    @Expose({name: 'descriz'})
+    @IsString()
+    description?: string;
 
     @Expose({name: 'data_in'})
     @IsString()
@@ -53,7 +57,4 @@ export class EventDto {
     @Expose({name: 'cap'})
     @IsString()
     cap: string;
-
-
-    //TODO Mancano le coordinate
 }

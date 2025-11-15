@@ -1,5 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { User } from "./user.entity";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Ticket{
@@ -12,6 +11,9 @@ export class Ticket{
     userId: number;
 
     @Column({})
+    eventId: number;
+
+    @Column({})
     event_name: string;
 
     @Column({})
@@ -20,7 +22,9 @@ export class Ticket{
     @Column({})
     event_location: string;
 
-    @Column({})
+    @Column({
+        default: 0.0,
+    })
     price: number;
 
     @Column({})

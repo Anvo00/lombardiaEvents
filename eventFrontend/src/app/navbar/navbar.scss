@@ -23,8 +23,16 @@
 .navbar-content {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    gap: 10%;
+    width: 100%;
+}
+
+.right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
 }
 
 .navbar-content a {
@@ -51,7 +59,7 @@
     cursor: pointer;
     border: 0;
     background-color: transparent;
-    box-shadow: rgb(0 0 0 / 5%) 0 0 8px;
+    box-shadow: rgb(0 0 0 / 10%) 0 0 8px;
     letter-spacing: 1.5px;
     font-size: 14px;
     transition: all 0.5s ease;

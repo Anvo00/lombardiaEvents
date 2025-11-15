@@ -1,22 +1,26 @@
-
 <div class="event-container">
   <div class="event-card">
-    <div class="event-image">
-      <img src="images/jazz-concert.jpeg" alt="{{ event.title }}" />
-    </div>
     <div class="event-info">
-      <h2>{{ event.title }}</h2>
-      <p>{{ event.description }}</p>
-      <p><strong>Luogo:</strong> {{ event.location }}</p>
-      <p><strong>Data:</strong> {{ event.date }}</p>
-      <p><strong>Orario:</strong> {{ event.time }}</p>
-      <div class="buttons">
-        <button class="btn map-btn" (click)="onOpenMap()">
-          Mappa
-        </button>
-        <button class="btn signup-btn" (click)="onSignup()">Iscriviti</button>
+      <div *ngIf="event">
+        <h2>{{ event.eventName }}</h2>
+        <p>{{ event.description? event.description.charAt(0).toUpperCase() + event.description.slice(1).toLowerCase(): ''}}</p>
+        <p><strong>Luogo:</strong> {{ event.toponimo + " " + event.address}}</p>
+        <p><strong>Comune:</strong> {{ event.comune + ", " + event.cap }}</p>
+        <p><strong>Data inizio:</strong> {{ event.startDate | date:'dd/MM/yyyy' }}</p>
+        <p><strong>Data fine:</strong> {{ event.endDate | date:'dd/MM/yyyy' }}</p>
+        <p><strong>Orario:</strong> {{ event.startTime + " - " + event.endTime}}</p>
+        <div class="buttons">
+          <button class="btn map-btn" (click)="eventOpenMap(event)">
+           Mappa
+          </button>
+          <button class="btn signup-btn" (click)="purchaseTicket(event.id)">Iscriviti</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+
+ 
+
 

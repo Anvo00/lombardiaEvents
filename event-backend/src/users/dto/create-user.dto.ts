@@ -1,5 +1,5 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsString, Length, Matches } from "class-validator";
-import { Role } from "../../common/role.enum";
+import { Role } from '@shared/role.enum';
 
 export class CreateUserDto{
 

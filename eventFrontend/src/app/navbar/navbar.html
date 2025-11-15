@@ -7,13 +7,19 @@
     </button>
   </div>
 
+  
   <div class="navbar-content" [ngClass]="{'active': navbarOpen}">
-    <a routerLink="/home">Home</a> 
-    <a routerLink="/profile">Profilo</a>
-    <a class="login-link" routerLink="/auth">Accedi</a><!--non funziona-->
-  </div>
+    <a routerLink="/home">Home</a>
 
-  <button class="login-button" [ngClass]="{'active': navbarOpen}" routerLink="/auth">
-    Accedi
-  </button>
+    <!-- NOT LOGGED IN -->
+
+    <button class="login-button" *ngIf="!isAuthenticated" routerLink="/auth">Accedi</button>
+
+    <!-- LOGGED IN -->
+
+    <div class="right" *ngIf="isAuthenticated">
+      <a routerLink="/profile">Profilo</a>
+      <button class="login-button" (click)="logout()">Log Out</button>
+    </div>
+  </div>
 </nav>
