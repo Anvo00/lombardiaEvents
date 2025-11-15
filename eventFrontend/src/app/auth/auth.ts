@@ -35,7 +35,8 @@ export class Auth {
       Swal.fire({
         icon: 'error',
         title: 'Errore',
-        text: 'Devi inserire una password!'
+        text: 'Devi inserire una password!',
+        iconColor: '#864B4F'
       });
       return;
     }

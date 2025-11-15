@@ -20,6 +20,9 @@ export class PasswordChange implements OnInit {
   user!: UserModel;
   formUser!: UserModel;
 
+  showPassword: boolean = false;
+  showPasswordRepeat: boolean = false;
+
   constructor(private authService : AuthService, private profileService : ProfileService, private router : Router) {}
  
   ngOnInit(): void {
