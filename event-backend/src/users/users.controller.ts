@@ -45,7 +45,7 @@ export class UsersController {
         return this.userService.findUserById(userId);
     }
 
-    @Get(':username')
+    @Get('username/:username')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     getUserByUsername(@Param('username', SafeStringPipe) username : string) {
