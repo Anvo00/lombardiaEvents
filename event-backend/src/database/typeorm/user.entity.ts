@@ -47,6 +47,6 @@ export class User {
     })
     email: string;
 
-    @Column({type: 'enum', enum: Role, default: Role.USER})
+    @Column({type: 'simple-enum', enum: Role, default: Role.USER})
     role: Role;
 }
