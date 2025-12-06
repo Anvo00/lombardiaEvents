@@ -44,7 +44,10 @@ export class PasswordChange implements OnInit {
       Swal.fire({
         icon: 'error',
         title: 'Errore',
-        text: 'Le password non coincidono. Riprova.'
+        text: 'Le password non coincidono. Riprova.',
+        iconColor: '#799851',
+        confirmButtonText: 'Ok',
+        confirmButtonColor: '#864B4F',
       });
     }
 
@@ -63,13 +66,19 @@ export class PasswordChange implements OnInit {
         Swal.fire({
           icon: 'success',
           title: 'Password aggiornata con successo',
+          iconColor: '#799851',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#864B4F',
         });
       }, 
       error: (error) => {
         Swal.fire({
           icon: 'error',
           title: 'Errore',
-          text: 'Si è verificato un errore durante l\'aggiornamento del profilo. Riprova più tardi.'
+          text: 'Si è verificato un errore durante l\'aggiornamento del profilo. Riprova più tardi.',
+          iconColor: '#799851',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#864B4F',
         });
         console.error('Errore durante l\'aggiornamento della password:', error);
       }

@@ -36,7 +36,9 @@ export class Auth {
         icon: 'error',
         title: 'Errore',
         text: 'Devi inserire una password!',
-        iconColor: '#864B4F'
+        iconColor: '#799851',
+        confirmButtonText: 'Ok',
+        confirmButtonColor: '#864B4F',
       });
       return;
     }
@@ -45,7 +47,10 @@ export class Auth {
       Swal.fire({
         icon: 'error',
         title: 'Errore',
-        text: 'La password deve essere lunga almeno 8 caratteri!'
+        text: 'La password deve essere lunga almeno 8 caratteri!',
+        iconColor: '#799851',
+        confirmButtonText: 'Ok',
+        confirmButtonColor: '#864B4F',
       });
       return;
     }
@@ -54,7 +59,10 @@ export class Auth {
       Swal.fire({
         icon: 'error',
         title: 'Errore',
-        text: 'La password deve contenere almeno una lettera maiuscola, una lettera minuscola, un numero e un carattere speciale!'
+        text: 'La password deve contenere almeno una lettera maiuscola, una lettera minuscola, un numero e un carattere speciale!',
+        iconColor: '#799851',
+        confirmButtonText: 'Ok',
+        confirmButtonColor: '#864B4F',
       });
       return;
     }
@@ -72,7 +80,11 @@ export class Auth {
         Swal.fire({
           icon: 'success',
           title: 'Registrazione avvenuta con successo!',
-          text: 'Benvenut*, ' + username + '!'
+          text: 'Benvenut*, ' + username + '!',
+          iconColor: '#799851',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#864B4F',
+          
         });
         this.router.navigate(['/home']); // Reindirizza alla home page dopo la registrazione
       },
@@ -80,7 +92,11 @@ export class Auth {
         Swal.fire({
           icon: 'error',
           title: 'Errore durante la registrazione',
-          text: 'Si è verificato un errore durante la registrazione. Riprova.'
+          text: 'Si è verificato un errore durante la registrazione. Riprova.',
+          iconColor: '#799851',
+        confirmButtonText: 'Ok',
+        confirmButtonColor: '#864B4F',
+          
         });
         console.error('Errore durante la registrazione:', error);
       }
@@ -103,7 +119,11 @@ export class Auth {
         Swal.fire({
           icon: 'success',
           title: 'Login avvenuto con successo!',
-          text: 'Bentornat*, ' + username + '!'
+          text: 'Bentornat*, ' + username + '!',
+          iconColor: '#799851',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#864B4F',
+          
         });
         this.router.navigate(['/home']); // Reindirizza alla home page dopo il login
       },
@@ -111,7 +131,10 @@ export class Auth {
         Swal.fire({
           icon: 'error',
           title: 'Errore durante il login',
-          text: 'Credenziali non valide. Riprova.'
+          text: 'Credenziali non valide. Riprova.',
+          iconColor: '#799851',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#864B4F',
         });
         console.error('Errore durante il login:', error);
       }

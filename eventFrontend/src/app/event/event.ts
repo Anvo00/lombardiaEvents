@@ -34,6 +34,10 @@ export class Event implements OnInit{
         Swal.fire({
           icon: 'success',
           title: 'Iscrizione effettuata con successo',
+          iconColor: '#799851',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#864B4F',
+          
         });
       },
       error: (error) => {
@@ -41,7 +45,10 @@ export class Event implements OnInit{
         Swal.fire({
           icon: 'error',
           title: 'Errore',
-          text: 'Si è verificato un errore durante l\'iscrizione all\'evento. Riprova più tardi.'
+          text: 'Si è verificato un errore durante l\'iscrizione all\'evento. Riprova più tardi.',
+          iconColor: '#799851',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#864B4F',
         });
       }
     });

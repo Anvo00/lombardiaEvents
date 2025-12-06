@@ -72,6 +72,9 @@ export class Profile implements OnInit {
         Swal.fire({
           icon: 'success',
           title: 'Profilo aggiornato con successo',
+          iconColor: '#799851',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#864B4F',
         });
         this.editing = false;
       }, 
@@ -79,7 +82,10 @@ export class Profile implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'Errore',
-          text: 'Si è verificato un errore durante l\'aggiornamento del profilo. Riprova più tardi.'
+          text: 'Si è verificato un errore durante l\'aggiornamento del profilo. Riprova più tardi.',
+          iconColor: '#799851',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#864B4F',
         });
         console.error('Errore durante l\'aggiornamento dell\'utente:', error);
       }
@@ -146,11 +152,12 @@ showTicketDetails(ticket: TicketModel): void {
             title: 'Sei sicuro?',
             text: 'Questa operazione eliminerà definitivamente il ticket.',
             icon: 'warning',
+            iconColor: '#799851',
             showCancelButton: true,
             confirmButtonText: 'Sì, elimina',
             cancelButtonText: 'Annulla',
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#6c757d',
+            confirmButtonColor: '#799851',
+            cancelButtonColor: '#864B4F',
             customClass: {
               confirmButton: 'rounded-btn',
               cancelButton: 'rounded-btn'
@@ -161,12 +168,14 @@ showTicketDetails(ticket: TicketModel): void {
                 next: () => {
                   Swal.fire({
                     icon: 'success',
+                    iconColor: '#799851',
                     title: 'Eliminato!',
                     text: 'Il ticket è stato eliminato.',
-                    confirmButtonColor: '#799851',
+                    confirmButtonColor: '#864B4F',
                     customClass: { confirmButton: 'rounded-btn' }
                   });
                   this.tickets = this.tickets.filter(t => t.id !== ticket.id);  
+                  
                   // ricarica i ticket
                   this.loadUserTickets();
                 },
@@ -174,6 +183,7 @@ showTicketDetails(ticket: TicketModel): void {
                   console.error('Errore eliminazione ticket', error);
                   Swal.fire({
                     icon: 'error',
+                    iconColor: '#799851',
                     title: 'Errore',
                     text: 'Impossibile eliminare il ticket. Riprova più tardi.',
                     confirmButtonColor: '#864B4F',
@@ -190,8 +200,11 @@ showTicketDetails(ticket: TicketModel): void {
       console.error('Errore durante il recupero dei dettagli dell\'evento:', error);
       Swal.fire({
         icon: 'error',
+        iconColor: '#799851',
         title: 'Errore',
-        text: 'Impossibile recuperare i dettagli dell\'evento.'
+        text: 'Impossibile recuperare i dettagli dell\'evento.',
+        confirmButtonColor: '#864B4F',
+
       });
     }
   });
