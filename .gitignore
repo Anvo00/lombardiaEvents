@@ -27,6 +27,7 @@ testem.log
 
 # Angular specific
 .angular/cache/
+/.angular/cache
 
 # Test coverage/output
 coverage/
