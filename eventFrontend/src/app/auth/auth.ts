@@ -4,11 +4,13 @@ import { AuthService } from './auth.service';
 import { Role } from '@shared/role.enum';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { Navbar } from '../navbar/navbar';
+import { Footer } from '../footer/footer';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, Navbar, Footer],
   templateUrl: './auth.html',
   styleUrls: ['./auth.scss']
 })

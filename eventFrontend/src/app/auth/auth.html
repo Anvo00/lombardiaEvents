@@ -1,43 +1,32 @@
-<!---->
-<div class="auth-container">
-  <div class="container" id="container" >
+<div class="auth_container">
+    <div class="auth_form">
+        <div class="auth_form_box" [ngClass]="{'disabled': registerFormActive}">
+            <h1>Bentornato!</h1>
+            <p>Inserisci i dati del tuo account per accedere</p>
+            <form>
+                <input type="text" placeholder="Nome utente" #usernameLogin>
+                <input type="password" placeholder="Password" #passwordLogin>
+                <button type="button" (click)="loginUser(usernameLogin.value, passwordLogin.value)">Accedi</button>
+                <hr>
+                <button type="button" (click)="onRegisterClick()">Register</button>
+            </form>
+        </div>
 
-    <!-- LOGIN -->
-
-    <div class="info-container" [ngClass]="{'active': registerFormActive}">
-        <h1>Bentornato!</h1>
-        <p>Inserisci i dati del tuo account per accedere</p>
-        <button class="hidden" id="login" (click)="onLoginClick()">Accedi</button>
+        <div class="auth_form_box" [ngClass]="{'disabled': !registerFormActive}">
+            <h1>Benvenuto!</h1>
+            <p>Registrati inserendo i tuoi dati personali</p>
+            <form>
+                <input type="text" placeholder="Nome" #nome>
+                <input type="text" placeholder="Cognome" #cognome>
+                <input type="text" placeholder="Nome utente" #username>
+                <input type="email" placeholder="Email" #email>
+                <input type="password" placeholder="Password" #password>
+                <button type="button" (click)="registerUser(nome.value, cognome.value, username.value, email.value, password.value)">Registrati</button>
+                <hr>
+                <button type="button" (click)="onLoginClick()">Login</button>
+              </form>
+        </div>
+        <div class="auth_hero"></div>
     </div>
-    
-    <div class="form-container login" [ngClass]="{'active': !registerFormActive}">
-      <form>
-        <h1>Accedi</h1>
-        <input type="text" placeholder="Nome utente" #usernameLogin>
-        <input type="password" placeholder="Password" #passwordLogin>
-        <button type="button" (click)="loginUser(usernameLogin.value, passwordLogin.value)">Accedi</button>
-      </form>
-    </div>
-
-    <!-- REGISTER -->
-
-    <div class="info-container inverted" [ngClass]="{'active': !registerFormActive}">
-      <h1>Benvenuto!</h1>
-      <p>Registrati inserendo i tuoi dati personali</p>
-      <button id="register" (click)="onRegisterClick()">Registrati</button>    
-    </div>
-
-    <div class="form-container register" [ngClass]="{'active': registerFormActive}">
-      <h1>Crea account</h1>
-      <form>
-        <input type="text" placeholder="Nome" #nome>
-        <input type="text" placeholder="Cognome" #cognome>
-        <input type="text" placeholder="Nome utente" #username>
-        <input type="email" placeholder="Email" #email>
-        <input type="password" placeholder="Password" #password>
-        <button type="button" (click)="registerUser(nome.value, cognome.value, username.value, email.value, password.value)">Registrati</button>
-      </form>
-    </div>
-  </div>
 </div>
-
+<app-footer></app-footer>

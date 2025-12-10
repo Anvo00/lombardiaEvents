@@ -2,21 +2,23 @@
 
 .event-container {
   display: flex;
+  height: 100vh;
   justify-content: center;
+  margin-top: 34px;
   padding: 20px;
   background-color: #f4eeeb;
 }
 
 .event-card {
   display: flex;
-  position: relative;
   max-width: 80%;
   width: 80vw;
-  height: 40vh;
+  height: 80vh;
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.15);
   overflow: hidden;
+  flex-direction: row;
 }
 
 .event-image {
@@ -29,53 +31,16 @@
 }
 
 .event-info {
-  flex: 2;
+  display: flex;
+  width: 70%;
   padding: 30px;
   padding-bottom: 60px;
+}
 
-  h2 {
-    margin-top: 0;
-    font-size: 1.8em;
-  }
-
-  p {
-    margin: 8px 0;
-  }
-
-  .buttons {
-    margin-top: 20px;
-    display: flex;
-    gap: 15px;
-    position: absolute;
-    bottom: 20px;  // margine dal bordo inferiore, da togliere se vogliamo bottoni a sinistra
-    right: 20px;   // margine dal bordo destro , come sopra
-   
-   
-    .btn {
-      padding: 10px 20px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-      transition: opacity 0.3s;
-
-      &:hover {
-        opacity: 0.9;
-      }
-    }
-
-    .map-btn {
-      background-color: #864e3e;
-      color: white;
-        justify-content: flex-end; /* allinea i pulsanti a destra */
-        display: flex;
-    }
-
-    .signup-btn {
-      background-color: #799851;
-      color: white;
-    }
-  }
+.event-map {
+  display: flex;
+  width: 30%;
+  background-color: red;
 }
 
 @media screen and (max-width: 600px) {
