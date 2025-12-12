@@ -3,16 +3,18 @@
 .event-container {
   display: flex;
   justify-content: center;
-  padding: 20px;
+  padding-top: 80px;
+  padding-bottom: 80px;
   background-color: #f4eeeb;
 }
 
 .event-card {
-  display: flex;
+  display: auto;
   position: relative;
   max-width: 80%;
-  width: 80vw;
-  height: 40vh;
+  width: 80vh;
+  height: auto;
+  padding-bottom: 20px;
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.15);
@@ -30,8 +32,9 @@
 
 .event-info {
   flex: 2;
-  padding: 30px;
-  padding-bottom: 60px;
+  padding: 30px 30px 30px 30px;
+  box-sizing: border-box;
+
 
   h2 {
     margin-top: 0;
@@ -40,15 +43,14 @@
 
   p {
     margin: 8px 0;
+    padding: 1px;
   }
 
   .buttons {
-    margin-top: 20px;
     display: flex;
-    gap: 15px;
-    position: absolute;
-    bottom: 20px;  // margine dal bordo inferiore, da togliere se vogliamo bottoni a sinistra
-    right: 20px;   // margine dal bordo destro , come sopra
+  justify-content: right;
+  gap: 16px;
+  margin-top: 25px;
    
    
     .btn {
@@ -67,8 +69,8 @@
     .map-btn {
       background-color: #864e3e;
       color: white;
-        justify-content: flex-end; /* allinea i pulsanti a destra */
-        display: flex;
+      justify-content: center; 
+      display: flex;
     }
 
     .signup-btn {
@@ -88,4 +90,12 @@
   .event-info {
     padding: 20px;
   }
+  .event-info .buttons {
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center; /* se vuoi centrarli */
+    align-items: stretch;    /* prendono larghezza completa */
+  }
+
+  
 }

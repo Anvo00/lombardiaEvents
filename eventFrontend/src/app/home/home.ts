@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { EventModel } from '../models/event.model';
 import { EventService } from '../event/event.service';
 import { Router } from '@angular/router';
+import { Navbar } from '../navbar/navbar';
 
 @Component({
   selector: 'app-home',
