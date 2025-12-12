@@ -2,35 +2,40 @@
     display: flex;
     flex-direction: row;
     min-height: fit-content;
-    height: calc(100vh - 68px * 2);
+    height: auto;
 }
 
 .auth_form {
     display: flex;
     flex-direction: row;
     width: 100vw;
-    padding: 100px;
+    padding: 60px 60px 60px 60px;   
     align-items: center;
     justify-content: center;
 }
 
 .auth_form_box {
-    align-items: center;
-    justify-content: center;
-    display: flex;
+     display: flex;
     flex-direction: column;
-    width: 50%;
+    align-items: center;
+    padding: 20px 20px 20px 20px;
+    justify-content: center;
+    width: 100%;
+    max-width: 500px; /* evita overflow */
     background-color: white;
     border-radius: 40px 0px 0px 40px;
-    height: 100%;
+    height: auto;
 }
 
 .auth_form form {
    display: flex;
    flex-direction: column;
    gap: 10px;
-   min-width: 400px;
+   min-width: auto;
+   
 }
+
+
 
 .auth_form form input{
     background-color: #eee;
@@ -55,7 +60,7 @@
 }
 
 .auth_hero {
-    width: 50%;
+    width: 80%;
     background-image: url("https://imgs.search.brave.com/vkAciGzNiev-65Bl__LPfA5H47xT6mn8Y2_awGs1Ny8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90aGVs/aWJyYXRyYXZlbHMu/Y29tL3dwLWNvbnRl/bnQvdXBsb2Fkcy8y/MDIxLzAyL3RoZWxp/YnJhdHJhdmVsc19U/ZXJyYXp6YU1hcnRp/bmktMTAyNHg2ODMu/anBn");
     background-size: cover;
     height: 100%;
@@ -88,24 +93,27 @@ hr {
     height: auto;
     min-height: auto;
     margin: 0;
-    padding: 0;
     display: flex;
     flex-direction: column-reverse;
+    padding: 10px 10px 10px 10px;
   }
 
   .auth_hero {
-    width: 100%;
-    height: 200px;
+    width: 90%;
+    height: 100px;
     min-height: 200px;
-    border-radius: 0px 0px 0px 0px;
+    max-width: 500px;
+    border-radius: 40px 40px 0px 0px;
   }
 
   .auth_form_box {
-    width: 100%;
+    width: 90%;
+    max-width: 500px;
     min-height: min-auto;
     padding: 20px;
     justify-content: start;
-    border-radius: 0px 0px 0px 0px;
+    border-radius: 0px 0px 40px 40px;
+
   }
 
   .auth_form_box form {

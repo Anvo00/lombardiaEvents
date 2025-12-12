@@ -4,7 +4,6 @@ import { EventModel } from '../models/event.model';
 import { EventService } from './event.service';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
-import { Navbar } from '../navbar/navbar';
 
 @Component({
   selector: 'app-event',

@@ -17,6 +17,8 @@ import { Footer } from '../footer/footer';
 export class Auth {
 
   registerFormActive = false;
+usernameLogin: any;
+passwordLogin: any;
 
   constructor(private authService : AuthService, private router : Router) { }
 

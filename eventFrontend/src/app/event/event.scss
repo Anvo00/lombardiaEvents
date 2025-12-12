@@ -2,23 +2,23 @@
 
 .event-container {
   display: flex;
-  height: 100vh;
   justify-content: center;
-  margin-top: 34px;
-  padding: 20px;
+  padding-top: 80px;
+  padding-bottom: 80px;
   background-color: #f4eeeb;
 }
 
 .event-card {
-  display: flex;
+  display: auto;
+  position: relative;
   max-width: 80%;
-  width: 80vw;
-  height: 80vh;
+  width: 80vh;
+  height: auto;
+  padding-bottom: 20px;
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.15);
   overflow: hidden;
-  flex-direction: row;
 }
 
 .event-image {
@@ -31,16 +31,53 @@
 }
 
 .event-info {
-  display: flex;
-  width: 70%;
-  padding: 30px;
-  padding-bottom: 60px;
-}
+  flex: 2;
+  padding: 30px 30px 30px 30px;
+  box-sizing: border-box;
 
-.event-map {
-  display: flex;
-  width: 30%;
-  background-color: red;
+
+  h2 {
+    margin-top: 0;
+    font-size: 1.8em;
+  }
+
+  p {
+    margin: 8px 0;
+    padding: 1px;
+  }
+
+  .buttons {
+    display: flex;
+  justify-content: right;
+  gap: 16px;
+  margin-top: 25px;
+   
+   
+    .btn {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: opacity 0.3s;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+
+    .map-btn {
+      background-color: #864e3e;
+      color: white;
+      justify-content: center; 
+      display: flex;
+    }
+
+    .signup-btn {
+      background-color: #799851;
+      color: white;
+    }
+  }
 }
 
 @media screen and (max-width: 600px) {
@@ -53,4 +90,12 @@
   .event-info {
     padding: 20px;
   }
+  .event-info .buttons {
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center; /* se vuoi centrarli */
+    align-items: stretch;    /* prendono larghezza completa */
+  }
+
+  
 }
