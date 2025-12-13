@@ -30,6 +30,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 15px;
 }
 
 .navbar-content a {
@@ -41,30 +42,28 @@
 
 .navbar-content a:hover {
   text-decoration: none;
-  transform: scale(1.15);
+  transform: scale(1.05);
 }
 
 
 .navbar .login-button {
-  padding: 17px 40px;
-  border-radius: 50px;
-  cursor: pointer;
-  border: 0;
   background-color: transparent;
-  box-shadow: rgb(0 0 0 / 10%) 0 0 8px;
-  letter-spacing: 1.5px;
-  font-size: 14px;
+    color: #212529;
+    font-size: 12px;
+    padding: 10px 45px;
+    border: 1px solid rgb(120 120 120 / 20%);
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    width: auto;
 }
 
 .navbar .login-button:hover {
-  letter-spacing: 2px;
+  scale: 1.05;
   background-color: #799851;
-}
-
-.navbar .login-button:active {
-  letter-spacing: 3px;
-  background-color: #6c6438;
-  color: hsl(0, 0%, 100%);
+  color: white;
 }
 
 
@@ -123,6 +122,11 @@
     border: none;
     font-size: 1em;
     letter-spacing: normal;
+  }
+
+  .navbar-content .login-button {
+    font-weight: normal;
+    text-transform: none;
   }
 
   .navbar-content a:hover,

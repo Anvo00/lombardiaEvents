@@ -27,6 +27,10 @@ export class ProfileService {
       return this.http.patch(this.baseUrl + `/${id}`, user, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
     }
 
+    compareUserPassword(id: number, password: string): Observable<any> {
+      return this.http.post(this.baseUrl + `/compare-password/${id}`, { password }, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
+    }
+
     // === TICKETS ===
 
     getUserTickets(): Observable<TicketModel[]> {

@@ -49,6 +49,8 @@ export class PasswordChange implements OnInit {
         confirmButtonText: 'Ok',
         confirmButtonColor: '#864B4F',
       });
+
+      return;
     }
 
     if(!this.formUser || !this.formUser.id) {
@@ -56,11 +58,23 @@ export class PasswordChange implements OnInit {
       return;
     }
 
-    const updatedUser: UpdateUserDto = {
-      password : newPassword
-    };
+    this.profileService.compareUserPassword(this.formUser.id, newPassword).subscribe({
+      next: (isValid : boolean) => {
+        if(!isValid) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Errore',
+            text: 'La nuova password non può essere uguale alla precedente. Riprova.',
+            iconColor: '#799851',
+            confirmButtonText: 'Ok',
+            confirmButtonColor: '#864B4F',
+          });
+          return;
+        }
 
-    this.profileService.updateUserPassword(this.formUser.id, updatedUser).subscribe({
+      const updatedUser: UpdateUserDto = { password : newPassword};
+
+      this.profileService.updateUserPassword(this.formUser.id, updatedUser).subscribe({
       next: (response) => {
         console.log('Password aggiornata con successo:', response);
         Swal.fire({
@@ -69,6 +83,11 @@ export class PasswordChange implements OnInit {
           iconColor: '#799851',
           confirmButtonText: 'Ok',
           confirmButtonColor: '#864B4F',
+        }).then((result) => {
+          if(result.isConfirmed) {
+            this.authService.logout();
+            this.router.navigate(['/home']);
+          }
         });
       }, 
       error: (error) => {
@@ -82,9 +101,20 @@ export class PasswordChange implements OnInit {
         });
         console.error('Errore durante l\'aggiornamento della password:', error);
       }
-    })
+    });
 
-    this.router.navigate(['/auth']);
+    },
+      error: (error) => {
+        Swal.fire({
+        icon: 'error',
+        title: 'Errore',
+        text: 'Errore durante il confronto delle password. Riprova',
+        iconColor: '#799851',
+        confirmButtonText: 'Ok',
+        confirmButtonColor: '#864B4F',
+      });
+      }
+    });
   }
 
   cancelEditing(): void {

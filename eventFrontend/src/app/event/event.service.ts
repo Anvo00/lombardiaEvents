@@ -32,4 +32,8 @@ export class EventService {
     purchaseTicket(eventId: string) : Observable<any> {
       return this.http.post<any>(this.ticketsUrl + `/purchase`, { eventId }, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
     }
+
+    getUserTickets() : Observable<any> {
+      return this.http.get<any>(`${environment.apiUrl}/users/tickets`, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
+    }
 }

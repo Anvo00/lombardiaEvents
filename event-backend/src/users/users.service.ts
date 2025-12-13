@@ -73,5 +73,19 @@ export class UsersService {
     async hashPassword(password: string): Promise<string> {
             const saltRounds = 10;
             return bcrypt.hash(password, saltRounds);
+    }
+
+    async comparePasswords(id: number, newPassword: string): Promise<boolean> {
+        const user = await this.findUserById(id);
+        if (!user) {
+            throw new NotFoundException(`Utente con id ${id} non trovato`);
         }
+
+        const isSame = await bcrypt.compare(newPassword, user.password);
+        if(isSame) {
+            return false;
+        }
+
+        return true;
+    }
 }

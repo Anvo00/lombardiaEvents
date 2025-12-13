@@ -33,8 +33,6 @@ export class TicketsService {
     async findTicketsByUserId(userId: number) : Promise<Ticket[]> {
         const tickets = await this.ticketsRepository.find({where: {userId}, order: {purchaseDate: 'DESC'}})
 
-        if(tickets.length === 0) throw new NotFoundException(`Nessun biglietto trovato per l'utente con id ${userId}`);
-
         console.log(`Trovati ${tickets.length} biglietti per l'utente con id ${userId}`);
         return tickets;
     }

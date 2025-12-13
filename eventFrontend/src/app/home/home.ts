@@ -4,6 +4,8 @@ import { EventModel } from '../models/event.model';
 import { EventService } from '../event/event.service';
 import { Router } from '@angular/router';
 import { Navbar } from '../navbar/navbar';
+import { AuthService } from '../auth/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +15,8 @@ import { Navbar } from '../navbar/navbar';
 })
 
 export class Home implements OnInit{
+
+  isAuthenticated = false;
 
   events: EventModel[] = []; // Array per memorizzare gli eventi
   today = new Date();
@@ -25,7 +29,9 @@ export class Home implements OnInit{
 
   Math = Math;
 
-  constructor(private eventService: EventService, private router : Router) {}
+  constructor(private authService : AuthService, private eventService: EventService, private router : Router) {
+    this.authService.isAuthenticated$.subscribe(status => this.isAuthenticated = status);
+  }
 
   ngOnInit(): void {
     this.loadEvents();
@@ -34,8 +40,11 @@ export class Home implements OnInit{
   loadEvents(): void {
     this.eventService.getEvents().subscribe({
       next: (data) => {
+        const favorites = JSON.parse(localStorage.getItem('favoriteEvents') || '{}');
+
         this.events = data.filter(event => {
           const eventDate = new Date(event.startDate);
+          event.isFavorite = !!favorites[event.id]; // Imposta lo stato dal localstorage
           return eventDate >= this.today;
         }); // Assegna i dati ricevuti all'array events e filtra per data
         
@@ -79,7 +88,16 @@ export class Home implements OnInit{
 
     this.eventService.getEventsByName(value).subscribe({
       next: (data) => {
-        this.events = data; // Assegna i dati ricevuti all'array events
+        const favorites = JSON.parse(localStorage.getItem('favoriteEvents') || '{}');
+        
+        // Assegna i dati ricevuti all'array events e imposta lo stato dei preferiti
+        this.events = data.map(event => {
+          return {
+            ...event,
+            isFavorite: !!favorites[event.id] // Imposta lo stato dal localstorage
+          };
+        }); 
+
         this.totalPages = Math.ceil(this.events.length / this.pageSize);
         this.updatePaginatedEvents();
       },
@@ -90,5 +108,38 @@ export class Home implements OnInit{
         this.updatePaginatedEvents();
       }
     });
+  }
+
+  toggleFavorite(event: EventModel, ev: MouseEvent): void {
+    ev.stopPropagation();
+
+    if(!this.isAuthenticated){
+      Swal.fire({
+          icon: 'error',
+          title: 'Attenzione',
+          text: 'Effettua l\'accesso per poter aggiungere ai preferiti.',
+          iconColor: '#799851',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#864B4F',
+        });
+      return;
+    }
+
+    event.isFavorite = !event.isFavorite;
+
+    // Salva lo stato del preferito per persistenza
+    this.saveFavoriteStatus(event);
+  }
+
+  saveFavoriteStatus(event: EventModel): void {
+    const favorites = JSON.parse(localStorage.getItem('favoriteEvents') || '{}');
+
+    if (event.isFavorite) {
+      favorites[event.id] = true;
+    } else {
+      delete favorites[event.id];
+    }
+
+    localStorage.setItem('favoriteEvents', JSON.stringify(favorites));
   }
 }

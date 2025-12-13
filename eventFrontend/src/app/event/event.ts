@@ -4,6 +4,7 @@ import { EventModel } from '../models/event.model';
 import { EventService } from './event.service';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-event',
@@ -14,7 +15,11 @@ import Swal from 'sweetalert2';
 })
 export class Event implements OnInit{
 
-  constructor(private route : ActivatedRoute, private eventService : EventService) {}
+  isAuthenticated = false;
+
+  constructor(private route : ActivatedRoute, private eventService : EventService, private authService : AuthService) {
+    this.authService.isAuthenticated$.subscribe(status => this.isAuthenticated = status);
+  }
 
   event!: EventModel;
 
@@ -29,24 +34,66 @@ export class Event implements OnInit{
   }
 
   purchaseTicket(id: string) {
-    this.eventService.purchaseTicket(id).subscribe({
-      next: () => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Iscrizione effettuata con successo',
-          iconColor: '#799851',
+    const thisEventId = Number(id);
+
+    this.eventService.getUserTickets().subscribe({
+      next: (tickets) => {
+        console.log('Biglietti utente:', tickets);
+        const alreadyPurchased = tickets.some((ticket: any) => ticket.eventId === thisEventId);
+        
+        if (alreadyPurchased) {
+          Swal.fire({
+          icon: 'error',
+          title: 'Attenzione',
+          text: 'Hai già acquistato un biglietto per questo evento (Max 1 per account).',
+          iconColor: '#864B4F',
           confirmButtonText: 'Ok',
           confirmButtonColor: '#864B4F',
-          
         });
-      },
-      error: (error) => {
-        console.error('Errore durante l\'iscrizione:', error);
+        return;
+      }
+
+      this.eventService.purchaseTicket(id).subscribe({
+        next: () => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Iscrizione effettuata con successo',
+            iconColor: '#799851',
+            confirmButtonText: 'Ok',
+            confirmButtonColor: '#864B4F',
+          });
+        },
+        error: (error) => {
+          console.error('Errore durante l\'iscrizione:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Errore',
+            text: 'Si è verificato un errore durante l\'iscrizione all\'evento. Riprova più tardi.',
+            iconColor: '#864B4F',
+            confirmButtonText: 'Ok',
+            confirmButtonColor: '#864B4F',
+          });
+        }
+      });
+    },
+      error: (err) => {
+        if(!this.isAuthenticated){
+            Swal.fire({
+            icon: 'error',
+            title: 'Errore',
+            text: 'Devi essere autenticato per acquistare un biglietto.',
+            iconColor: '#864B4F',
+            confirmButtonText: 'Ok',
+            confirmButtonColor: '#864B4F',
+          });
+          return;
+        }
+
         Swal.fire({
           icon: 'error',
           title: 'Errore',
-          text: 'Si è verificato un errore durante l\'iscrizione all\'evento. Riprova più tardi.',
-          iconColor: '#799851',
+          text: 'Non è stato possibile verificare i biglietti dell\'utente. Riprova più tardi.',
+          iconColor: '#864B4F',
           confirmButtonText: 'Ok',
           confirmButtonColor: '#864B4F',
         });
@@ -60,5 +107,9 @@ export class Event implements OnInit{
       const url = `https://www.google.com/maps/search/?q=${event.toponimo}+${event.address},+${event.comune}`;
       window.open(url, '_blank');
     }
+  }
+
+  exit(){
+    window.history.back();
   }
 }

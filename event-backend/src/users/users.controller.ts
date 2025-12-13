@@ -27,14 +27,10 @@ export class UsersController {
     @Get('tickets')
     @UseGuards(JwtAuthGuard)
     getTicketsByUserId(@Req() req) : Promise<Ticket[]>{
-        console.log('Richiesta ricevuta per ottenere i biglietti dell\'utente');
         // Controlla che l'utente esista
         const userId = req.user.sub;
-        console.log(`User ID from request: ${userId}`);
-        console.log(`Cerco l'utente nel dabatabe`);
         this.userService.findUserById(userId);
-
-        console.log(`Cerco i ticket per l'utente con ID: ${userId}`);
+        
         return this.ticketsService.findTicketsByUserId(userId);
     }
 
@@ -80,5 +76,16 @@ export class UsersController {
         }
         
         return this.userService.updateUser(id, updateUserDto);
+    }
+
+    @Post('compare-password/:id')
+    @UseGuards(JwtAuthGuard)
+    compareUserPassword(@Param('id', ParseIntPipe) id: number, @Body('password') password: string, @Req() req) : Promise<boolean> {
+        const user = req.user;
+        if(user.sub !== id) {
+            throw new ForbiddenException('Non hai i permessi per confrontare la password di questo utente');
+        }
+
+        return this.userService.comparePasswords(id, password);
     }
 }

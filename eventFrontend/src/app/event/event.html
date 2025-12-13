@@ -2,7 +2,13 @@
   <div class="event-card">
     <div class="event-info">
       <div *ngIf="event">
-        <h2>{{ event.eventName }}</h2>
+        <div class="card-title">
+          <h2>{{ event.eventName }}</h2>
+          <svg (click)="exit()"  xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+          </svg>
+        </div>
+        
         <p>{{ event.description? event.description.charAt(0).toUpperCase() + event.description.slice(1).toLowerCase(): ''}}</p>
         <p><strong>Luogo:</strong> {{ event.toponimo + " " + event.address}}</p>
         <p><strong>Comune:</strong> {{ event.comune + ", " + event.cap }}</p>
@@ -10,9 +16,7 @@
         <p><strong>Data fine:</strong> {{ event.endDate | date:'dd/MM/yyyy' }}</p>
         <p><strong>Orario:</strong> {{ event.startTime + " - " + event.endTime}}</p>
         <div class="buttons">
-          <button class="btn map-btn" (click)="eventOpenMap(event)">
-           Mappa
-          </button>
+          <button class="btn map-btn" (click)="eventOpenMap(event)">Mappa</button>
           <button class="btn signup-btn" (click)="purchaseTicket(event.id)">Iscriviti</button>
         </div>
       </div>

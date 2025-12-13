@@ -6,9 +6,10 @@
             <form>
                 <input type="text" placeholder="Nome utente" #usernameLogin>
                 <input type="password" placeholder="Password" #passwordLogin>
-                <button type="button" (click)="loginUser(usernameLogin.value, passwordLogin.value)">Accedi</button>
+                <button type="button" class="button" (click)="loginUser(usernameLogin.value, passwordLogin.value)">Accedi</button>
                 <hr>
-                <button type="button" (click)="onRegisterClick()">Register</button>
+                <p class="little-text">Sei un nuovo utente?</p>
+                <button type="button" class="secondary-button" (click)="onRegisterClick()">Registrati</button>
             </form>
         </div>
 
@@ -21,9 +22,10 @@
                 <input type="text" placeholder="Nome utente" #username>
                 <input type="email" placeholder="Email" #email>
                 <input type="password" placeholder="Password" #password>
-                <button type="button" (click)="registerUser(nome.value, cognome.value, username.value, email.value, password.value)">Registrati</button>
+                <button type="button" class="button" (click)="registerUser(nome.value, cognome.value, username.value, email.value, password.value)">Registrati</button>
                 <hr>
-                <button type="button" (click)="onLoginClick()">Login</button>
+                <p class="little-text">Hai già un account?</p>
+                <button type="button" class="secondary-button" (click)="onLoginClick()">Accedi</button>
               </form>
         </div>
         <div class="auth_hero"></div>

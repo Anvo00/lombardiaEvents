@@ -13,4 +13,6 @@ export interface EventModel {
     toponimo: string;
     address: string;
     cap: string;
+
+    isFavorite?: boolean;
 }

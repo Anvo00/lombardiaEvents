@@ -3,19 +3,20 @@
     flex-direction: row;
     min-height: fit-content;
     height: auto;
+    justify-content: center;
 }
 
 .auth_form {
     display: flex;
     flex-direction: row;
-    width: 100vw;
+    width: 70vw;
     padding: 60px 60px 60px 60px;   
     align-items: center;
     justify-content: center;
 }
 
 .auth_form_box {
-     display: flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px 20px 20px 20px;
@@ -32,10 +33,9 @@
    flex-direction: column;
    gap: 10px;
    min-width: auto;
-   
+   width: 80%;
+   align-items: center;
 }
-
-
 
 .auth_form form input{
     background-color: #eee;
@@ -44,9 +44,10 @@
     font-size: 13px;
     border-radius: 8px;
     outline: none;
+    width: 100%;
 }
 
-.auth_form form button{
+.auth_form .button{
     background-color: #799851;
     color: #fff;
     font-size: 12px;
@@ -57,6 +58,7 @@
     letter-spacing: 0.5px;
     text-transform: uppercase;
     cursor: pointer;
+    width: 50%;
 }
 
 .auth_hero {
@@ -65,7 +67,6 @@
     background-size: cover;
     height: 100%;
     border-radius: 0px 40px 40px 0px;
-
 }
 
 hr {
@@ -75,6 +76,32 @@ hr {
   width: 96%;               
   background-color: #799851;
   height: 1px;
+}
+
+.little-text {
+  font-size: 14px;
+  color: #555;
+  text-align: center;
+}
+
+.auth_form_box .secondary-button {
+  background-color: transparent;
+    color: #212529;
+    font-size: 12px;
+    padding: 10px 45px;
+    border: 1px solid rgb(120 120 120 / 20%);
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    width: 50%;
+}
+
+.auth_form_box .secondary-button:hover {
+  scale: 1.05;
+  background-color: #799851;
+  color: white;
 }
 
 .disabled{
@@ -111,9 +138,8 @@ hr {
     max-width: 500px;
     min-height: min-auto;
     padding: 20px;
-    justify-content: start;
+    justify-content: center;
     border-radius: 0px 0px 40px 40px;
-
   }
 
   .auth_form_box form {
