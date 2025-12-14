@@ -5,6 +5,8 @@ import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/database/typeorm';
 import { UserLoginDto } from './dto/user-login.dto';
+import { Role } from '@shared/role.enum';
+import { CreateUserGoogleDto } from './dto/create-user-google.dto';
 
 @Injectable()
 export class AuthService {
@@ -32,15 +34,31 @@ export class AuthService {
         }
     }
     
-    async login(user: any) : Promise<{access_token: string}> {
+    async login(user: User) : Promise<{access_token: string}> {
 
         const payload = {
             username: user.username,
             sub: user.id,
-            role: user.role
+            role: user.role,
+            provider: user.provider
         }
         
         return {access_token: this.jwtService.sign(payload)}
+    }
+
+    async validateOrCreateUser(googleUser: {email: string; name: string; surname: string; googleId: string;}): Promise<User> {
+        const existingGoogleIdUser = await this.userService.findUserByGoogleId(googleUser.googleId);
+        if (existingGoogleIdUser) return existingGoogleIdUser;
+
+        const createUserGoogleDto: CreateUserGoogleDto = {
+            email: googleUser.email,
+            name: googleUser.name,
+            surname: googleUser.surname,
+            role: Role.USER,
+            googleId: googleUser.googleId
+        };
+
+        return this.userService.createGoogleUser(createUserGoogleDto);
     }
 
     async hashPassword(password: string): Promise<string> {

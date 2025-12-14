@@ -16,8 +16,6 @@ import { Footer } from '../footer/footer';
 export class Auth {
 
   registerFormActive = false;
-usernameLogin: any;
-passwordLogin: any;
 
   constructor(private authService : AuthService, private router : Router) { }
 
@@ -142,5 +140,45 @@ passwordLogin: any;
         console.error('Errore durante il login:', error);
       }
     });
+  }
+
+  async loginWithGoogle(): Promise<void> {
+    try {
+      const token = await this.authService.loginWithGoogle();
+
+      this.authService.getProfile(token).subscribe({
+        next: (user) => {
+          Swal.fire({
+          icon: 'success',
+          title: 'Login avvenuto con successo!',
+          text: `Bentornat*, ${user.username}!`,
+          iconColor: '#799851',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#864B4F',
+          });
+
+        this.router.navigate(['/home']);
+        },
+        error: () => {
+          Swal.fire({
+          icon: 'error',
+          title: 'Errore',
+          text: 'Errore nel recupero del profilo utente',
+          iconColor: '#864B4F',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#864B4F',
+          });
+        }
+      });
+    }
+    catch (error) {
+      Swal.fire({
+      icon: 'error',
+      title: 'Login Google annullato',
+      text: 'Operazione interrotta',
+      iconColor: '#799851',
+      confirmButtonColor: '#864B4F',
+    });
+    }
   }
 }

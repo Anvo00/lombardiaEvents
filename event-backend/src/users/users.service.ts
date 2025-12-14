@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {  Repository } from 'typeorm';
 import { User } from '../database/typeorm/user.entity';
 import * as bcrypt from 'bcrypt';
+import { CreateUserGoogleDto } from 'src/auth/dto/create-user-google.dto';import { create } from 'domain';
 
 @Injectable()
 export class UsersService {
@@ -48,6 +49,40 @@ export class UsersService {
         return this.userRepository.save(newUser);
     }
 
+    async createGoogleUser(createUserGoogleDto: CreateUserGoogleDto) : Promise<User> {
+        const existingGoogleIdUser = await this.userRepository.findOne({where: {googleId: createUserGoogleDto.googleId}});
+        if(existingGoogleIdUser) throw new BadRequestException('Utente con Google ID già esistente');
+
+        // Se l'utente si è già registrato con la stessa mail, lo collega all'account Google
+        const existingEmailUser = await this.userRepository.findOne({where: {email: createUserGoogleDto.email}});
+        if(existingEmailUser) {
+            existingEmailUser.googleId = createUserGoogleDto.googleId;
+            existingEmailUser.provider = 'google';
+            return this.userRepository.save(existingEmailUser);
+        }
+
+        // Se l'utente non ha uno username, ne genera uno automaticamente
+        if(!createUserGoogleDto.username) {
+            createUserGoogleDto.username = createUserGoogleDto.name.toLowerCase() + '.' + createUserGoogleDto.surname.toLowerCase();
+
+            let counter = 1;
+            let tempUsername = createUserGoogleDto.username;
+            while(await this.userRepository.findOne({where: {username: tempUsername}})) {
+                tempUsername = `${createUserGoogleDto.username}${counter}`;
+                counter++;
+            }
+            createUserGoogleDto.username = tempUsername;
+        }
+
+        const newGoogleUser = this.userRepository.create({
+            ...createUserGoogleDto,
+            provider: 'google',
+            password: createUserGoogleDto.password ? await this.hashPassword(createUserGoogleDto.password) : await this.hashPassword(Math.random().toString(36).slice(-8).toUpperCase() + '1'),
+        });
+
+        return this.userRepository.save(newGoogleUser);
+    }
+
     async updateUser(id : number, updateUserDto : UpdateUserDto) : Promise<User> {
         // Se viene trovato l'utente, allora viene fatto il merge delle informazioni automaticamente
         const updatedUser = await this.userRepository.preload({id, ...updateUserDto});
@@ -87,5 +122,9 @@ export class UsersService {
         }
 
         return true;
+    }
+
+    async findUserByGoogleId(googleId : string) : Promise<User | null> {
+        return this.userRepository.findOne({where : {googleId}});
     }
 }

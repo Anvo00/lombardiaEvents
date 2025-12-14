@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable, tap } from "rxjs";
 import { UserModel } from "../models/user.model";
 import { CreateUserDto } from "./dto/user-create.dto";
 import { UserLoginDto } from "./dto/user-login.dto";
+import { resolve } from "path";
 
 @Injectable({
   providedIn: 'root'
@@ -68,6 +69,40 @@ export class AuthService {
         this.isAuthenticated.next(true)
       })
     );
+  }
+
+  loginWithGoogle() : Promise<string> {
+    return new Promise((resolve, reject) => {
+      const width = 500;
+      const height = 600;
+      const left = (screen.width - width) / 2;
+      const top = (screen.height - height) / 2;
+
+      const popup = window.open(
+        `${environment.apiUrl}/auth/google`,
+        'Google Login',
+        `width=${width},height=${height},top=${top},left=${left}`
+      );
+
+      if(!popup) {
+        reject('Popup bloccato');
+        return;
+      }
+
+      const listener = (event: MessageEvent) => {
+        if (event.origin === window.location.origin && event.data?.type === 'google-auth') {
+          const token = event.data.token;
+
+          sessionStorage.setItem('token', token);
+          this.isAuthenticated.next(true);
+
+          window.removeEventListener('message', listener);
+          resolve(token);
+        }
+      };
+
+      window.addEventListener('message', listener);
+    });
   }
 
   getProfile(access_token : String): Observable<UserModel> {

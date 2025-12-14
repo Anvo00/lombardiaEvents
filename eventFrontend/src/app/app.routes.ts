@@ -14,5 +14,10 @@ export const routes: Routes = [
   { path: 'event/:id', component: Event },
   { path: 'auth', component: Auth },
   { path: 'passwordchange', component: PasswordChange},
+  { path: 'google-callback',
+    loadComponent: () =>
+      import('./auth/google-callback')
+        .then(m => m.GoogleCallback)
+  },
   { path: '**', redirectTo: 'home' } // wildcard per le route 
 ];

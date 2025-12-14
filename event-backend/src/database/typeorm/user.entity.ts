@@ -49,4 +49,17 @@ export class User {
 
     @Column({type: 'simple-enum', enum: Role, default: Role.USER})
     role: Role;
+
+    @Column({
+        name: 'google_id',
+        nullable: true,
+    })
+    googleId?: string;
+
+    @Column({
+        name: 'provider',
+        nullable: false,
+        default: 'local',
+    })
+    provider: string;
 }
