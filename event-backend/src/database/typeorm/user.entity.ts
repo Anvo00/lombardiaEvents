@@ -1,6 +1,7 @@
 import { Exclude } from "class-transformer";
-import { Entity, Column,  PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column,  PrimaryGeneratedColumn, ManyToMany } from "typeorm";
 import { Role } from '@shared/role.enum';
+import { FavoriteEvent } from "./favorite-event.entity";
 
 @Entity()
 export class User {
@@ -62,4 +63,7 @@ export class User {
         default: 'local',
     })
     provider: string;
+
+    @ManyToMany(() => FavoriteEvent, fav => fav.user)
+    favoriteEvents: FavoriteEvent[];
 }

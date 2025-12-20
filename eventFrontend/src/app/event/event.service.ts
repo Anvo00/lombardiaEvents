@@ -27,7 +27,8 @@ export class EventService {
       return this.http.get<EventModel>(this.baseUrl + `/${id}`);
     }
 
-    // === TICKET ===
+
+    // === TICKET === //
 
     purchaseTicket(eventId: string) : Observable<any> {
       return this.http.post<any>(this.ticketsUrl + `/purchase`, { eventId }, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
@@ -35,5 +36,20 @@ export class EventService {
 
     getUserTickets() : Observable<any> {
       return this.http.get<any>(`${environment.apiUrl}/users/tickets`, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
+    }
+
+
+    // === FAVORITES === //
+
+    getFavoriteEvents() {
+      return this.http.get<any>(`${environment.apiUrl}/users/favorites`, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
+    }
+
+    addFavoriteEvent(eventId: number) {
+      return this.http.post<any>(`${environment.apiUrl}/users/favorites/${eventId}`, {}, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
+    }
+
+    removeFavoriteEvent(eventId: number) {
+      return this.http.delete<any>(`${environment.apiUrl}/users/favorites/${eventId}`, {headers: {Authorization: `Bearer ${sessionStorage.getItem('token')}`}});
     }
 }

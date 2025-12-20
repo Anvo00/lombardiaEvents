@@ -5,7 +5,6 @@ import { BehaviorSubject, Observable, tap } from "rxjs";
 import { UserModel } from "../models/user.model";
 import { CreateUserDto } from "./dto/user-create.dto";
 import { UserLoginDto } from "./dto/user-login.dto";
-import { resolve } from "path";
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +21,15 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
     if(typeof window !== 'undefined'){
-      const storedUser = sessionStorage.getItem('currentUser');
-        if (storedUser) {
-          this.currentUserSubject.next(JSON.parse(storedUser));
-          this.isAuthenticated.next(true);
-        }
+      const token = sessionStorage.getItem('token');
+      const user = sessionStorage.getItem('currentUser');
+
+      if(token && user){
+        this.currentUserSubject.next(JSON.parse(user));
+        this.isAuthenticated.next(true);
+      } else {
+        this.isAuthenticated.next(false);
+      }
     }
   }
 
@@ -105,7 +108,7 @@ export class AuthService {
     });
   }
 
-  getProfile(access_token : String): Observable<UserModel> {
+  getProfile(access_token : string): Observable<UserModel> {
     return this.http.get<UserModel>(this.baseUrl + `/profile`, {headers: {Authorization: `Bearer ${access_token}`}}).pipe(
       tap(user => {
         this.saveUserToStorage(user);

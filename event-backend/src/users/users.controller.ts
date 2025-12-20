@@ -23,6 +23,12 @@ export class UsersController {
     getUsers(){
         return this.userService.findAllUsers();
     }
+
+    @Get('favorites')
+    @UseGuards(JwtAuthGuard)
+    getFavorites(@Req() req) {
+        return this.userService.getFavoriteEvents(req.user.sub);    
+    }
     
     @Get('tickets')
     @UseGuards(JwtAuthGuard)
@@ -50,7 +56,7 @@ export class UsersController {
 
 
 
-    //--- CRUD Operations ---//
+    // === CRUD Operations === //
     
 
     @Post()
@@ -87,5 +93,20 @@ export class UsersController {
         }
 
         return this.userService.comparePasswords(id, password);
+    }
+
+
+    // === FAVORITE EVENTS === //
+
+    @Post('favorites/:eventId')
+    @UseGuards(JwtAuthGuard)
+    addFavorite(@Req() req, @Param('eventId', ParseIntPipe) eventId: number) {
+        return this.userService.addFavoriteEvent(req.user.sub, eventId);
+    }
+
+    @Delete('favorites/:eventId')
+    @UseGuards(JwtAuthGuard)
+    removeFavorite(@Req() req, @Param('eventId', ParseIntPipe) eventId: number) {
+        return this.userService.removeFavoriteEvent(req.user.sub, eventId);
     }
 }

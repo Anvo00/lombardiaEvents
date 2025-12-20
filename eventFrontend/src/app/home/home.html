@@ -7,6 +7,11 @@
   <div class="container">
     <div class="search">
       <h2 class="search__title">Scopri i nostri eventi</h2>
+      <label>
+        <input type="checkbox" (change)="onTogglefavoritesFilter($event)" /> 
+        Preferiti
+      </label>
+      
       <div class="search__container">
         <input type="text" class="search__input" placeholder="Filtra eventi..." #input (keyup.enter)="onSearchFilter(input.value)"/>
         <button class="search__button" (click)="onSearchFilter(input.value)">

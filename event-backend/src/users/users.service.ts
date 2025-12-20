@@ -6,11 +6,13 @@ import {  Repository } from 'typeorm';
 import { User } from '../database/typeorm/user.entity';
 import * as bcrypt from 'bcrypt';
 import { CreateUserGoogleDto } from 'src/auth/dto/create-user-google.dto';import { create } from 'domain';
+import { FavoriteEvent } from 'src/database/typeorm';
 
 @Injectable()
 export class UsersService {
 
-    constructor(@InjectRepository(User) private userRepository : Repository<User>) {}
+    constructor(@InjectRepository(User) private userRepository : Repository<User>,
+        @InjectRepository(FavoriteEvent) private favoritesRepository : Repository<FavoriteEvent>) {}
 
     
     async findAllUsers() : Promise<User[]>{
@@ -41,7 +43,7 @@ export class UsersService {
     }
 
 
-    //--- CRUD Operations ---//
+    // === CRUD Operations === //
 
 
     async createUser(createUserDto : CreateUserDto) : Promise<User>{
@@ -126,5 +128,30 @@ export class UsersService {
 
     async findUserByGoogleId(googleId : string) : Promise<User | null> {
         return this.userRepository.findOne({where : {googleId}});
+    }
+
+
+    // === FAVORITE EVENTS === //
+
+    async getFavoriteEvents(userId: number) : Promise<FavoriteEvent[]> {
+        const user = await this.findUserById(userId);
+        if(!user) throw new NotFoundException(`Utente con id ${userId} non trovato`);
+
+        return this.favoritesRepository.find({where: {user: {id: userId}}});
+    }
+
+    async addFavoriteEvent(userId: number, eventId: number) : Promise<FavoriteEvent> {
+        const user = await this.findUserById(userId);
+        if(!user) throw new NotFoundException(`Utente con id ${userId} non trovato`);
+
+        const favorite = this.favoritesRepository.create({ eventId, user });
+            return this.favoritesRepository.save(favorite);
+    }
+
+    async removeFavoriteEvent(userId: number, eventId: number) {
+        const user = await this.findUserById(userId);
+        if(!user) throw new NotFoundException(`Utente con id ${userId} non trovato`);
+            
+        return this.favoritesRepository.delete({ user: {id: userId}, eventId});
     }
 }
