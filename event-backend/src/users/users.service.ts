@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {  Repository } from 'typeorm';
 import { User } from '../database/typeorm/user.entity';
 import * as bcrypt from 'bcrypt';
-import { CreateUserGoogleDto } from 'src/auth/dto/create-user-google.dto';import { create } from 'domain';
+import { CreateUserGoogleDto } from 'src/auth/dto/create-user-google.dto';
 import { FavoriteEvent } from 'src/database/typeorm';
 
 @Injectable()

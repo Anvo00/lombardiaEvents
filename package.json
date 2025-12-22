@@ -1,4 +1,10 @@
 {
+  "scripts": {
+    "install:all": "cd event-backend && npm install && npm audit fix && cd ../eventFrontend && npm install && npm audit fix",
+    "start:backend": "cd event-backend && npm run start",
+    "start:frontend" : "cd eventFrontend && ng serve --open",
+    "startProject": "concurrently \"npm run start:backend\" \"npm run start:frontend\""
+  },
   "dependencies": {
     "@nestjs/config": "^4.0.2"
   }

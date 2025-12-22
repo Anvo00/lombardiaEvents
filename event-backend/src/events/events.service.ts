@@ -3,7 +3,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { EventDto } from './dto/event.dto';
 import { plainToInstance } from 'class-transformer';
-import { Not } from 'typeorm';
 
 @Injectable()
 export class EventsService {
