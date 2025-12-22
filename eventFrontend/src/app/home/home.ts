@@ -63,10 +63,8 @@ export class Home implements OnInit{
   }
 
   loadFavoriteEvents(): void {
-    console.log('🚀 CHIAMO GET FAVORITES');
     this.eventService.getFavoriteEvents().subscribe({
       next: (favorites) => {
-        console.log('✅ FAVORITI RICEVUTI', favorites);
         this.favoriteEventsIds = new Set(favorites.map((fav: any) => fav.eventId));
         this.markFavorites(); 
       },

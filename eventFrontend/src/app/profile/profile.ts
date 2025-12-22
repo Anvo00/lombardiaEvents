@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { TicketModel } from '../models/ticket.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../event/event.service';
+import { ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-profile',
@@ -24,6 +25,12 @@ export class Profile implements OnInit {
   formUser: UserModel = { ...this.user };
 
   tickets!: TicketModel[];
+
+  @ViewChild('carousel', {static: false})
+  carousel!: ElementRef<HTMLDivElement>;
+
+  atStart = true;
+  atEnd = false;
 
   constructor(private authService : AuthService, private profileService : ProfileService, 
     private router : Router, private route : ActivatedRoute, private eventService : EventService) {}
@@ -114,99 +121,120 @@ export class Profile implements OnInit {
     });
   }
 
-showTicketDetails(ticket: TicketModel): void {
+  showTicketDetails(ticket: TicketModel): void {
 
-  this.eventService.getEventById(ticket.eventId.toString()).subscribe({
-    next: (event) => {
-      Swal.fire({
-        title: `<strong>${event.eventName}</strong>`,
-        html: `
-          <div style="text-align: left;">
-            <p><b>Data:</b> ${new Date(event.startDate).toLocaleDateString('it-IT')} - ${new Date(event.endDate).toLocaleDateString('it-IT')}</p>
-            <p><b>Orario:</b> ${event.startTime} - ${event.endTime}</p>
-            <p><b>Luogo:</b> ${ticket.event_location}</p>
-            <p><b>Prenotato il:</b> ${new Date(ticket.purchaseDate).toLocaleDateString()}</p>
-          </div>
-        `,
-        icon: 'info',
-        iconColor: '#799851',
-        showCloseButton: true,
-        showCancelButton: true,
-        confirmButtonText: 'Mappa',
-        cancelButtonText: 'Elimina ticket',
-        confirmButtonColor: '#799851',
-        cancelButtonColor: '#864B4F',
-        focusConfirm: false,
-        customClass: {
-          confirmButton: 'rounded-btn',
-          cancelButton: 'rounded-btn'
-        }
-      }).then(result => {
-        if (result.isConfirmed) {
-          if (event.address) {
-            const url = `https://www.google.com/maps/search/?q=${event.toponimo}+${event.address},+${event.comune}`;
-            window.open(url, '_blank');
+    this.eventService.getEventById(ticket.eventId.toString()).subscribe({
+      next: (event) => {
+        Swal.fire({
+          title: `<strong>${event.eventName}</strong>`,
+          html: `
+            <div style="text-align: left;">
+              <p><b>Data:</b> ${new Date(event.startDate).toLocaleDateString('it-IT')} - ${new Date(event.endDate).toLocaleDateString('it-IT')}</p>
+              <p><b>Orario:</b> ${event.startTime} - ${event.endTime}</p>
+              <p><b>Luogo:</b> ${ticket.event_location}</p>
+              <p><b>Prenotato il:</b> ${new Date(ticket.purchaseDate).toLocaleDateString()}</p>
+            </div>
+          `,
+          icon: 'info',
+          iconColor: '#799851',
+          showCloseButton: true,
+          showCancelButton: true,
+          confirmButtonText: 'Mappa',
+          cancelButtonText: 'Elimina ticket',
+          confirmButtonColor: '#799851',
+          cancelButtonColor: '#864B4F',
+          focusConfirm: false,
+          customClass: {
+            confirmButton: 'rounded-btn',
+            cancelButton: 'rounded-btn'
           }
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          Swal.fire({
-            title: 'Sei sicuro?',
-            text: 'Questa operazione eliminerà definitivamente il ticket.',
-            icon: 'warning',
-            iconColor: '#799851',
-            showCancelButton: true,
-            confirmButtonText: 'Sì, elimina',
-            cancelButtonText: 'Annulla',
-            confirmButtonColor: '#799851',
-            cancelButtonColor: '#864B4F',
-            customClass: {
-              confirmButton: 'rounded-btn',
-              cancelButton: 'rounded-btn'
+        }).then(result => {
+          if (result.isConfirmed) {
+            if (event.address) {
+              const url = `https://www.google.com/maps/search/?q=${event.toponimo}+${event.address},+${event.comune}`;
+              window.open(url, '_blank');
             }
-          }).then(confirmResult => {
-            if (confirmResult.isConfirmed) {
-              this.profileService.deleteTicket(ticket.id).subscribe({
-                next: () => {
-                  Swal.fire({
-                    icon: 'success',
-                    iconColor: '#799851',
-                    title: 'Eliminato!',
-                    text: 'Il ticket è stato eliminato.',
-                    confirmButtonColor: '#864B4F',
-                    customClass: { confirmButton: 'rounded-btn' }
-                  });
-                  this.tickets = this.tickets.filter(t => t.id !== ticket.id);  
-                  
-                  // ricarica i ticket
-                  this.loadUserTickets();
-                },
-                error: (error) => {
-                  console.error('Errore eliminazione ticket', error);
-                  Swal.fire({
-                    icon: 'error',
-                    iconColor: '#799851',
-                    title: 'Errore',
-                    text: 'Impossibile eliminare il ticket. Riprova più tardi.',
-                    confirmButtonColor: '#864B4F',
-                    customClass: { confirmButton: 'rounded-btn' }
-                  });
-                }
-              });
-            }
-          });
-        }
-      });
-    },
-    error: (error) => {
-      console.error('Errore durante il recupero dei dettagli dell\'evento:', error);
-      Swal.fire({
-        icon: 'error',
-        iconColor: '#799851',
-        title: 'Errore',
-        text: 'Impossibile recuperare i dettagli dell\'evento.',
-        confirmButtonColor: '#864B4F',
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire({
+              title: 'Sei sicuro?',
+              text: 'Questa operazione eliminerà definitivamente il ticket.',
+              icon: 'warning',
+              iconColor: '#799851',
+              showCancelButton: true,
+              confirmButtonText: 'Sì, elimina',
+              cancelButtonText: 'Annulla',
+              confirmButtonColor: '#799851',
+              cancelButtonColor: '#864B4F',
+              customClass: {
+                confirmButton: 'rounded-btn',
+                cancelButton: 'rounded-btn'
+              }
+            }).then(confirmResult => {
+              if (confirmResult.isConfirmed) {
+                this.profileService.deleteTicket(ticket.id).subscribe({
+                  next: () => {
+                    Swal.fire({
+                      icon: 'success',
+                      iconColor: '#799851',
+                      title: 'Eliminato!',
+                      text: 'Il ticket è stato eliminato.',
+                      confirmButtonColor: '#864B4F',
+                      customClass: { confirmButton: 'rounded-btn' }
+                    });
+                    this.tickets = this.tickets.filter(t => t.id !== ticket.id);  
+                    
+                    // ricarica i ticket
+                    this.loadUserTickets();
+                  },
+                  error: (error) => {
+                    console.error('Errore eliminazione ticket', error);
+                    Swal.fire({
+                      icon: 'error',
+                      iconColor: '#799851',
+                      title: 'Errore',
+                      text: 'Impossibile eliminare il ticket. Riprova più tardi.',
+                      confirmButtonColor: '#864B4F',
+                      customClass: { confirmButton: 'rounded-btn' }
+                    });
+                  }
+                });
+              }
+            });
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Errore durante il recupero dei dettagli dell\'evento:', error);
+        Swal.fire({
+          icon: 'error',
+          iconColor: '#799851',
+          title: 'Errore',
+          text: 'Impossibile recuperare i dettagli dell\'evento.',
+          confirmButtonColor: '#864B4F',
 
-      });
-    }
-  });
-}
+        });
+      }
+    });
+  }
+
+  scrollLeft() : void {
+    this.carousel.nativeElement.scrollBy({
+      left: -300,
+      behavior: 'smooth'
+    });
+  }
+
+  scrollRight() : void {
+    this.carousel.nativeElement.scrollBy({
+      left: 300,
+      behavior: 'smooth'
+    });
+  }
+
+  onScroll() : void {
+    const el = this.carousel.nativeElement;
+
+    this.atStart = el.scrollLeft <= 0;
+    this.atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth -1;
+  }
 }

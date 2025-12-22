@@ -96,22 +96,97 @@
   margin: 40px 0 20px 0;
 }
 
-.container-tickets {
+.carousel-wrapper {
+  position: relative;
+  margin-top: 20px;
+}
+
+.carousel-tickets {
     display: flex;
-    flex-wrap: wrap;
     margin-top: 20px;
     gap: 20px;
-    justify-content: left;
+    
+
+    overflow-x: auto;
+    position: relative;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+}
+
+.carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 38px;
+  height: 38px;
+
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+
+  color: #212529;
+
+  cursor: pointer;
+  z-index: 10;
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  &.left{
+    left: 5px;
+  }
+
+  &.right{
+    right: 5px;
+  }
+}
+
+.carousel-nav:hover:not(:disabled) svg {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.carousel-wrapper::before, .carousel-wrapper::after  {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 40px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.carousel-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, #fff, transparent);
+}
+
+.carousel-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, #fff, transparent);
 }
 
 .ticket-card {
-    width: 270px;
-    height: 350px; //400
+    flex: 0 0 270px;
+    height: 350px;    
     background-color: #fff;
+
+    scroll-snap-align: start;
+
     padding: 10px;
     border-radius: 10px;
     border:1px solid rgb(235, 221, 221);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -138,6 +213,7 @@
   padding-top: 10px;
 }
 
+
 .btn-password:hover {
   background-color: #799851;    
   color: white;                   
@@ -150,8 +226,27 @@
   }
 
   .ticket-card {
-        width: 100%;
+    flex: 0 0 90%;
  }
+
+  .carousel-tickets {
+    gap: 16px;
+    margin-left: 24px;
+  }
+
+  .carousel-wrapper{
+    margin-left: auto;
+  }
+
+  .carousel-nav{
+    height: 32px;
+    width: 32px;
+  }
+
+  .carousel-wrapper::after, .carousel-wrapper::before{
+    display: none;
+  }
+
   .profile-card {
     width: 100%;           
     padding: 20px;

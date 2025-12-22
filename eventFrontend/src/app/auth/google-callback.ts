@@ -1,4 +1,5 @@
-import { Component, OnInit } from "@angular/core";
+import { isPlatformBrowser } from "@angular/common";
+import { Component, Inject, OnInit, PLATFORM_ID } from "@angular/core";
 
 @Component({
     standalone: true,
@@ -6,7 +7,13 @@ import { Component, OnInit } from "@angular/core";
 })
 export class GoogleCallback implements OnInit {
 
+    constructor(@Inject(PLATFORM_ID) private platformId : Object){}
+
     ngOnInit(): void {
+        if (!isPlatformBrowser(this.platformId)) {
+            return;
+        }
+
         const params = new URLSearchParams(window.location.search);
         const token = params.get('token');
 
