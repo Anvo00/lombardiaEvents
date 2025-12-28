@@ -1,7 +1,5 @@
 <div class="home">
   <div class="home-image">
-    <h1>Eventi Lombardia</h1>
-    <p>La tua guida per il territorio</p>
   </div>
 
   <div class="container">
@@ -37,7 +35,7 @@
       <div *ngIf="paginatedEvents.length === 0" class="no-events">
         <p>Nessun evento trovato.</p>
       </div>
-      <a *ngFor="let event of paginatedEvents" class="event-card" (click)="onSelectEvent(event.id)" style="color:#131313; text-decoration: none;">
+      <a *ngFor="let event of paginatedEvents" class="event-card" (click)="onSelectEvent(event.id)" style="color:#293b62; text-decoration: none;">
         <div class="card-title">
           <h3>{{ event.eventName }}</h3>
 

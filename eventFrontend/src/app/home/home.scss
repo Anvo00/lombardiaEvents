@@ -1,5 +1,5 @@
 .home {
-    background-color: #f4eeeb;
+    background-color: #eeebe3;
     min-height: fit-content;
     height: 100vh;
 }
@@ -11,21 +11,14 @@
 .home h2 {
     font-size: 2rem;
     text-align: center;
-    color: #000000;
+    color: #293b62;
 }
 
 .home-image {
-    background-image: url("/images/home-hero.jpg");
+    background-image: url("/images/background.jpg");
     background-size: cover;
     background-position: center;
     height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-align: center;
-    padding: 30px;
-    flex-direction: column;
 }
 
 .home-image h1 {
@@ -64,8 +57,9 @@
   border-radius: 8px;
   background-color: transparent;
   border: 1px solid rgb(120 120 120 / 20%);
-  color: #212529;
+  color: #293b62;
   font-size: 1rem;
+  font-weight: 600;
 
   cursor: pointer;
   transition: opacity 0.3s;
@@ -136,8 +130,6 @@
   margin-bottom: -15px;
 }
 
-
-
 .search {
   display: flex;
   align-items: center;
@@ -164,7 +156,7 @@
 .search__input {
   font-family: inherit;
   font-size: 1rem;
-  background-color: #f4f2f2;
+  background-color: white;
   border: 0.5px solid #dcdcdc;
   color: #646464;
   padding: 0.7rem 2.5rem 0.7rem 1rem; 
@@ -210,9 +202,9 @@
   }
   
   .page-item.active .page-link {
-    background-color: #799851;
+    background-color: #6bb95d;
     color: white;
-    border-color: #799851;
+    border-color: #6bb95d;
   }
   
   
@@ -220,7 +212,7 @@
     font-weight: bold;
     text-align: center;
     margin-top: 64px;
-    color: black;
+    color: #293b62;
   }
 
 

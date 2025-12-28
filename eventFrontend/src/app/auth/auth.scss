@@ -48,7 +48,7 @@
 }
 
 .auth_form .button{
-    background-color: #799851;
+    background-color: #6bb95d;
     color: #fff;
     font-size: 12px;
     padding: 10px 45px;
@@ -63,8 +63,10 @@
 
 .auth_hero {
     width: 80%;
-    background-image: url("https://imgs.search.brave.com/vkAciGzNiev-65Bl__LPfA5H47xT6mn8Y2_awGs1Ny8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90aGVs/aWJyYXRyYXZlbHMu/Y29tL3dwLWNvbnRl/bnQvdXBsb2Fkcy8y/MDIxLzAyL3RoZWxp/YnJhdHJhdmVsc19U/ZXJyYXp6YU1hcnRp/bmktMTAyNHg2ODMu/anBn");
-    background-size: cover;
+    background-image: url("/images/banner_auth.jpg");
+    background-size: 120%;
+    background-repeat: no-repeat;
+    background-position: center;
     height: 100%;
     border-radius: 0px 40px 40px 0px;
 }
@@ -74,7 +76,7 @@ hr {
   clear:both;
   display:block;
   width: 96%;               
-  background-color: #799851;
+  background-color: #6bb95d;
   height: 1px;
 }
 
@@ -86,7 +88,7 @@ hr {
 
 .auth_form_box .secondary-button {
   background-color: transparent;
-    color: #212529;
+    color: #293b62;
     font-size: 12px;
     padding: 10px 45px;
     border: 1px solid rgb(120 120 120 / 20%);
@@ -104,13 +106,13 @@ hr {
 
 .auth_form_box .secondary-button:hover {
   scale: 1.05;
-  background-color: #799851;
+  background-color: #6bb95d;
   color: white;
 }
 
 .auth_form_box .google-button {
   background-color: transparent;
-    color: #212529;
+    color: #293b62;
     font-size: 12px;
     padding: 10px 45px;
     border: 1px solid rgb(120 120 120 / 20%);
@@ -122,16 +124,16 @@ hr {
     width: 50%;
 
     & svg {
-      fill: #799851;
+      fill: #293b62;
     }
 
     &:hover {
       svg {
-        fill: white;
+        fill: #F4F2EF;
       }
       scale: 1.05;
-      background-color: #799851;
-      color: white;
+      background-color: #6bb95d;
+      color: #F4F2EF;
     }
 }
 

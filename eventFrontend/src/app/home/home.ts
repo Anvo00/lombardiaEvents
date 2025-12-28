@@ -149,9 +149,9 @@ export class Home implements OnInit{
           icon: 'error',
           title: 'Attenzione',
           text: 'Effettua l\'accesso per poter aggiungere ai preferiti.',
-          iconColor: '#864B4F',
+          iconColor: '#AF3E4D',
           confirmButtonText: 'Ok',
-          confirmButtonColor: '#864B4F',
+          confirmButtonColor: '#293B62',
         });
       return;
     }
@@ -172,9 +172,9 @@ export class Home implements OnInit{
           icon: 'success',
           title: 'Evento aggiunto',
           text: 'L\'evento è stato aggiunto ai preferiti.',
-          iconColor: '#799851',
+          iconColor: '#6bb95d',
           confirmButtonText: 'Ok',
-          confirmButtonColor: '#864B4F',
+          confirmButtonColor: '#293B62',
         });
       },
       error : () => {
@@ -182,9 +182,9 @@ export class Home implements OnInit{
           icon: 'error',
           title: 'Errore',
           text: 'Impossibile aggiungere l\' evento ai preferiti.',
-          iconColor: '#864B4F',
+          iconColor: '#AF3E4D',
           confirmButtonText: 'Ok',
-          confirmButtonColor: '#864B4F',
+          confirmButtonColor: '#293B62',
         });
       }
     })
@@ -203,9 +203,9 @@ export class Home implements OnInit{
           icon: 'success',
           title: 'Evento rimosso',
           text: 'L\'evento è stato rimosso dai preferiti.',
-          iconColor: '#799851',
+          iconColor: '#6bb95d',
           confirmButtonText: 'Ok',
-          confirmButtonColor: '#864B4F',
+          confirmButtonColor: '#293B62',
         });
       },
       error : () => {
@@ -213,9 +213,9 @@ export class Home implements OnInit{
           icon: 'error',
           title: 'Errore',
           text: 'Impossibile rimuovere l\' evento dai preferiti.',
-          iconColor: '#864B4F',
+          iconColor: '#AF3E4D',
           confirmButtonText: 'Ok',
-          confirmButtonColor: '#864B4F',
+          confirmButtonColor: '#293B62',
         });
       }
     })

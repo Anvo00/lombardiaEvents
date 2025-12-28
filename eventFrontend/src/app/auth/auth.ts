@@ -37,9 +37,9 @@ export class Auth {
         icon: 'error',
         title: 'Errore',
         text: 'Devi inserire una password!',
-        iconColor: '#799851',
+        iconColor: '#AF3E4D',
         confirmButtonText: 'Ok',
-        confirmButtonColor: '#864B4F',
+        confirmButtonColor: '#293B62',
       });
       return;
     }
@@ -49,9 +49,9 @@ export class Auth {
         icon: 'error',
         title: 'Errore',
         text: 'La password deve essere lunga almeno 8 caratteri!',
-        iconColor: '#799851',
+        iconColor: '#AF3E4D',
         confirmButtonText: 'Ok',
-        confirmButtonColor: '#864B4F',
+        confirmButtonColor: '#293B62',
       });
       return;
     }
@@ -61,9 +61,9 @@ export class Auth {
         icon: 'error',
         title: 'Errore',
         text: 'La password deve contenere almeno una lettera maiuscola, una lettera minuscola, un numero e un carattere speciale!',
-        iconColor: '#799851',
+        iconColor: '#AF3E4D',
         confirmButtonText: 'Ok',
-        confirmButtonColor: '#864B4F',
+        confirmButtonColor: '#293B62',
       });
       return;
     }
@@ -82,9 +82,9 @@ export class Auth {
           icon: 'success',
           title: 'Registrazione avvenuta con successo!',
           text: 'Benvenut*, ' + username + '!',
-          iconColor: '#799851',
+          iconColor: '#6bb95d',
           confirmButtonText: 'Ok',
-          confirmButtonColor: '#864B4F',
+          confirmButtonColor: '#293B62',
           
         });
         this.router.navigate(['/home']); // Reindirizza alla home page dopo la registrazione
@@ -94,9 +94,9 @@ export class Auth {
           icon: 'error',
           title: 'Errore durante la registrazione',
           text: 'Si è verificato un errore durante la registrazione. Riprova.',
-          iconColor: '#799851',
+          iconColor: '#AF3E4D',
         confirmButtonText: 'Ok',
-        confirmButtonColor: '#864B4F',
+        confirmButtonColor: '#293B62',
           
         });
         console.error('Errore durante la registrazione:', error);
@@ -121,9 +121,9 @@ export class Auth {
           icon: 'success',
           title: 'Login avvenuto con successo!',
           text: 'Bentornat*, ' + username + '!',
-          iconColor: '#799851',
+          iconColor: '#6bb95d',
           confirmButtonText: 'Ok',
-          confirmButtonColor: '#864B4F',
+          confirmButtonColor: '#293B62',
           
         });
         this.router.navigate(['/home']); // Reindirizza alla home page dopo il login
@@ -133,9 +133,9 @@ export class Auth {
           icon: 'error',
           title: 'Errore durante il login',
           text: 'Credenziali non valide. Riprova.',
-          iconColor: '#799851',
+          iconColor: '#AF3E4D',
           confirmButtonText: 'Ok',
-          confirmButtonColor: '#864B4F',
+          confirmButtonColor: '#293B62',
         });
         console.error('Errore durante il login:', error);
       }
@@ -152,9 +152,9 @@ export class Auth {
           icon: 'success',
           title: 'Login avvenuto con successo!',
           text: `Bentornat*, ${user.username}!`,
-          iconColor: '#799851',
+          iconColor: '#6bb95d',
           confirmButtonText: 'Ok',
-          confirmButtonColor: '#864B4F',
+          confirmButtonColor: '#293B62',
           });
 
         this.router.navigate(['/home']);
@@ -164,9 +164,9 @@ export class Auth {
           icon: 'error',
           title: 'Errore',
           text: 'Errore nel recupero del profilo utente',
-          iconColor: '#864B4F',
+          iconColor: '#AF3E4D',
           confirmButtonText: 'Ok',
-          confirmButtonColor: '#864B4F',
+          confirmButtonColor: '#293B62',
           });
         }
       });
@@ -176,8 +176,8 @@ export class Auth {
       icon: 'error',
       title: 'Login Google annullato',
       text: 'Operazione interrotta',
-      iconColor: '#799851',
-      confirmButtonColor: '#864B4F',
+      iconColor: '#AF3E4D',
+      confirmButtonColor: '#293B62',
     });
     }
   }

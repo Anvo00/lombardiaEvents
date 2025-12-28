@@ -15,7 +15,7 @@
   width: 80vh;
   height: auto;
   padding-bottom: 20px;
-  background: #fff;
+  background: white;
   border-radius: 20px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.15);
   overflow: hidden;
@@ -46,7 +46,7 @@
 } 
 
 .card-title svg:hover{
-  color: black;
+  color: #293b62;
   transform: scale(1.1);
   transition: all 0.3s ease;
 }
@@ -88,14 +88,14 @@
     }
 
     .map-btn {
-      background-color: #864e3e;
+      background-color: #293b62;
       color: white;
       justify-content: center; 
       display: flex;
     }
 
     .signup-btn {
-      background-color: #799851;
+      background-color: #6bb95d;
       color: white;
     }
   }

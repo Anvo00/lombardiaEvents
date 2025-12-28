@@ -79,9 +79,9 @@ export class Profile implements OnInit {
         Swal.fire({
           icon: 'success',
           title: 'Profilo aggiornato con successo',
-          iconColor: '#799851',
+          iconColor: '#6bb95d',
           confirmButtonText: 'Ok',
-          confirmButtonColor: '#864B4F',
+          confirmButtonColor: '#293B62',
         });
         this.editing = false;
       }, 
@@ -90,9 +90,9 @@ export class Profile implements OnInit {
           icon: 'error',
           title: 'Errore',
           text: 'Si è verificato un errore durante l\'aggiornamento del profilo. Riprova più tardi.',
-          iconColor: '#799851',
+          iconColor: '#AF3E4D',
           confirmButtonText: 'Ok',
-          confirmButtonColor: '#864B4F',
+          confirmButtonColor: '#293B62',
         });
         console.error('Errore durante l\'aggiornamento dell\'utente:', error);
       }
@@ -136,13 +136,13 @@ export class Profile implements OnInit {
             </div>
           `,
           icon: 'info',
-          iconColor: '#799851',
+          iconColor: '#6bb95d',
           showCloseButton: true,
           showCancelButton: true,
           confirmButtonText: 'Mappa',
           cancelButtonText: 'Elimina ticket',
-          confirmButtonColor: '#799851',
-          cancelButtonColor: '#864B4F',
+          confirmButtonColor: '#6bb95d',
+          cancelButtonColor: '#AF3E4D',
           focusConfirm: false,
           customClass: {
             confirmButton: 'rounded-btn',
@@ -159,12 +159,12 @@ export class Profile implements OnInit {
               title: 'Sei sicuro?',
               text: 'Questa operazione eliminerà definitivamente il ticket.',
               icon: 'warning',
-              iconColor: '#799851',
+              iconColor: '#6bb95d',
               showCancelButton: true,
               confirmButtonText: 'Sì, elimina',
               cancelButtonText: 'Annulla',
-              confirmButtonColor: '#799851',
-              cancelButtonColor: '#864B4F',
+              confirmButtonColor: '#6bb95d',
+              cancelButtonColor: '#AF3E4D',
               customClass: {
                 confirmButton: 'rounded-btn',
                 cancelButton: 'rounded-btn'
@@ -175,10 +175,10 @@ export class Profile implements OnInit {
                   next: () => {
                     Swal.fire({
                       icon: 'success',
-                      iconColor: '#799851',
+                      iconColor: '#6bb95d',
                       title: 'Eliminato!',
                       text: 'Il ticket è stato eliminato.',
-                      confirmButtonColor: '#864B4F',
+                      confirmButtonColor: '#293B62',
                       customClass: { confirmButton: 'rounded-btn' }
                     });
                     this.tickets = this.tickets.filter(t => t.id !== ticket.id);  
@@ -190,10 +190,10 @@ export class Profile implements OnInit {
                     console.error('Errore eliminazione ticket', error);
                     Swal.fire({
                       icon: 'error',
-                      iconColor: '#799851',
+                      iconColor: '#AF3E4D',
                       title: 'Errore',
                       text: 'Impossibile eliminare il ticket. Riprova più tardi.',
-                      confirmButtonColor: '#864B4F',
+                      confirmButtonColor: '#293B62',
                       customClass: { confirmButton: 'rounded-btn' }
                     });
                   }
@@ -207,10 +207,10 @@ export class Profile implements OnInit {
         console.error('Errore durante il recupero dei dettagli dell\'evento:', error);
         Swal.fire({
           icon: 'error',
-          iconColor: '#799851',
+          iconColor: '#AF3E4D',
           title: 'Errore',
           text: 'Impossibile recuperare i dettagli dell\'evento.',
-          confirmButtonColor: '#864B4F',
+          confirmButtonColor: '#293B62',
 
         });
       }
@@ -236,5 +236,9 @@ export class Profile implements OnInit {
 
     this.atStart = el.scrollLeft <= 0;
     this.atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth -1;
+  }
+
+  exit(){
+    this.router.navigate(['/home']);
   }
 }

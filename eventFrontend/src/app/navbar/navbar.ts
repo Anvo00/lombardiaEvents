@@ -25,14 +25,14 @@ export class Navbar {
 
   logout(){
     this.authService.logout();
-    this.router.navigate(['/home']);
+    this.router.navigate(['/auth']);
     Swal.fire({
         icon: 'info',
         title: 'Logout effettuato',
         text: 'Sei stato discconnesso con successo.',
-        iconColor: '#799851',
+        iconColor: '#6bb95d',
         confirmButtonText: 'Ok',
-        confirmButtonColor: '#864B4F',
+        confirmButtonColor: '#293B62',
       });
   }
 }

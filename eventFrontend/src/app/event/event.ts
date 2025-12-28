@@ -46,9 +46,9 @@ export class Event implements OnInit{
           icon: 'error',
           title: 'Attenzione',
           text: 'Hai già acquistato un biglietto per questo evento (Max 1 per account).',
-          iconColor: '#864B4F',
+          iconColor: '#AF3E4D',
           confirmButtonText: 'Ok',
-          confirmButtonColor: '#864B4F',
+          confirmButtonColor: '#293B62',
         });
         return;
       }
@@ -58,9 +58,9 @@ export class Event implements OnInit{
           Swal.fire({
             icon: 'success',
             title: 'Iscrizione effettuata con successo',
-            iconColor: '#799851',
+            iconColor: '#6bb95d',
             confirmButtonText: 'Ok',
-            confirmButtonColor: '#864B4F',
+            confirmButtonColor: '#293B62',
           });
         },
         error: (error) => {
@@ -69,9 +69,9 @@ export class Event implements OnInit{
             icon: 'error',
             title: 'Errore',
             text: 'Si è verificato un errore durante l\'iscrizione all\'evento. Riprova più tardi.',
-            iconColor: '#864B4F',
+            iconColor: '#AF3E4D',
             confirmButtonText: 'Ok',
-            confirmButtonColor: '#864B4F',
+            confirmButtonColor: '#293B62',
           });
         }
       });
@@ -82,9 +82,9 @@ export class Event implements OnInit{
             icon: 'error',
             title: 'Errore',
             text: 'Devi essere autenticato per acquistare un biglietto.',
-            iconColor: '#864B4F',
+            iconColor: '#AF3E4D',
             confirmButtonText: 'Ok',
-            confirmButtonColor: '#864B4F',
+            confirmButtonColor: '#293B62',
           });
           return;
         }
@@ -93,9 +93,9 @@ export class Event implements OnInit{
           icon: 'error',
           title: 'Errore',
           text: 'Non è stato possibile verificare i biglietti dell\'utente. Riprova più tardi.',
-          iconColor: '#864B4F',
+          iconColor: '#AF3E4D',
           confirmButtonText: 'Ok',
-          confirmButtonColor: '#864B4F',
+          confirmButtonColor: '#293B62',
         });
       }
     });

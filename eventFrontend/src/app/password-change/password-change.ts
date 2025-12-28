@@ -45,9 +45,9 @@ export class PasswordChange implements OnInit {
         icon: 'error',
         title: 'Errore',
         text: 'Le password non coincidono. Riprova.',
-        iconColor: '#799851',
+        iconColor: '#AF3E4D',
         confirmButtonText: 'Ok',
-        confirmButtonColor: '#864B4F',
+        confirmButtonColor: '#293B62',
       });
 
       return;
@@ -65,9 +65,9 @@ export class PasswordChange implements OnInit {
             icon: 'error',
             title: 'Errore',
             text: 'La nuova password non può essere uguale alla precedente. Riprova.',
-            iconColor: '#799851',
+            iconColor: '#AF3E4D',
             confirmButtonText: 'Ok',
-            confirmButtonColor: '#864B4F',
+            confirmButtonColor: '#293B62',
           });
           return;
         }
@@ -80,9 +80,9 @@ export class PasswordChange implements OnInit {
         Swal.fire({
           icon: 'success',
           title: 'Password aggiornata con successo',
-          iconColor: '#799851',
+          iconColor: '#6bb95d',
           confirmButtonText: 'Ok',
-          confirmButtonColor: '#864B4F',
+          confirmButtonColor: '#293B62',
         }).then((result) => {
           if(result.isConfirmed) {
             this.authService.logout();
@@ -95,9 +95,9 @@ export class PasswordChange implements OnInit {
           icon: 'error',
           title: 'Errore',
           text: 'Si è verificato un errore durante l\'aggiornamento del profilo. Riprova più tardi.',
-          iconColor: '#799851',
+          iconColor: '#AF3E4D',
           confirmButtonText: 'Ok',
-          confirmButtonColor: '#864B4F',
+          confirmButtonColor: '#293B62',
         });
         console.error('Errore durante l\'aggiornamento della password:', error);
       }
@@ -109,9 +109,9 @@ export class PasswordChange implements OnInit {
         icon: 'error',
         title: 'Errore',
         text: 'Errore durante il confronto delle password. Riprova',
-        iconColor: '#799851',
+        iconColor: '#AF3E4D',
         confirmButtonText: 'Ok',
-        confirmButtonColor: '#864B4F',
+        confirmButtonColor: '#293B62',
       });
       }
     });
