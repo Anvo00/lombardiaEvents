@@ -1096,9 +1096,9 @@ var require_setprototypeof = __commonJS({
   }
 });
 
-// node_modules/http-errors/node_modules/statuses/codes.json
+// node_modules/statuses/codes.json
 var require_codes = __commonJS({
-  "node_modules/http-errors/node_modules/statuses/codes.json"(exports, module) {
+  "node_modules/statuses/codes.json"(exports, module) {
     module.exports = {
       "100": "Continue",
       "101": "Switching Protocols",
@@ -1167,9 +1167,9 @@ var require_codes = __commonJS({
   }
 });
 
-// node_modules/http-errors/node_modules/statuses/index.js
+// node_modules/statuses/index.js
 var require_statuses = __commonJS({
-  "node_modules/http-errors/node_modules/statuses/index.js"(exports, module) {
+  "node_modules/statuses/index.js"(exports, module) {
     "use strict";
     var codes = require_codes();
     module.exports = status;
@@ -1456,7 +1456,7 @@ var require_http_errors = __commonJS({
       });
     }
     function toClassName(name) {
-      return name.substr(-5) !== "Error" ? name + "Error" : name;
+      return name.slice(-5) === "Error" ? name : name + "Error";
     }
   }
 });
@@ -1546,312 +1546,6 @@ var require_bytes = __commonJS({
         return null;
       }
       return Math.floor(map[unit] * floatValue);
-    }
-  }
-});
-
-// node_modules/statuses/codes.json
-var require_codes2 = __commonJS({
-  "node_modules/statuses/codes.json"(exports, module) {
-    module.exports = {
-      "100": "Continue",
-      "101": "Switching Protocols",
-      "102": "Processing",
-      "103": "Early Hints",
-      "200": "OK",
-      "201": "Created",
-      "202": "Accepted",
-      "203": "Non-Authoritative Information",
-      "204": "No Content",
-      "205": "Reset Content",
-      "206": "Partial Content",
-      "207": "Multi-Status",
-      "208": "Already Reported",
-      "226": "IM Used",
-      "300": "Multiple Choices",
-      "301": "Moved Permanently",
-      "302": "Found",
-      "303": "See Other",
-      "304": "Not Modified",
-      "305": "Use Proxy",
-      "307": "Temporary Redirect",
-      "308": "Permanent Redirect",
-      "400": "Bad Request",
-      "401": "Unauthorized",
-      "402": "Payment Required",
-      "403": "Forbidden",
-      "404": "Not Found",
-      "405": "Method Not Allowed",
-      "406": "Not Acceptable",
-      "407": "Proxy Authentication Required",
-      "408": "Request Timeout",
-      "409": "Conflict",
-      "410": "Gone",
-      "411": "Length Required",
-      "412": "Precondition Failed",
-      "413": "Payload Too Large",
-      "414": "URI Too Long",
-      "415": "Unsupported Media Type",
-      "416": "Range Not Satisfiable",
-      "417": "Expectation Failed",
-      "418": "I'm a Teapot",
-      "421": "Misdirected Request",
-      "422": "Unprocessable Entity",
-      "423": "Locked",
-      "424": "Failed Dependency",
-      "425": "Too Early",
-      "426": "Upgrade Required",
-      "428": "Precondition Required",
-      "429": "Too Many Requests",
-      "431": "Request Header Fields Too Large",
-      "451": "Unavailable For Legal Reasons",
-      "500": "Internal Server Error",
-      "501": "Not Implemented",
-      "502": "Bad Gateway",
-      "503": "Service Unavailable",
-      "504": "Gateway Timeout",
-      "505": "HTTP Version Not Supported",
-      "506": "Variant Also Negotiates",
-      "507": "Insufficient Storage",
-      "508": "Loop Detected",
-      "509": "Bandwidth Limit Exceeded",
-      "510": "Not Extended",
-      "511": "Network Authentication Required"
-    };
-  }
-});
-
-// node_modules/statuses/index.js
-var require_statuses2 = __commonJS({
-  "node_modules/statuses/index.js"(exports, module) {
-    "use strict";
-    var codes = require_codes2();
-    module.exports = status;
-    status.message = codes;
-    status.code = createMessageToStatusCodeMap(codes);
-    status.codes = createStatusCodeList(codes);
-    status.redirect = {
-      300: true,
-      301: true,
-      302: true,
-      303: true,
-      305: true,
-      307: true,
-      308: true
-    };
-    status.empty = {
-      204: true,
-      205: true,
-      304: true
-    };
-    status.retry = {
-      502: true,
-      503: true,
-      504: true
-    };
-    function createMessageToStatusCodeMap(codes2) {
-      var map = {};
-      Object.keys(codes2).forEach(function forEachCode(code) {
-        var message = codes2[code];
-        var status2 = Number(code);
-        map[message.toLowerCase()] = status2;
-      });
-      return map;
-    }
-    function createStatusCodeList(codes2) {
-      return Object.keys(codes2).map(function mapCode(code) {
-        return Number(code);
-      });
-    }
-    function getStatusCode(message) {
-      var msg = message.toLowerCase();
-      if (!Object.prototype.hasOwnProperty.call(status.code, msg)) {
-        throw new Error('invalid status message: "' + message + '"');
-      }
-      return status.code[msg];
-    }
-    function getStatusMessage(code) {
-      if (!Object.prototype.hasOwnProperty.call(status.message, code)) {
-        throw new Error("invalid status code: " + code);
-      }
-      return status.message[code];
-    }
-    function status(code) {
-      if (typeof code === "number") {
-        return getStatusMessage(code);
-      }
-      if (typeof code !== "string") {
-        throw new TypeError("code must be a number or string");
-      }
-      var n = parseInt(code, 10);
-      if (!isNaN(n)) {
-        return getStatusMessage(n);
-      }
-      return getStatusCode(code);
-    }
-  }
-});
-
-// node_modules/raw-body/node_modules/http-errors/index.js
-var require_http_errors2 = __commonJS({
-  "node_modules/raw-body/node_modules/http-errors/index.js"(exports, module) {
-    "use strict";
-    var deprecate = require_depd()("http-errors");
-    var setPrototypeOf = require_setprototypeof();
-    var statuses = require_statuses2();
-    var inherits = require_inherits();
-    var toIdentifier = require_toidentifier();
-    module.exports = createError;
-    module.exports.HttpError = createHttpErrorConstructor();
-    module.exports.isHttpError = createIsHttpErrorFunction(module.exports.HttpError);
-    populateConstructorExports(module.exports, statuses.codes, module.exports.HttpError);
-    function codeClass(status) {
-      return Number(String(status).charAt(0) + "00");
-    }
-    function createError() {
-      var err;
-      var msg;
-      var status = 500;
-      var props = {};
-      for (var i = 0; i < arguments.length; i++) {
-        var arg = arguments[i];
-        var type = typeof arg;
-        if (type === "object" && arg instanceof Error) {
-          err = arg;
-          status = err.status || err.statusCode || status;
-        } else if (type === "number" && i === 0) {
-          status = arg;
-        } else if (type === "string") {
-          msg = arg;
-        } else if (type === "object") {
-          props = arg;
-        } else {
-          throw new TypeError("argument #" + (i + 1) + " unsupported type " + type);
-        }
-      }
-      if (typeof status === "number" && (status < 400 || status >= 600)) {
-        deprecate("non-error status code; use only 4xx or 5xx status codes");
-      }
-      if (typeof status !== "number" || !statuses.message[status] && (status < 400 || status >= 600)) {
-        status = 500;
-      }
-      var HttpError = createError[status] || createError[codeClass(status)];
-      if (!err) {
-        err = HttpError ? new HttpError(msg) : new Error(msg || statuses.message[status]);
-        Error.captureStackTrace(err, createError);
-      }
-      if (!HttpError || !(err instanceof HttpError) || err.status !== status) {
-        err.expose = status < 500;
-        err.status = err.statusCode = status;
-      }
-      for (var key in props) {
-        if (key !== "status" && key !== "statusCode") {
-          err[key] = props[key];
-        }
-      }
-      return err;
-    }
-    function createHttpErrorConstructor() {
-      function HttpError() {
-        throw new TypeError("cannot construct abstract class");
-      }
-      inherits(HttpError, Error);
-      return HttpError;
-    }
-    function createClientErrorConstructor(HttpError, name, code) {
-      var className = toClassName(name);
-      function ClientError(message) {
-        var msg = message != null ? message : statuses.message[code];
-        var err = new Error(msg);
-        Error.captureStackTrace(err, ClientError);
-        setPrototypeOf(err, ClientError.prototype);
-        Object.defineProperty(err, "message", {
-          enumerable: true,
-          configurable: true,
-          value: msg,
-          writable: true
-        });
-        Object.defineProperty(err, "name", {
-          enumerable: false,
-          configurable: true,
-          value: className,
-          writable: true
-        });
-        return err;
-      }
-      inherits(ClientError, HttpError);
-      nameFunc(ClientError, className);
-      ClientError.prototype.status = code;
-      ClientError.prototype.statusCode = code;
-      ClientError.prototype.expose = true;
-      return ClientError;
-    }
-    function createIsHttpErrorFunction(HttpError) {
-      return function isHttpError(val) {
-        if (!val || typeof val !== "object") {
-          return false;
-        }
-        if (val instanceof HttpError) {
-          return true;
-        }
-        return val instanceof Error && typeof val.expose === "boolean" && typeof val.statusCode === "number" && val.status === val.statusCode;
-      };
-    }
-    function createServerErrorConstructor(HttpError, name, code) {
-      var className = toClassName(name);
-      function ServerError(message) {
-        var msg = message != null ? message : statuses.message[code];
-        var err = new Error(msg);
-        Error.captureStackTrace(err, ServerError);
-        setPrototypeOf(err, ServerError.prototype);
-        Object.defineProperty(err, "message", {
-          enumerable: true,
-          configurable: true,
-          value: msg,
-          writable: true
-        });
-        Object.defineProperty(err, "name", {
-          enumerable: false,
-          configurable: true,
-          value: className,
-          writable: true
-        });
-        return err;
-      }
-      inherits(ServerError, HttpError);
-      nameFunc(ServerError, className);
-      ServerError.prototype.status = code;
-      ServerError.prototype.statusCode = code;
-      ServerError.prototype.expose = false;
-      return ServerError;
-    }
-    function nameFunc(func, name) {
-      var desc = Object.getOwnPropertyDescriptor(func, "name");
-      if (desc && desc.configurable) {
-        desc.value = name;
-        Object.defineProperty(func, "name", desc);
-      }
-    }
-    function populateConstructorExports(exports2, codes, HttpError) {
-      codes.forEach(function forEachCode(code) {
-        var CodeError;
-        var name = toIdentifier(statuses.message[code]);
-        switch (codeClass(code)) {
-          case 400:
-            CodeError = createClientErrorConstructor(HttpError, name, code);
-            break;
-          case 500:
-            CodeError = createServerErrorConstructor(HttpError, name, code);
-            break;
-        }
-        if (CodeError) {
-          exports2[code] = CodeError;
-          exports2[name] = CodeError;
-        }
-      });
-    }
-    function toClassName(name) {
-      return name.slice(-5) === "Error" ? name : name + "Error";
     }
   }
 });
@@ -5683,7 +5377,7 @@ var require_raw_body = __commonJS({
     "use strict";
     var asyncHooks = tryRequireAsyncHooks();
     var bytes = require_bytes();
-    var createError = require_http_errors2();
+    var createError = require_http_errors();
     var iconv = require_lib();
     var unpipe = require_unpipe();
     module.exports = getRawBody;
@@ -21498,8 +21192,23 @@ var require_utils2 = __commonJS({
   "node_modules/qs/lib/utils.js"(exports, module) {
     "use strict";
     var formats = require_formats();
+    var getSideChannel = require_side_channel();
     var has = Object.prototype.hasOwnProperty;
     var isArray = Array.isArray;
+    var overflowChannel = getSideChannel();
+    var markOverflow = function markOverflow2(obj, maxIndex) {
+      overflowChannel.set(obj, maxIndex);
+      return obj;
+    };
+    var isOverflow = function isOverflow2(obj) {
+      return overflowChannel.has(obj);
+    };
+    var getMaxIndex = function getMaxIndex2(obj) {
+      return overflowChannel.get(obj);
+    };
+    var setMaxIndex = function setMaxIndex2(obj, maxIndex) {
+      overflowChannel.set(obj, maxIndex);
+    };
     var hexTable = function() {
       var array = [];
       for (var i = 0; i < 256; ++i) {
@@ -21539,7 +21248,11 @@ var require_utils2 = __commonJS({
         if (isArray(target)) {
           target.push(source);
         } else if (target && typeof target === "object") {
-          if (options && (options.plainObjects || options.allowPrototypes) || !has.call(Object.prototype, source)) {
+          if (isOverflow(target)) {
+            var newIndex = getMaxIndex(target) + 1;
+            target[newIndex] = source;
+            setMaxIndex(target, newIndex);
+          } else if (options && (options.plainObjects || options.allowPrototypes) || !has.call(Object.prototype, source)) {
             target[source] = true;
           }
         } else {
@@ -21548,6 +21261,15 @@ var require_utils2 = __commonJS({
         return target;
       }
       if (!target || typeof target !== "object") {
+        if (isOverflow(source)) {
+          var sourceKeys = Object.keys(source);
+          var result = options && options.plainObjects ? { __proto__: null, 0: target } : { 0: target };
+          for (var m = 0; m < sourceKeys.length; m++) {
+            var oldKey = parseInt(sourceKeys[m], 10);
+            result[oldKey + 1] = source[sourceKeys[m]];
+          }
+          return markOverflow(result, getMaxIndex(source) + 1);
+        }
         return [target].concat(source);
       }
       var mergeTarget = target;
@@ -21670,8 +21392,18 @@ var require_utils2 = __commonJS({
       }
       return !!(obj.constructor && obj.constructor.isBuffer && obj.constructor.isBuffer(obj));
     };
-    var combine = function combine2(a, b) {
-      return [].concat(a, b);
+    var combine = function combine2(a, b, arrayLimit, plainObjects) {
+      if (isOverflow(a)) {
+        var newIndex = getMaxIndex(a) + 1;
+        a[newIndex] = b;
+        setMaxIndex(a, newIndex);
+        return a;
+      }
+      var result = [].concat(a, b);
+      if (result.length > arrayLimit) {
+        return markOverflow(arrayToObject(result, { plainObjects }), result.length - 1);
+      }
+      return result;
     };
     var maybeMap = function maybeMap2(val, fn) {
       if (isArray(val)) {
@@ -21691,6 +21423,7 @@ var require_utils2 = __commonJS({
       decode,
       encode,
       isBuffer,
+      isOverflow,
       isRegExp,
       maybeMap,
       merge
@@ -22069,16 +21802,18 @@ var require_parse = __commonJS({
           val = options.strictNullHandling ? null : "";
         } else {
           key = options.decoder(part.slice(0, pos), defaults.decoder, charset, "key");
-          val = utils.maybeMap(
-            parseArrayValue(
-              part.slice(pos + 1),
-              options,
-              isArray(obj[key]) ? obj[key].length : 0
-            ),
-            function(encodedVal) {
-              return options.decoder(encodedVal, defaults.decoder, charset, "value");
-            }
-          );
+          if (key !== null) {
+            val = utils.maybeMap(
+              parseArrayValue(
+                part.slice(pos + 1),
+                options,
+                isArray(obj[key]) ? obj[key].length : 0
+              ),
+              function(encodedVal) {
+                return options.decoder(encodedVal, defaults.decoder, charset, "value");
+              }
+            );
+          }
         }
         if (val && options.interpretNumericEntities && charset === "iso-8859-1") {
           val = interpretNumericEntities(String(val));
@@ -22086,11 +21821,18 @@ var require_parse = __commonJS({
         if (part.indexOf("[]=") > -1) {
           val = isArray(val) ? [val] : val;
         }
-        var existing = has.call(obj, key);
-        if (existing && options.duplicates === "combine") {
-          obj[key] = utils.combine(obj[key], val);
-        } else if (!existing || options.duplicates === "last") {
-          obj[key] = val;
+        if (key !== null) {
+          var existing = has.call(obj, key);
+          if (existing && options.duplicates === "combine") {
+            obj[key] = utils.combine(
+              obj[key],
+              val,
+              options.arrayLimit,
+              options.plainObjects
+            );
+          } else if (!existing || options.duplicates === "last") {
+            obj[key] = val;
+          }
         }
       }
       return obj;
@@ -22106,7 +21848,16 @@ var require_parse = __commonJS({
         var obj;
         var root = chain[i];
         if (root === "[]" && options.parseArrays) {
-          obj = options.allowEmptyArrays && (leaf === "" || options.strictNullHandling && leaf === null) ? [] : utils.combine([], leaf);
+          if (utils.isOverflow(leaf)) {
+            obj = leaf;
+          } else {
+            obj = options.allowEmptyArrays && (leaf === "" || options.strictNullHandling && leaf === null) ? [] : utils.combine(
+              [],
+              leaf,
+              options.arrayLimit,
+              options.plainObjects
+            );
+          }
         } else {
           obj = options.plainObjects ? { __proto__: null } : {};
           var cleanRoot = root.charAt(0) === "[" && root.charAt(root.length - 1) === "]" ? root.slice(1, -1) : root;
@@ -22125,14 +21876,19 @@ var require_parse = __commonJS({
       }
       return leaf;
     };
-    var parseKeys = function parseQueryStringKeys(givenKey, val, options, valuesParsed) {
-      if (!givenKey) {
-        return;
-      }
+    var splitKeyIntoSegments = function splitKeyIntoSegments2(givenKey, options) {
       var key = options.allowDots ? givenKey.replace(/\.([^.[]+)/g, "[$1]") : givenKey;
+      if (options.depth <= 0) {
+        if (!options.plainObjects && has.call(Object.prototype, key)) {
+          if (!options.allowPrototypes) {
+            return;
+          }
+        }
+        return [key];
+      }
       var brackets = /(\[[^[\]]*])/;
       var child = /(\[[^[\]]*])/g;
-      var segment = options.depth > 0 && brackets.exec(key);
+      var segment = brackets.exec(key);
       var parent = segment ? key.slice(0, segment.index) : key;
       var keys = [];
       if (parent) {
@@ -22144,9 +21900,10 @@ var require_parse = __commonJS({
         keys.push(parent);
       }
       var i = 0;
-      while (options.depth > 0 && (segment = child.exec(key)) !== null && i < options.depth) {
+      while ((segment = child.exec(key)) !== null && i < options.depth) {
         i += 1;
-        if (!options.plainObjects && has.call(Object.prototype, segment[1].slice(1, -1))) {
+        var segmentContent = segment[1].slice(1, -1);
+        if (!options.plainObjects && has.call(Object.prototype, segmentContent)) {
           if (!options.allowPrototypes) {
             return;
           }
@@ -22158,6 +21915,16 @@ var require_parse = __commonJS({
           throw new RangeError("Input depth exceeded depth option of " + options.depth + " and strictDepth is true");
         }
         keys.push("[" + key.slice(segment.index) + "]");
+      }
+      return keys;
+    };
+    var parseKeys = function parseQueryStringKeys(givenKey, val, options, valuesParsed) {
+      if (!givenKey) {
+        return;
+      }
+      var keys = splitKeyIntoSegments(givenKey, options);
+      if (!keys) {
+        return;
       }
       return parseObject(keys, val, options, valuesParsed);
     };
@@ -22543,7 +22310,7 @@ var require_finalhandler = __commonJS({
     var escapeHtml = require_escape_html();
     var onFinished = require_on_finished();
     var parseUrl = require_parseurl();
-    var statuses = require_statuses2();
+    var statuses = require_statuses();
     var isFinished = onFinished.isFinished;
     function createHtmlDocument(message) {
       var body = escapeHtml(message).replaceAll("\n", "<br>").replaceAll("  ", " &nbsp;");
@@ -26446,7 +26213,7 @@ var require_send = __commonJS({
     var onFinished = require_on_finished();
     var parseRange = require_range_parser();
     var path = __require("path");
-    var statuses = require_statuses2();
+    var statuses = require_statuses();
     var Stream = __require("stream");
     var util = __require("util");
     var extname = path.extname;
@@ -26999,7 +26766,7 @@ var require_response = __commonJS({
     var mime = require_mime_types();
     var path = __require("path");
     var pathIsAbsolute = __require("path").isAbsolute;
-    var statuses = require_statuses2();
+    var statuses = require_statuses();
     var sign = require_cookie_signature().sign;
     var normalizeType = require_utils3().normalizeType;
     var normalizeTypes = require_utils3().normalizeTypes;
@@ -27606,7 +27373,6 @@ depd/index.js:
    *)
 
 statuses/index.js:
-statuses/index.js:
   (*!
    * statuses
    * Copyright(c) 2014 Jonathan Ong
@@ -27621,7 +27387,6 @@ toidentifier/index.js:
    * MIT Licensed
    *)
 
-http-errors/index.js:
 http-errors/index.js:
   (*!
    * http-errors

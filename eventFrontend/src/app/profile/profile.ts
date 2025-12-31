@@ -20,6 +20,7 @@ import { ViewChild, ElementRef } from '@angular/core';
 export class Profile implements OnInit {
 
   editing = false;
+  isGoogleUser = false;
 
   user!: UserModel;
   formUser: UserModel = { ...this.user };
@@ -42,8 +43,10 @@ export class Profile implements OnInit {
         this.user = currentUser;
         this.loadUserTickets();
         this.route.queryParams.subscribe(params => {
-        if(params['editing'] === 'true') this.startEditing();
-    });
+        if(params['editing'] === 'true') this.startEditing();});
+        this.authService.loginProvider$.subscribe(provider => {
+          this.isGoogleUser = (provider === 'google');
+        });
       } catch (error) {
         console.error('Errore nel parsing dell\'utente dal sessionStorage:', error);
       }
@@ -60,7 +63,17 @@ export class Profile implements OnInit {
   }
 
   startPasswordChanging() : void {
-    this.router.navigate(['/passwordchange']);
+    if(!(this.user.provider === 'google')) {
+      this.router.navigate(['/passwordchange']);
+    }
+    Swal.fire({
+          icon: 'error',
+          title: 'Errore',
+          text: 'Non è possibile cambiare la password per gli utenti registrati tramite Google.',
+          iconColor: '#AF3E4D',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#293B62',
+        });
   }
 
   saveChanges(): void {

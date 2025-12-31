@@ -7,4 +7,5 @@ export interface UserModel {
     username: string;
     email: string;
     role: Role;
+    provider: string;
 }

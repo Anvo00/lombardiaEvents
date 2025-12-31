@@ -17,6 +17,9 @@ export class AuthService {
   private isAuthenticated = new BehaviorSubject<boolean>(false);
   isAuthenticated$ = this.isAuthenticated.asObservable();
 
+  private loginProvider = new BehaviorSubject<string | null>(null);
+  loginProvider$ = this.loginProvider.asObservable();
+
   private baseUrl = `${environment.apiUrl}/auth`; // URL del backend
 
   constructor(private http: HttpClient) {
@@ -70,6 +73,7 @@ export class AuthService {
         sessionStorage.setItem('token', (res as any).access_token);
         this.getProfile((res as any).access_token).subscribe();
         this.isAuthenticated.next(true)
+        this.loginProvider.next('local');
       })
     );
   }
@@ -98,6 +102,7 @@ export class AuthService {
 
           sessionStorage.setItem('token', token);
           this.isAuthenticated.next(true);
+          this.loginProvider.next('google');
 
           window.removeEventListener('message', listener);
           resolve(token);
@@ -120,5 +125,6 @@ export class AuthService {
     sessionStorage.clear();
     this.currentUserSubject.next(null);
     this.isAuthenticated.next(false);
+    this.loginProvider.next(null);
   }
 }

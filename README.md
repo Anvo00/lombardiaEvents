@@ -3,6 +3,11 @@
 <table>
   <tr>
     <td width="110" valign="middle" align="center">
+    <img
+        src="eventFrontend/public/images/logo.png"
+        alt="LombardiaEvents"
+        width="110"
+      />
     </td>
     <td>
       LombardiaEvents è un'applicazione web che permette di visualizzare gli
@@ -10,7 +15,6 @@
       grazie al collegamento ad un servizio
       <em>open source</em> messo a disposizione dalla regione Lombardia.
     </td>
-
   </tr>
 </table>
  
@@ -53,6 +57,12 @@ npm run install:all
 
 # Avviare il progetto da terminale nella cartella 'lombardiaEvents'
 npm run startProject
+
+-------
+
+# Se si fa il login tramite "Google", occorre utilizzare la mail accademica
+nome.cognome@studenti.unicam.it
+nome.cognome@unicam.it
 ```
 
 ### File _.env_
