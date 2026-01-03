@@ -1,7 +1,7 @@
 <div class="event-container">
-  <div class="event-card">
+  <div *ngIf="event" class="event-card">
     <div class="event-info">
-      <div *ngIf="event">
+      <div>
         <div class="card-title">
           <h2>{{ event.eventName }}</h2>
           <svg (click)="exit()"  xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">

@@ -3,9 +3,11 @@
 .event-container {
   display: flex;
   justify-content: center;
+  align-items: center;
   padding-top: 80px;
   padding-bottom: 80px;
   background-color: #f4eeeb;
+  min-height: 100vh;
 }
 
 .event-card {
@@ -13,7 +15,7 @@
   position: relative;
   max-width: 80%;
   width: 80vh;
-  height: auto;
+  height: fit-content;
   padding-bottom: 20px;
   background: white;
   border-radius: 20px;
@@ -114,7 +116,7 @@
   .event-info .buttons {
     flex-direction: column;
     gap: 10px;
-    justify-content: center; /* se vuoi centrarli */
+    justify-content: center; 
     align-items: stretch;    /* prendono larghezza completa */
   }
 
