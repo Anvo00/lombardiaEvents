@@ -15,6 +15,7 @@ tmp/
 .tmp/
 out-tsc/
 bazel-out/
+*.zip
 
 # Logs
 logs

@@ -48,8 +48,8 @@
 
 
 .navbar .login-button {
-  background-color: transparent;
-    color: #293b62;
+  background-color: #293b62;
+    color: #F4F2EF;
     font-size: 12px;
     font-weight: 600;
     padding: 10px 45px;
@@ -62,9 +62,7 @@
 }
 
 .navbar .login-button:hover {
-  scale: 1.05;
-  background-color: #6bb95d;
-  color: #eeebe3;
+  opacity: 0.9;
 }
 
 
