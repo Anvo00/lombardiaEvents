@@ -76,7 +76,7 @@ export class Event implements OnInit{
         }
       });
     },
-      error: (err) => {
+      error: () => {
         if(!this.isAuthenticated){
             Swal.fire({
             icon: 'error',
